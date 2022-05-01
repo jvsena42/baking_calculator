@@ -1,6 +1,6 @@
 package com.bulletapps.candypricer.domain.model
 
-data class Supplies(
+data class Supply(
     val id: String = "",
     val description: String = "",
     val price: Double = 0.0,
