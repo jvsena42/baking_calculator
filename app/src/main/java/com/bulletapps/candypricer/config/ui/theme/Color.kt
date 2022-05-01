@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.ui.theme
+package com.bulletapps.candypricer.config.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

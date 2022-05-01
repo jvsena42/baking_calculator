@@ -6,5 +6,5 @@ data class Component(
     val price: Double = 0.0,
     val unitType: UnitType,
     val quantity: Double = 0.0,
-    val productBaseIds: List<String>
+    val suppliesIds: List<String>
 )
