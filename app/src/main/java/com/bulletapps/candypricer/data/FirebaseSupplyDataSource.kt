@@ -42,12 +42,19 @@ class FirebaseSupplyDataSource(
         }
     }
 
-    override suspend fun updateSupply(id: String) {
-        TODO("Not yet implemented")
+    override suspend fun updateSupply(supply: Supply) : Supply {
+        return suspendCoroutine { continuation ->
+            suppliesReference.document(supply.id).set(supply)
+                .addOnSuccessListener { continuation.resumeWith(Result.success(supply)) }
+                .addOnFailureListener { e -> continuation.resumeWith(Result.failure(e)) }
+        }
     }
 
     override suspend fun deleteSupply(id: String) {
-        TODO("Not yet implemented")
+        return suspendCoroutine { continuation ->
+            suppliesReference.document(id).delete()
+                .addOnFailureListener { e -> continuation.resumeWith(Result.failure(e)) }
+        }
     }
 
 

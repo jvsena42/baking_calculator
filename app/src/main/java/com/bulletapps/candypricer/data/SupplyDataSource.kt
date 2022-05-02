@@ -9,7 +9,7 @@ interface SupplyDataSource {
 
     suspend fun getAllSupplies() : List<Supply>
 
-    suspend fun updateSupply(id: String)
+    suspend fun updateSupply(supply: Supply) : Supply
 
     suspend fun deleteSupply(id: String)
 }
