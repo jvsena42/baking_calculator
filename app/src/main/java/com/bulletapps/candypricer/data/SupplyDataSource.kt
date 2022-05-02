@@ -3,13 +3,13 @@ package com.bulletapps.candypricer.data
 import com.bulletapps.candypricer.domain.model.Supply
 
 interface SupplyDataSource {
-    fun createSupply(supply: Supply): Supply
+    suspend fun createSupply(supply: Supply): Supply
 
-    fun getSupply(id: String): Supply
+    suspend fun getSupply(id: String): Supply
 
-    fun getAllSupplies() : List<Supply>
+    suspend fun getAllSupplies() : List<Supply>
 
-    fun updateSupply(id: String)
+    suspend fun updateSupply(id: String)
 
-    fun deleteSupply(id: String)
+    suspend fun deleteSupply(id: String)
 }
