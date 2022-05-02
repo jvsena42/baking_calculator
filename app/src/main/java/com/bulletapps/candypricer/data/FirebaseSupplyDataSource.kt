@@ -28,29 +28,18 @@ class FirebaseSupplyDataSource(
                 val supply = documents.map { it.toObject(Supply::class.java) }.find { it.id == id }
                 continuation.resumeWith(Result.success(supply))
             }
+                .addOnFailureListener { e -> continuation.resumeWith(Result.failure(e)) }
         }
     }
 
-//       return suspendCoroutine { continuation ->
-//            val productsReference = documentReference.collection(COLLECTION_PRODUCTS)
-//
-//            productsReference.get().addOnSuccessListener { documents ->
-//                val products = mutableListOf<Product>()
-//                documents.forEach {
-//                    it.toObject(Product::class.java).run {
-//                        products.add(this)
-//                    }
-//                }
-//                continuation.resumeWith(Result.success(products))
-//            }
-//
-//            productsReference.get().addOnFailureListener { exception ->
-//                continuation.resumeWith(Result.failure(exception))
-//            }
-//        }
-
     override suspend fun getAllSupplies(): List<Supply> {
-        TODO("Not yet implemented")
+        return suspendCoroutine { continuation ->
+            suppliesReference.get().addOnSuccessListener { documents ->
+                val supplies = documents.map { it.toObject(Supply::class.java) }
+                continuation.resumeWith(Result.success(supplies))
+            }
+                .addOnFailureListener { e -> continuation.resumeWith(Result.failure(e)) }
+        }
     }
 
     override suspend fun updateSupply(id: String) {
