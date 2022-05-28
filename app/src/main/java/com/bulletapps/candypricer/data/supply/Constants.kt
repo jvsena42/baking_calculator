@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.data
+package com.bulletapps.candypricer.data.supply
 
 const val COLLECTION_ROOT = "data"
 const val COLLECTION_LEVEL = "client"

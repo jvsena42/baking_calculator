@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.data
+package com.bulletapps.candypricer.data.supply
 
 import com.bulletapps.candypricer.domain.model.Supply
 

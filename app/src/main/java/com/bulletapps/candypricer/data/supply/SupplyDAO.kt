@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.data
+package com.bulletapps.candypricer.data.supply
 
 import androidx.room.*
 import com.bulletapps.candypricer.domain.model.Supply
