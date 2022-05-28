@@ -11,7 +11,6 @@ class FirebaseSupplyDataSource(
     private val documentReference = firebaseFirestore.document("$COLLECTION_ROOT/$COLLECTION_LEVEL")
     private val suppliesReference = documentReference.collection(COLLECTION_SUPPLIES)
 
-
     override suspend fun createSupply(supply: Supply): Supply {
         return suspendCoroutine { continuation ->
             suppliesReference
