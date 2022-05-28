@@ -1,9 +1,14 @@
 package com.bulletapps.candypricer.domain.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "supply")
 data class Supply(
+    @PrimaryKey(autoGenerate = true)
     val id: String,
-    val description: String = "",
-    val price: Double = 0.0,
+    val name: String,
+    val price: Double,
     val quantity: Double,
     val unitType: UnitType
 )
