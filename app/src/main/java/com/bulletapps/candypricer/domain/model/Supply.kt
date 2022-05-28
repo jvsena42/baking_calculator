@@ -3,7 +3,7 @@ package com.bulletapps.candypricer.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "supply")
+@Entity(tableName = "supplies")
 data class Supply(
     @PrimaryKey(autoGenerate = true)
     val id: String,
