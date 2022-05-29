@@ -5,7 +5,7 @@ import com.bulletapps.candypricer.data.model.Supply
 interface CandyPricerRepository {
     suspend fun createSupply(supply: Supply)
 
-    suspend fun getSupply(id: String): Supply?
+    suspend fun getSupply(id: Int) : Supply?
 
     suspend fun getAllSupplies() : List<Supply>
 

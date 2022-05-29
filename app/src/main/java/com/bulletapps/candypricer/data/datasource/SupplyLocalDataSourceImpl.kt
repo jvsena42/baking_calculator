@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SupplyLocalDataSourceImpl @Inject constructor(private val supplyDAO: SupplyDAO ): SupplyDataSource {
     override suspend fun createSupply(supply: Supply) = supplyDAO.createSupply(supply)
 
-    override suspend fun getSupply(id: String) = supplyDAO.getSupply(id)
+    override suspend fun getSupply(id: Int) = supplyDAO.getSupply(id)
 
     override suspend fun getAllSupplies() = supplyDAO.getAllSupplies()
 

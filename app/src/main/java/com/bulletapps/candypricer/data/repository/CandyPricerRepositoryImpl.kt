@@ -9,7 +9,7 @@ class CandyPricerRepositoryImpl @Inject constructor(
 ): CandyPricerRepository {
     override suspend fun createSupply(supply: Supply) = supplyDataSource.createSupply(supply)
 
-    override suspend fun getSupply(id: String) = supplyDataSource.getSupply(id)
+    override suspend fun getSupply(id: Int) = supplyDataSource.getSupply(id)
 
     override suspend fun getAllSupplies(): List<Supply> = supplyDataSource.getAllSupplies()
 

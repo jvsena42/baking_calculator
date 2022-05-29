@@ -10,7 +10,7 @@ interface SupplyDAO {
     suspend fun createSupply(supply: Supply)
 
     @Query("SELECT * FROM supplies WHERE id=:id")
-    fun getSupply(id: String): Supply?
+    fun getSupply(id: Int): Supply?
 
     @Query("SELECT * FROM supplies")
     fun getAllSupplies() : List<Supply>
