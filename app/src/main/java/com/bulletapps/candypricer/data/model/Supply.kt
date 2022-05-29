@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.domain.model
+package com.bulletapps.candypricer.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

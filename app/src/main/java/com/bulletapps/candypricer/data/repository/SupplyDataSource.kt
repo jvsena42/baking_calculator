@@ -1,6 +1,6 @@
-package com.bulletapps.candypricer.data.supply
+package com.bulletapps.candypricer.data.repository
 
-import com.bulletapps.candypricer.domain.model.Supply
+import com.bulletapps.candypricer.data.model.Supply
 
 interface SupplyDataSource {
     suspend fun createSupply(supply: Supply): Supply

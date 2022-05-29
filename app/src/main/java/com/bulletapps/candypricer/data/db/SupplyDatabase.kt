@@ -1,7 +1,7 @@
-package com.bulletapps.candypricer.data.supply
+package com.bulletapps.candypricer.data.db
 
 import androidx.room.Database
-import com.bulletapps.candypricer.domain.model.Supply
+import com.bulletapps.candypricer.data.model.Supply
 
 @Database(
     entities = [Supply::class],
