@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.config.ui.theme
+package com.bulletapps.candypricer.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.config.ui.theme
+package com.bulletapps.candypricer.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
