@@ -7,7 +7,7 @@ import com.bulletapps.candypricer.data.model.Supply
 interface SupplyDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun createSupply(supply: Supply): Supply
+    suspend fun createSupply(supply: Supply)
 
     @Query("SELECT * FROM supplies WHERE id=:id")
     fun getSupply(id: String): Supply?
@@ -16,7 +16,7 @@ interface SupplyDAO {
     fun getAllSupplies() : List<Supply>
 
     @Update
-    suspend fun updateSupply(supply: Supply) : Supply
+    suspend fun updateSupply(supply: Supply)
 
     @Delete
     suspend fun deleteSupply(supply: Supply)
