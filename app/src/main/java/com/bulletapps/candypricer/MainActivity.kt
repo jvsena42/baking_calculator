@@ -3,6 +3,7 @@ package com.bulletapps.candypricer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
@@ -25,20 +26,18 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun BuildUI() {
     CandyPricerTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(1f),
-                            textAlign = TextAlign.Center,
-                            text = stringResource(R.string.main_menu)
-                        )
-                    },
-                )
-            }
+        Column (
+            modifier = Modifier.fillMaxSize(),
         ) {
-
+            TopAppBar(
+                title = {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(R.string.main_menu)
+                    )
+                },
+            )
         }
     }
 }
