@@ -65,7 +65,10 @@ fun MenuGrid(menuItems: List<MenuModel>) {
         modifier = Modifier.padding(top = 32.dp),
         content = {
             items(menuItems.size) { index ->
-                MenuItem(menuItems[index])
+                val item = menuItems[index]
+                MenuItem(item) {
+
+                }
             }
         }
     )
