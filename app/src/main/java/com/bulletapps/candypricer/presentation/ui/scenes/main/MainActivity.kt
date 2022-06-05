@@ -49,10 +49,10 @@ fun BuildUI() {
                 },
             )
             MenuGrid(listOf(
-                MenuModel(R.string.main_menu,R.drawable.ic_store),
-                MenuModel(R.string.supplies,R.drawable.ic_shopping_cart),
-                MenuModel(R.string.components,R.drawable.ic_widgets),
-                MenuModel(R.string.settings,R.drawable.ic_build),
+                MenuModel(R.string.main_menu,R.drawable.ic_store, -1),
+                MenuModel(R.string.supplies,R.drawable.ic_shopping_cart, -1),
+                MenuModel(R.string.components,R.drawable.ic_widgets, -1),
+                MenuModel(R.string.settings,R.drawable.ic_build, -1),
             ))
         }
     }
