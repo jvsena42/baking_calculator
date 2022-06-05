@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main
+package com.bulletapps.candypricer.presentation.ui.scenes.main.menu
 
 data class MenuModel(
     val labelRef: Int,
