@@ -1,6 +1,5 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.menu
 
-import android.view.MenuItem
 import androidx.lifecycle.ViewModel
 import com.bulletapps.candypricer.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +16,6 @@ class MenuViewModel @Inject constructor() : ViewModel() {
             MenuModel(R.string.settings, R.drawable.ic_build, -1),
         ),
     )
-
 
 }
 
