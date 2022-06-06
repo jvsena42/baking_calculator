@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.bulletapps.candypricer.presentation.ui.scenes.main.menu
+package com.bulletapps.candypricer.presentation.ui.scenes.main.supplies
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -26,9 +26,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun ScreenMenu(
-    viewModel: MenuViewModel = hiltViewModel()
+    viewModel: SuppliesViewModel = hiltViewModel()
 ) {
-    Screen(viewModel.menuItems)
+//    Screen(viewModel.menuItems)
 }
 
 @Composable
