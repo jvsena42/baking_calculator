@@ -1,10 +1,7 @@
 package com.bulletapps.candypricer.presentation.ui.widgets
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -21,10 +18,8 @@ import com.bulletapps.candypricer.presentation.ui.theme.colorAccent
 
 @Composable
 fun MenuItem(item: MenuModel, onClick: () -> Unit?) {
-    Card(
-        backgroundColor = Color.Transparent,
-        elevation = 0.dp,
-        modifier = Modifier.padding(8.dp).clickable { onClick },
+    Box(
+        modifier = Modifier.padding(8.dp),
     )
     {
         Column(
@@ -32,7 +27,7 @@ fun MenuItem(item: MenuModel, onClick: () -> Unit?) {
         ) {
             Card(
                 backgroundColor = colorAccent,
-                modifier = Modifier.size(60.dp)
+                modifier = Modifier.size(60.dp).clickable { onClick }
             ) {
                 Icon(
                     painter = painterResource(id = item.iconRef),
