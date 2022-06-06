@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Precificando</string>
+    <string name="main_menu">Menu Principal</string>
+    <string name="my_products">Meus Produtos</string>
+    <string name="supplies">Insumos</string>
+    <string name="settings">Configurações</string>
 </resources>
