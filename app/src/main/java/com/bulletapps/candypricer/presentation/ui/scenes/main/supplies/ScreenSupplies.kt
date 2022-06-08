@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -19,8 +20,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.data.model.Supply
 import com.bulletapps.candypricer.domain.model.MenuModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
+import com.bulletapps.candypricer.presentation.ui.widgets.CardSupply
 import com.bulletapps.candypricer.presentation.ui.widgets.MenuItem
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -28,14 +31,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 fun ScreenMenu(
     viewModel: SuppliesViewModel = hiltViewModel()
 ) {
-//    Screen(viewModel.menuItems)
+    Screen(viewModel.suppliesList)
 }
 
 @Composable
 fun Screen(
-    menuState: MutableStateFlow<List<MenuModel>>
+    itemsState: MutableStateFlow<List<Supply>>
 ) {
-    val items = menuState.collectAsState()
+    val items = itemsState.collectAsState()
     CandyPricerTheme {
         Column (
             modifier = Modifier.fillMaxSize(),
@@ -49,22 +52,18 @@ fun Screen(
                     )
                 },
             )
-            MenuGrid(items.value)
+            SuppliesList(items.value)
         }
     }
 }
 
 @Composable
-fun MenuGrid(menuItems: List<MenuModel>) {
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
-        modifier = Modifier.padding(top = 32.dp),
+fun SuppliesList(supplyList: List<Supply>) {
+    LazyColumn (
         content = {
-            items(menuItems.size) { index ->
-                val item = menuItems[index]
-                MenuItem(item) {
-
-                }
+            items(supplyList.size) { index ->
+                val item = supplyList[index]
+                CardSupply(item)
             }
         }
     )
