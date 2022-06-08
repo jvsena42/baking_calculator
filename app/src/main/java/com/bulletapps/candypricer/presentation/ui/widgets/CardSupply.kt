@@ -13,16 +13,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.data.model.Supply
+import com.bulletapps.candypricer.data.model.UnitType
 
 @Composable
-fun CardSupply() {
+fun CardSupply(supply: Supply) {
     Card {
         Column(modifier = Modifier.padding(8.dp)) {
-            TextWithLabel(stringResource(id = R.string.name_label),"Leite condensado")
+            TextWithLabel(stringResource(id = R.string.name_label),supply.name)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                TextWithLabel(stringResource(id = R.string.quantity_label), "2")
-                TextWithLabel(stringResource(id = R.string.measure_type_label),"Caixa")
-                TextWithLabel(stringResource(id = R.string.cost_label), "R$ 2,00")
+                TextWithLabel(stringResource(id = R.string.quantity_label), supply.quantity.toString())
+                TextWithLabel(stringResource(id = R.string.measure_type_label),supply.unitType)
+                TextWithLabel(stringResource(id = R.string.cost_label), supply.price)
             }
         }
     }
@@ -31,5 +33,5 @@ fun CardSupply() {
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    CardSupply()
+    CardSupply(Supply(id = 0, name = "Leite Condensado Caixa", price = "R$ 5,00", quantity = 1.0, unitType = "Unidade" ))
 }
