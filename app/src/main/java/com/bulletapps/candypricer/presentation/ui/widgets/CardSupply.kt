@@ -1,5 +1,6 @@
 package com.bulletapps.candypricer.presentation.ui.widgets
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -17,19 +18,11 @@ import com.bulletapps.candypricer.R
 fun CardSupply() {
     Card {
         Column(modifier = Modifier.padding(8.dp)) {
-            Row {
-                TextLabel(stringResource(id = R.string.name_label))
-                Text("Leite condensado")
-            }
-            Row {
-                TextLabel(stringResource(id = R.string.quantity_label))
-                Text("2")
-
-                TextLabel(stringResource(id = R.string.measure_type_label))
-                Text("Caixa")
-
-                TextLabel(stringResource(id = R.string.cost_label))
-                Text("R$ 2,00")
+            TextWithLabel(stringResource(id = R.string.name_label),"Leite condensado")
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                TextWithLabel(stringResource(id = R.string.quantity_label), "2")
+                TextWithLabel(stringResource(id = R.string.measure_type_label),"Caixa")
+                TextWithLabel(stringResource(id = R.string.cost_label), "R$ 2,00")
             }
         }
     }
