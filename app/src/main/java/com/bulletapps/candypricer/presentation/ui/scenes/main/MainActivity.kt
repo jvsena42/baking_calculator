@@ -27,14 +27,17 @@ class MainActivity : ComponentActivity() {
             )
         }
     }
-}
 
-private fun navigationBuilder(builder: NavGraphBuilder) = builder.apply {
-    composable(MainViewModel.Navigation.MainMenu.router) {
-        ScreenMenu()
+    private fun navigationBuilder(builder: NavGraphBuilder) = builder.apply {
+        composable(MainViewModel.Navigation.MainMenu.router) {
+            ScreenMenu(sharedViewModel = sharedViewModel)
+        }
+        composable(MainViewModel.Navigation.Supplies.router) {
+            ScreenMenu(sharedViewModel = sharedViewModel)
+        }
     }
-}
 
-private fun navEvent(navController: NavController, navScreen: MainViewModel.Navigation) {
-    navController.navigate(route = navScreen.router)
+    private fun navEvent(navController: NavController, navScreen: MainViewModel.Navigation) {
+        navController.navigate(route = navScreen.router)
+    }
 }

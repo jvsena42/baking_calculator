@@ -20,15 +20,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.domain.model.MenuModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.MenuItem
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun ScreenMenu(
-    viewModel: MenuViewModel = hiltViewModel()
+    viewModel: MenuViewModel = hiltViewModel(),
+    sharedViewModel: MainViewModel
 ) {
-    Screen(viewModel.menuItems)
+    Screen(sharedViewModel.menuItems)
 }
 
 @Composable
