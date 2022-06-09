@@ -1,5 +1,6 @@
 package com.bulletapps.candypricer.presentation.ui.widgets
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,8 +18,8 @@ import com.bulletapps.candypricer.data.model.Supply
 import com.bulletapps.candypricer.data.model.UnitType
 
 @Composable
-fun CardSupply(supply: Supply) {
-    Card {
+fun CardSupply(supply: Supply, onClick: () -> Unit?) {
+    Card(modifier = Modifier.clickable { onClick }) {
         Column(modifier = Modifier.padding(8.dp)) {
             TextWithLabel(stringResource(id = R.string.name_label),supply.name)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -33,5 +34,7 @@ fun CardSupply(supply: Supply) {
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    CardSupply(Supply(id = 0, name = "Leite Condensado Caixa", price = "R$ 5,00", quantity = 1.0, unitType = "Unidade" ))
+    CardSupply(Supply(id = 0, name = "Leite Condensado Caixa", price = "R$ 5,00", quantity = 1.0, unitType = "Unidade" )) {
+
+    }
 }

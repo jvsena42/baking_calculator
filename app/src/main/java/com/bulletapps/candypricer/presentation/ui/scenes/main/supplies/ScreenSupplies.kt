@@ -63,7 +63,9 @@ fun SuppliesList(supplyList: List<Supply>) {
         content = {
             items(supplyList.size) { index ->
                 val item = supplyList[index]
-                CardSupply(item)
+                CardSupply(item) {
+
+                }
             }
         }
     )
