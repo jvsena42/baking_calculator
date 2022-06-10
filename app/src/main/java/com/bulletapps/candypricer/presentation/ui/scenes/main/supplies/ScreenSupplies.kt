@@ -3,10 +3,12 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.supplies
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
@@ -36,7 +38,9 @@ fun Screen(
     val items = itemsState.collectAsState()
     CandyPricerTheme {
         Column (
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color=colors.background),
         ) {
             TopAppBar(
                 title = {

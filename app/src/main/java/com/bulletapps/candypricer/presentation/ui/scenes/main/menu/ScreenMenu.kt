@@ -3,12 +3,14 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.menu
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
@@ -61,7 +63,7 @@ fun Screen(
 fun MenuGrid(menuItems: List<MenuModel>, sharedViewModel: MainViewModel) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
-        modifier = Modifier.padding(top = 32.dp),
+        modifier = Modifier.padding(top = 32.dp).background(color= MaterialTheme.colors.background),
         content = {
             items(menuItems.size) { index ->
                 val item = menuItems[index]
