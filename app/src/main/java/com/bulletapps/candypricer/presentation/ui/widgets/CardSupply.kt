@@ -17,16 +17,23 @@ import com.bulletapps.candypricer.data.model.UnitType
 @Composable
 fun CardSupply(supply: Supply, onClick: () -> Unit?) {
     Card(
-        modifier = Modifier.clickable { onClick }
-        .fillMaxWidth()
-        .padding(top = 4.dp, start = 8.dp, end = 8.dp),
+        modifier = Modifier
+            .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+            .clickable { onClick.invoke() }
+            .fillMaxWidth(),
         elevation = 1.dp
     ) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            TextWithLabel(stringResource(id = R.string.name_label),supply.name)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                TextWithLabel(stringResource(id = R.string.quantity_label), supply.quantity.toString())
-                TextWithLabel(stringResource(id = R.string.measure_type_label),supply.unitType)
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            TextWithLabel(stringResource(id = R.string.name_label), supply.name)
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                TextWithLabel(
+                    stringResource(id = R.string.quantity_label),
+                    supply.quantity.toString()
+                )
+                TextWithLabel(stringResource(id = R.string.measure_type_label), supply.unitType)
                 TextWithLabel(stringResource(id = R.string.cost_label), supply.price)
             }
         }
@@ -36,7 +43,15 @@ fun CardSupply(supply: Supply, onClick: () -> Unit?) {
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    CardSupply(Supply(id = 0, name = "Leite Condensado Caixa", price = "R$ 5,00", quantity = 1.0, unitType = "Unidade" )) {
+    CardSupply(
+        Supply(
+            id = 0,
+            name = "Leite Condensado Caixa",
+            price = "R$ 5,00",
+            quantity = 1.0,
+            unitType = "Unidade"
+        )
+    ) {
 
     }
 }

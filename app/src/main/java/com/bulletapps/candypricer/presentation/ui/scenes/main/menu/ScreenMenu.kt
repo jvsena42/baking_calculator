@@ -43,7 +43,9 @@ fun Screen(
     val items = menuState.collectAsState()
     CandyPricerTheme {
         Column (
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color= MaterialTheme.colors.background),
         ) {
             TopAppBar(
                 title = {
@@ -63,7 +65,9 @@ fun Screen(
 fun MenuGrid(menuItems: List<MenuModel>, sharedViewModel: MainViewModel) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
-        modifier = Modifier.padding(top = 32.dp).background(color= MaterialTheme.colors.background),
+        modifier = Modifier
+            .padding(top = 32.dp)
+            .fillMaxSize(),
         content = {
             items(menuItems.size) { index ->
                 val item = menuItems[index]

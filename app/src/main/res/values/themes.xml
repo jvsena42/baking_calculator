@@ -2,5 +2,6 @@
 <resources>
 
     <style name="Theme.CandyPricer" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#FFD32F2F</item>
     </style>
 </resources>
