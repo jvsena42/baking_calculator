@@ -28,7 +28,7 @@ import com.bulletapps.candypricer.presentation.ui.widgets.MenuItem
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
-fun ScreenMenu(
+fun ScreenSupplies(
     viewModel: SuppliesViewModel = hiltViewModel()
 ) {
     Screen(viewModel.suppliesList)
@@ -48,7 +48,7 @@ fun Screen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
-                        text = stringResource(R.string.main_menu)
+                        text = stringResource(R.string.supplies)
                     )
                 },
             )

@@ -30,12 +30,13 @@ fun ScreenMenu(
     viewModel: MenuViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    Screen(sharedViewModel.menuItems)
+    Screen(sharedViewModel.menuItems, sharedViewModel)
 }
 
 @Composable
 fun Screen(
-    menuState: MutableStateFlow<List<MenuModel>>
+    menuState: MutableStateFlow<List<MenuModel>>,
+    sharedViewModel: MainViewModel
 ) {
     val items = menuState.collectAsState()
     CandyPricerTheme {
@@ -51,13 +52,13 @@ fun Screen(
                     )
                 },
             )
-            MenuGrid(items.value)
+            MenuGrid(items.value, sharedViewModel)
         }
     }
 }
 
 @Composable
-fun MenuGrid(menuItems: List<MenuModel>) {
+fun MenuGrid(menuItems: List<MenuModel>, sharedViewModel: MainViewModel) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
         modifier = Modifier.padding(top = 32.dp),
@@ -65,7 +66,7 @@ fun MenuGrid(menuItems: List<MenuModel>) {
             items(menuItems.size) { index ->
                 val item = menuItems[index]
                 MenuItem(item) {
-
+                    sharedViewModel.navigate(item.path)
                 }
             }
         }

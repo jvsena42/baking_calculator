@@ -26,7 +26,7 @@ fun MenuItem(item: MenuModel, onClick: () -> Unit?) {
         ) {
             Card(
                 backgroundColor = colorAccent,
-                modifier = Modifier.size(60.dp).clickable { onClick }
+                modifier = Modifier.size(60.dp).clickable { onClick.invoke() }
             ) {
                 Icon(
                     painter = painterResource(id = item.iconRef),
