@@ -10,4 +10,6 @@
     <string name="cost_label">Custo: </string>
     <string name="back">Voltar</string>
     <string name="add_supply">Adicionar Insumo</string>
+    <string name="name">Nome</string>
+    <string name="cocoa_powder">Cacau em pó</string>
 </resources>

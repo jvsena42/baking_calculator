@@ -50,10 +50,34 @@ fun Screen() {
             OutlinedTextField(
                 value = "",
                 onValueChange = {  },
-                label = { Text("Label") },
+                placeholder = { Text(stringResource(R.string.cocoa_powder)) },
+                label = { Text(stringResource(R.string.name)) },
                 modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
             )
 
+            OutlinedTextField(
+                value = "",
+                onValueChange = {  },
+                placeholder = { Text(stringResource(R.string.cocoa_powder)) },
+                label = { Text(stringResource(R.string.name)) },
+                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+            )
+
+            OutlinedTextField(
+                value = "",
+                onValueChange = {  },
+                placeholder = { Text(stringResource(R.string.cocoa_powder)) },
+                label = { Text(stringResource(R.string.name)) },
+                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+            )
+
+            OutlinedTextField(
+                value = "",
+                onValueChange = {  },
+                placeholder = { Text(stringResource(R.string.cocoa_powder)) },
+                label = { Text(stringResource(R.string.name)) },
+                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+            )
         }
     }
 }
