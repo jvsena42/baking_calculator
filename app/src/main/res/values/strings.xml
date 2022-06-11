@@ -9,5 +9,5 @@
     <string name="measure_type_label">Medida: </string>
     <string name="cost_label">Custo: </string>
     <string name="back">Voltar</string>
-    <string name="add_new">Adicionar novo</string>
+    <string name="add_supply">Adicionar Insumo</string>
 </resources>

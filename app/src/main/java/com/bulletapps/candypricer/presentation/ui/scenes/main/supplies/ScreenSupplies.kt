@@ -62,7 +62,7 @@ fun Screen(
             floatingActionButton = { FloatingActionButton(backgroundColor = colors.secondary, contentColor = colors.background, onClick = {}, ){
                 Icon(
                     painter = painterResource(id = R.drawable.ic_add_),
-                    contentDescription = stringResource(id = R.string.add_new),
+                    contentDescription = stringResource(id = R.string.add_supply),
                 )
             } }
         ) {
