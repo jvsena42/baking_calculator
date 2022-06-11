@@ -8,4 +8,5 @@
     <string name="quantity_label">Qnt: </string>
     <string name="measure_type_label">Medida: </string>
     <string name="cost_label">Custo: </string>
+    <string name="back">Voltar</string>
 </resources>
