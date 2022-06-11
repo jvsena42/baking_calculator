@@ -1,14 +1,8 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.addSupply
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
+import com.bulletapps.candypricer.presentation.util.CustomArrangement
 
 @Composable
 fun ScreenAddSupply(
@@ -32,10 +27,11 @@ fun ScreenAddSupply(
 fun Screen() {
     CandyPricerTheme {
 
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color= MaterialTheme.colors.background),
+                .background(color = MaterialTheme.colors.background),
+            verticalArrangement = CustomArrangement.spacedBy(8.dp)
         ) {
             TopAppBar(
                 title = {
@@ -47,9 +43,11 @@ fun Screen() {
                 },
             )
 
+            Spacer(Modifier.padding(8.dp))
+
             OutlinedTextField(
                 value = "",
-                onValueChange = {  },
+                onValueChange = { },
                 placeholder = { Text(stringResource(R.string.cocoa_powder)) },
                 label = { Text(stringResource(R.string.name)) },
                 modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
@@ -57,33 +55,34 @@ fun Screen() {
 
             OutlinedTextField(
                 value = "",
-                onValueChange = {  },
-                placeholder = { Text(stringResource(R.string.cocoa_powder)) },
-                label = { Text(stringResource(R.string.name)) },
+                onValueChange = { },
+                placeholder = { Text(stringResource(R.string.five_hundred)) },
+                label = { Text(stringResource(R.string.quantity)) },
                 modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
             )
 
             OutlinedTextField(
                 value = "",
-                onValueChange = {  },
+                onValueChange = { },
                 placeholder = { Text(stringResource(R.string.cocoa_powder)) },
-                label = { Text(stringResource(R.string.name)) },
+                label = { Text(stringResource(R.string.thirty_reals)) },
                 modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
             )
 
-            OutlinedTextField(
-                value = "",
-                onValueChange = {  },
-                placeholder = { Text(stringResource(R.string.cocoa_powder)) },
-                label = { Text(stringResource(R.string.name)) },
-                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
-            )
+            Button(
+                onClick = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 32.dp)
+            ) {
+                Text(stringResource(R.string.confirm))
+            }
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun Preview(){
+fun Preview() {
     Screen()
 }
