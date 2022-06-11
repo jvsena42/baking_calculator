@@ -1,19 +1,12 @@
-@file:OptIn(ExperimentalFoundationApi::class)
 
 package com.bulletapps.candypricer.presentation.ui.scenes.main.supplies
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -42,26 +35,33 @@ fun Screen(
 ) {
     val items = itemsState.collectAsState()
     CandyPricerTheme {
-        Column (
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color=colors.background),
-        ) {
-            TopAppBar(
-                backgroundColor = colors.primary,
-            ) {
-                IconButton(onClick = {  }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_arrow_back),
-                        contentDescription = stringResource(R.string.back),
+        Scaffold(
+            backgroundColor = colors.background,
+            topBar = {
+                TopAppBar(
+                    backgroundColor = colors.primary,
+                ) {
+                    IconButton(onClick = {  }) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_arrow_back),
+                            contentDescription = stringResource(R.string.back),
+                            colorFilter = ColorFilter.tint(color = colors.background)
+                        )
+                    }
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(R.string.supplies)
                     )
                 }
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = stringResource(R.string.supplies)
+            },
+            floatingActionButton = { FloatingActionButton(backgroundColor = colors.secondary, contentColor = colors.background, onClick = {}, ){
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add_),
+                    contentDescription = stringResource(id = R.string.add_new),
                 )
-            }
+            } }
+        ) {
             SuppliesList(items.value)
         }
     }
