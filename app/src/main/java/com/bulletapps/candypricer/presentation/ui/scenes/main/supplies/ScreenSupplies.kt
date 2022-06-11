@@ -1,4 +1,3 @@
-
 package com.bulletapps.candypricer.presentation.ui.scenes.main.supplies
 
 import androidx.compose.foundation.Image
@@ -9,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.data.model.Supply
@@ -43,28 +44,32 @@ fun Screen(
             backgroundColor = colors.background,
             topBar = {
                 TopAppBar(
-                    backgroundColor = colors.primary,
-                ) {
-                    IconButton(onClick = { activity.onBackPressed() }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = stringResource(R.string.back),
-                            colorFilter = ColorFilter.tint(color = colors.background)
-                        )
+                    title = {
+                        Text(text = stringResource(R.string.supplies))
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = { activity.onBackPressed() }) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_arrow_back),
+                                contentDescription = stringResource(R.string.back),
+                                colorFilter = ColorFilter.tint(color = colors.background)
+                            )
+                        }
                     }
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        text = stringResource(R.string.supplies)
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    backgroundColor = colors.secondary,
+                    contentColor = colors.background,
+                    onClick = {},
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_add_),
+                        contentDescription = stringResource(id = R.string.add_supply),
                     )
                 }
-            },
-            floatingActionButton = { FloatingActionButton(backgroundColor = colors.secondary, contentColor = colors.background, onClick = {}, ){
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_add_),
-                    contentDescription = stringResource(id = R.string.add_supply),
-                )
-            } }
+            }
         ) {
             SuppliesList(items.value)
         }
@@ -73,7 +78,7 @@ fun Screen(
 
 @Composable
 fun SuppliesList(supplyList: List<Supply>) {
-    LazyColumn (
+    LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         content = {
@@ -84,5 +89,37 @@ fun SuppliesList(supplyList: List<Supply>) {
                 }
             }
         }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Preview() {
+    Screen(
+        MutableStateFlow(
+            listOf(
+                Supply(
+                    id = 0,
+                    name = "Leite Condensado Caixa",
+                    price = "R$ 5,00",
+                    quantity = 1.0,
+                    unitType = "Unidade"
+                ),
+                Supply(
+                    id = 1,
+                    name = "Creme de leite Caixa",
+                    price = "R$ 6,00",
+                    quantity = 1.0,
+                    unitType = "Unidade"
+                ),
+                Supply(
+                    id = 2,
+                    name = "Chocolate em pó",
+                    price = "R$ 38,00",
+                    quantity = 500.0,
+                    unitType = "Gramas"
+                ),
+            )
+        )
     )
 }
