@@ -4,4 +4,10 @@
     <string name="my_products">Meus Produtos</string>
     <string name="supplies">Insumos</string>
     <string name="settings">Configurações</string>
+    <string name="name_label">Nome: </string>
+    <string name="quantity_label">Qnt: </string>
+    <string name="measure_type_label">Medida: </string>
+    <string name="cost_label">Custo: </string>
+    <string name="back">Voltar</string>
+    <string name="add_new">Adicionar novo</string>
 </resources>

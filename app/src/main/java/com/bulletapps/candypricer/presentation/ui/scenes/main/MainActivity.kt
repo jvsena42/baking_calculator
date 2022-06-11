@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.ScreenMenu
+import com.bulletapps.candypricer.presentation.ui.scenes.main.supplies.ScreenSupplies
 import com.bulletapps.candypricer.presentation.util.setNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,14 +28,17 @@ class MainActivity : ComponentActivity() {
             )
         }
     }
-}
 
-private fun navigationBuilder(builder: NavGraphBuilder) = builder.apply {
-    composable(MainViewModel.Navigation.MainMenu.router) {
-        ScreenMenu()
+    private fun navigationBuilder(builder: NavGraphBuilder) = builder.apply {
+        composable(MainViewModel.Navigation.MainMenu.router) {
+            ScreenMenu(sharedViewModel = sharedViewModel)
+        }
+        composable(MainViewModel.Navigation.Supplies.router) {
+            ScreenSupplies()
+        }
     }
-}
 
-private fun navEvent(navController: NavController, navScreen: MainViewModel.Navigation) {
-    navController.navigate(route = navScreen.router)
+    private fun navEvent(navController: NavController, navScreen: MainViewModel.Navigation) {
+        navController.navigate(route = navScreen.router)
+    }
 }

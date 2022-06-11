@@ -8,7 +8,7 @@ data class Supply(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
-    val price: Double,
+    val price: String,
     val quantity: Double,
-    val unitType: UnitType
+    val unitType: String
 )

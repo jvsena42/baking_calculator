@@ -11,3 +11,5 @@ val primaryText = Color(0xFF212121)
 val secondaryText = Color(0xFF757575)
 
 val colorDivider = Color(0xFFBDBDBD)
+
+val whiteBackground = Color(0xFFF2F6F9)
