@@ -12,12 +12,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.data.model.Supply
+import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardSupply
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,6 +36,8 @@ fun Screen(
     itemsState: MutableStateFlow<List<Supply>>
 ) {
     val items = itemsState.collectAsState()
+    val activity = LocalContext.current as MainActivity
+
     CandyPricerTheme {
         Scaffold(
             backgroundColor = colors.background,
@@ -41,7 +45,7 @@ fun Screen(
                 TopAppBar(
                     backgroundColor = colors.primary,
                 ) {
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = { activity.onBackPressed() }) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_arrow_back),
                             contentDescription = stringResource(R.string.back),
