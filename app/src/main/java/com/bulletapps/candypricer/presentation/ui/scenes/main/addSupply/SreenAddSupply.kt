@@ -1,10 +1,12 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.addSupply
 
+import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
+import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.util.CustomArrangement
 
 @Composable
@@ -20,11 +23,11 @@ fun ScreenAddSupply(
     viewModel: AddSupplyViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    Screen()
+    Screen(viewModel::addProduct)
 }
 
 @Composable
-fun Screen() {
+fun Screen(onClick : () -> Unit) {
     CandyPricerTheme {
 
         Column(
@@ -69,14 +72,7 @@ fun Screen() {
                 modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
             )
 
-            Button(
-                onClick = {},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 32.dp)
-            ) {
-                Text(stringResource(R.string.confirm))
-            }
+            NormalButton(text = stringResource(R.string.confirm), onClick = onClick)
         }
     }
 }
@@ -84,5 +80,5 @@ fun Screen() {
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    Screen()
+    Screen(onClick = {})
 }

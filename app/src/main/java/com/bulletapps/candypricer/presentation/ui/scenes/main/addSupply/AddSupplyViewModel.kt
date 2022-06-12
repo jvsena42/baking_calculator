@@ -9,5 +9,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddSupplyViewModel @Inject constructor() : ViewModel() {
 
+    fun addProduct() {
+
+    }
 }
 
