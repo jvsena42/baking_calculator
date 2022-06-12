@@ -16,4 +16,5 @@
     <string name="five_hundred">500</string>
     <string name="thirty_reals">R$ 30,00</string>
     <string name="confirm">Confirmar</string>
+    <string name="price">Preço</string>
 </resources>

@@ -80,8 +80,8 @@ fun Screen(
             OutlinedTextField(
                 value = price,
                 onValueChange = { onTextChanged(FieldsTexts.Price(it)) },
-                placeholder = { Text(stringResource(R.string.cocoa_powder)) },
-                label = { Text(stringResource(R.string.thirty_reals)) },
+                placeholder = { Text(stringResource(R.string.thirty_reals)) },
+                label = { Text(stringResource(R.string.price)) },
                 modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
             )
 
