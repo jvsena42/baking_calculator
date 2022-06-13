@@ -21,21 +21,24 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.data.model.Supply
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
+import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardSupply
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun ScreenSupplies(
-    viewModel: SuppliesViewModel = hiltViewModel()
+    viewModel: SuppliesViewModel = hiltViewModel(),
+    sharedViewModel: MainViewModel
 ) {
-    Screen(viewModel.suppliesList)
+    Screen(viewModel.suppliesList, onClickAdd = { sharedViewModel.navigate(MainViewModel.Navigation.AddSupply) })
 }
 
 @Composable
 fun Screen(
-    itemsState: MutableStateFlow<List<Supply>>
-) {
+    itemsState: MutableStateFlow<List<Supply>>,
+    onClickAdd: () -> Unit,
+    ) {
     val items = itemsState.collectAsState()
     val activity = LocalContext.current as MainActivity
 
@@ -62,7 +65,7 @@ fun Screen(
                 FloatingActionButton(
                     backgroundColor = colors.secondary,
                     contentColor = colors.background,
-                    onClick = {},
+                    onClick = onClickAdd,
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_add_),
@@ -120,6 +123,7 @@ fun Preview() {
                     unitType = "Gramas"
                 ),
             )
-        )
+        ),
+        {}
     )
 }

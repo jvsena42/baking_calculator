@@ -29,6 +29,7 @@ class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.
         object MainMenu : Navigation("main_menu")
         object MyProducts : Navigation("my_products")
         object Supplies : Navigation("supplies")
+        object AddSupply : Navigation("add_supply")
         object Settings : Navigation("settings")
     }
 }

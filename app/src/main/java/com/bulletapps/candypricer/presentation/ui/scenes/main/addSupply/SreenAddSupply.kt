@@ -1,6 +1,5 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.addSupply
 
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -20,7 +19,6 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.addSupply.AddSupplyViewModel.FieldsTexts
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
-import com.bulletapps.candypricer.presentation.util.CustomArrangement
 
 @Composable
 fun ScreenAddSupply(
