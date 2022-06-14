@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.addSupply
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -25,12 +26,19 @@ fun ScreenAddSupply(
     viewModel: AddSupplyViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    Screen(viewModel::onConfirmClicked, viewModel::onTextChanged, viewModel.uiState)
+    viewModel.setup() // todo: remove after integration
+    Screen(
+        viewModel::onClickConfirm,
+        viewModel::onChangeExpanded,
+        viewModel::onTextChanged,
+        viewModel.uiState
+    )
 }
 
 @Composable
 fun Screen(
-    onClick: () -> Unit,
+    onClickConfirm: () -> Unit,
+    onchangeExpanded: () -> Unit,
     onTextChanged: (FieldsTexts) -> Unit,
     uiState: AddSupplyViewModel.UIState
 ) {
@@ -38,6 +46,8 @@ fun Screen(
     val name by uiState.name.collectAsState()
     val quantity by uiState.quantity.collectAsState()
     val price by uiState.price.collectAsState()
+    val unities by uiState.unities.collectAsState()
+    val isExpanded by uiState.isExpanded.collectAsState()
 
     CandyPricerTheme {
 
@@ -75,27 +85,28 @@ fun Screen(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             )
 
-            DropdownMenu(
-                expanded = true,
-                onDismissRequest = {},
-                offset = DpOffset(0.dp, 0.dp),
-                properties = PopupProperties(focusable = true),
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
+            Box(
+                modifier = Modifier.fillMaxWidth().clickable { onchangeExpanded.invoke() }
             ) {
-                DropdownMenuItem(
-                    onClick = {},
+                DropdownMenu(
+                    expanded = isExpanded,
+                    onDismissRequest = onchangeExpanded,
+                    offset = DpOffset(0.dp, 0.dp),
+                    properties = PopupProperties(focusable = true),
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
                 ) {
-                    Text("gramas")
-                }
-
-                DropdownMenuItem(
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
-                ) {
-                    Text("gramas")
+                    unities.forEachIndexed { index, unityModel ->
+                        DropdownMenuItem(
+                            onClick = onchangeExpanded,
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
+                        ) {
+                            Text(unityModel.label)
+                        }
+                    }
                 }
             }
+
+
 
             OutlinedTextField(
                 value = price,
@@ -107,7 +118,7 @@ fun Screen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            NormalButton(text = stringResource(R.string.confirm), onClick = onClick)
+            NormalButton(text = stringResource(R.string.confirm), onClick = onClickConfirm)
         }
     }
 }
@@ -115,5 +126,5 @@ fun Screen(
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    Screen(onClick = {}, onTextChanged = {}, uiState = AddSupplyViewModel.UIState())
+    Screen(onClickConfirm = {}, onchangeExpanded = {}, onTextChanged = {}, uiState = AddSupplyViewModel.UIState())
 }
