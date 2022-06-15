@@ -4,29 +4,30 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 
 @Composable
-fun DropdownMenuCustom(
+fun DropdownMenuOutlined(
     modifier: Modifier = Modifier,
     expanded: Boolean,
     items: List<String>,
     selectedItem: String,
     label: String = "",
-    onClick: (() -> Unit)
+    onClick: (() -> Unit),
+    onItemSelected: ((Int) -> Unit),
 ) {
     val icon = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
@@ -47,14 +48,30 @@ fun DropdownMenuCustom(
         )
 
         DropdownMenu(
-
-        )
+            expanded = expanded,
+            onDismissRequest = {},
+            modifier = Modifier.width(with(LocalDensity.current) { textFieldSize.width.toDp() }),
+        ) {
+            items.forEachIndexed { index, item ->
+                DropdownMenuItem(
+                    onClick = { onItemSelected(index) },
+                    content = { Text(item, color = Color.Black) }
+                )
+            }
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    DropdownMenu()
+    DropdownMenuOutlined(
+    expanded = true,
+    items = listOf("item 1", "item 2", "item 3"),
+    selectedItem = "",
+    label = "Select an item",
+    onClick = {},
+    onItemSelected = {},
+    )
 }
 
