@@ -32,7 +32,7 @@ fun DropdownMenuOutlined(
     val icon = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
 
-    Column(modifier = modifier.padding(20.dp)) {
+    Column(modifier = modifier) {
         OutlinedTextField(
             value = selectedItem,
             onValueChange = {},

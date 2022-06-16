@@ -19,6 +19,7 @@ import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.addSupply.AddSupplyViewModel.FieldsTexts
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
+import com.bulletapps.candypricer.presentation.ui.widgets.DropdownMenuOutlined
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 
 @Composable
@@ -85,28 +86,15 @@ fun Screen(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             )
 
-            Box(
-                modifier = Modifier.fillMaxWidth().clickable { onchangeExpanded.invoke() }
-            ) {
-                DropdownMenu(
-                    expanded = isExpanded,
-                    onDismissRequest = onchangeExpanded,
-                    offset = DpOffset(0.dp, 0.dp),
-                    properties = PopupProperties(focusable = true),
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
-                ) {
-                    unities.forEachIndexed { index, unityModel ->
-                        DropdownMenuItem(
-                            onClick = onchangeExpanded,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
-                        ) {
-                            Text(unityModel.label)
-                        }
-                    }
-                }
-            }
-
-
+            DropdownMenuOutlined(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                expanded = isExpanded,
+                items = unities.map { it.label },
+                selectedItem = "",
+                label = stringResource(R.string.select_a_unit),
+                onClick = onchangeExpanded,
+                onItemSelected = {}
+            )
 
             OutlinedTextField(
                 value = price,

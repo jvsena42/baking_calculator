@@ -47,7 +47,7 @@ class AddSupplyViewModel @Inject constructor() : ViewModel() {
         val quantity = MutableStateFlow("")
         val price = MutableStateFlow("")
         val unities = MutableStateFlow<List<UnityModel>>(listOf())
-        val isExpanded = MutableStateFlow(true)
+        val isExpanded = MutableStateFlow(false)
         val selectedIndex = MutableStateFlow(0)
     }
 }
