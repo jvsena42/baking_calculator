@@ -42,7 +42,7 @@ fun CardSupply(supply: Supply, onClick: () -> Unit?) {
 
 @Preview(showBackground = true)
 @Composable
-fun Preview() {
+private fun Preview() {
     CardSupply(
         Supply(
             id = 0,

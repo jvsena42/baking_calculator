@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.bulletapps.candypricer.presentation.ui.scenes.main.addSupply.ScreenAddSupply
 import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.ScreenMenu
 import com.bulletapps.candypricer.presentation.ui.scenes.main.supplies.ScreenSupplies
 import com.bulletapps.candypricer.presentation.util.setNavigation
@@ -34,7 +35,10 @@ class MainActivity : ComponentActivity() {
             ScreenMenu(sharedViewModel = sharedViewModel)
         }
         composable(MainViewModel.Navigation.Supplies.router) {
-            ScreenSupplies()
+            ScreenSupplies(sharedViewModel = sharedViewModel)
+        }
+        composable(MainViewModel.Navigation.AddSupply.router) {
+            ScreenAddSupply(sharedViewModel = sharedViewModel)
         }
     }
 
