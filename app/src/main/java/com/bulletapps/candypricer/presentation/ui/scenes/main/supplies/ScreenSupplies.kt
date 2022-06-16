@@ -1,6 +1,5 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.supplies
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,10 +7,8 @@ import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -48,17 +45,12 @@ fun Screen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = stringResource(R.string.supplies))
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            text = stringResource(R.string.supplies)
+                        )
                     },
-                    navigationIcon = {
-                        IconButton(onClick = { activity.onBackPressed() }) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_arrow_back),
-                                contentDescription = stringResource(R.string.back),
-                                colorFilter = ColorFilter.tint(color = colors.background)
-                            )
-                        }
-                    }
                 )
             },
             floatingActionButton = {
