@@ -3,7 +3,6 @@ package com.bulletapps.candypricer.presentation.ui.widgets
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 
 @Composable
@@ -36,6 +34,7 @@ fun DropdownMenuOutlined(
         OutlinedTextField(
             value = selectedItem,
             onValueChange = {},
+            readOnly = true,
             modifier = modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates ->

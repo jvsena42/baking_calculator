@@ -29,9 +29,10 @@ fun ScreenAddSupply(
 ) {
     viewModel.setup() // todo: remove after integration
     Screen(
-        viewModel::onClickConfirm,
-        viewModel::onChangeExpanded,
-        viewModel::onTextChanged,
+        onClickConfirm = viewModel::onClickConfirm,
+        onchangeExpanded = viewModel::onChangeExpanded,
+        onTextChanged = viewModel::onTextChanged,
+        onItemSelected = {index -> viewModel.onItemSelected(index)},
         viewModel.uiState
     )
 }
@@ -41,7 +42,8 @@ fun Screen(
     onClickConfirm: () -> Unit,
     onchangeExpanded: () -> Unit,
     onTextChanged: (FieldsTexts) -> Unit,
-    uiState: AddSupplyViewModel.UIState
+    onItemSelected: ((Int) -> Unit),
+    uiState: AddSupplyViewModel.UIState,
 ) {
 
     val name by uiState.name.collectAsState()
@@ -49,6 +51,7 @@ fun Screen(
     val price by uiState.price.collectAsState()
     val unities by uiState.unities.collectAsState()
     val isExpanded by uiState.isExpanded.collectAsState()
+    val selectedUnit by uiState.selectedUnit.collectAsState()
 
     CandyPricerTheme {
 
@@ -90,10 +93,10 @@ fun Screen(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                 expanded = isExpanded,
                 items = unities.map { it.label },
-                selectedItem = "",
+                selectedItem = selectedUnit,
                 label = stringResource(R.string.select_a_unit),
                 onClick = onchangeExpanded,
-                onItemSelected = {}
+                onItemSelected = { index -> onItemSelected(index) }
             )
 
             OutlinedTextField(
@@ -114,5 +117,5 @@ fun Screen(
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    Screen(onClickConfirm = {}, onchangeExpanded = {}, onTextChanged = {}, uiState = AddSupplyViewModel.UIState())
+    Screen(onClickConfirm = {}, onchangeExpanded = {}, onTextChanged = {}, onItemSelected = {}, uiState = AddSupplyViewModel.UIState())
 }

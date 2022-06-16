@@ -26,6 +26,11 @@ class AddSupplyViewModel @Inject constructor() : ViewModel() {
 
     }
 
+    fun onItemSelected(index: Int) {
+        uiState.isExpanded.value = false
+        uiState.selectedUnit.value = uiState.unities.value[index].label
+    }
+
     fun onChangeExpanded() {
         uiState.isExpanded.value = !uiState.isExpanded.value
     }
@@ -48,7 +53,7 @@ class AddSupplyViewModel @Inject constructor() : ViewModel() {
         val price = MutableStateFlow("")
         val unities = MutableStateFlow<List<UnityModel>>(listOf())
         val isExpanded = MutableStateFlow(false)
-        val selectedIndex = MutableStateFlow(0)
+        val selectedUnit = MutableStateFlow("")
     }
 }
 
