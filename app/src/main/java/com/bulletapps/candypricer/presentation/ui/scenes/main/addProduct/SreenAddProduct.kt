@@ -47,7 +47,6 @@ private fun Screen(
 ) {
 
     val profitMargin by uiState.profitMargin.collectAsState()
-    val variableExpenses by uiState.variableExpenses.collectAsState()
     val suppliesList by uiState.suppliesList.collectAsState()
 
     CandyPricerTheme {
@@ -79,21 +78,7 @@ private fun Screen(
 
                     MakeFieldLaborPrice(onAction, uiState)
 
-                    OutlinedTextField(
-                        value = variableExpenses,
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        onValueChange = {
-                            OnTextChanged(
-                                FieldsTexts.VariableExpenses(
-                                    it
-                                )
-                            )
-                        },
-                        placeholder = { Text(stringResource(R.string.thirty_reals)) },
-                        label = { Text(stringResource(R.string.variable_expenses)) },
-                        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
-                    )
+                    MakeFieldVariableExpenses(onAction, uiState)
 
                     OutlinedTextField(
                         value = profitMargin,
@@ -144,6 +129,30 @@ private fun Screen(
     }
 }
 
+@Composable
+private fun MakeFieldVariableExpenses(onAction: ((ScreenActions) -> Unit), uiState: UIState) {
+    val variableExpenses by uiState.variableExpenses.collectAsState()
+
+    OutlinedTextField(
+        value = variableExpenses,
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        onValueChange = {
+            onAction(
+                OnTextChanged(
+                    FieldsTexts.VariableExpenses(
+                        it
+                    )
+                )
+            )
+        },
+        placeholder = { Text(stringResource(R.string.thirty_reals)) },
+        label = { Text(stringResource(R.string.variable_expenses)) },
+        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+    )
+}
+
+@Composable
 private fun MakeFieldLaborPrice(onAction: ((ScreenActions) -> Unit), uiState: UIState) {
     val laborPrice by uiState.laborPrice.collectAsState()
 
