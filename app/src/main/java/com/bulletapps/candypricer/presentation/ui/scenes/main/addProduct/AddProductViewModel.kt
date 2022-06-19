@@ -37,20 +37,23 @@ class AddProductViewModel @Inject constructor() : ViewModel() {
 
     fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
         is FieldsTexts.Name -> uiState.name.value = fieldsTexts.text
-        is FieldsTexts.Price -> uiState.price.value = fieldsTexts.text
-        is FieldsTexts.Quantity -> uiState.quantity.value = fieldsTexts.text
+        is FieldsTexts.LaborPrice -> uiState.laborPrice.value = fieldsTexts.text
+        is FieldsTexts.ProfitMargin -> uiState.profitMargin.value = fieldsTexts.text
+        is FieldsTexts.VariableExpenses -> uiState.variableExpenses.value = fieldsTexts.text
     }
 
     sealed class FieldsTexts {
         data class Name(val text: String) : FieldsTexts()
-        data class Quantity(val text: String) : FieldsTexts()
-        data class Price(val text: String) : FieldsTexts()
+        data class LaborPrice(val text: String) : FieldsTexts()
+        data class ProfitMargin(val text: String) : FieldsTexts()
+        data class VariableExpenses(val text: String) : FieldsTexts()
     }
 
     class UIState {
         val name = MutableStateFlow("")
-        val quantity = MutableStateFlow("")
-        val price = MutableStateFlow("")
+        val laborPrice = MutableStateFlow("")
+        val profitMargin = MutableStateFlow("")
+        val variableExpenses = MutableStateFlow("")
         val unities = MutableStateFlow<List<UnityModel>>(listOf())
         val isExpanded = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow("")

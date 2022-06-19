@@ -3,12 +3,16 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,8 +49,9 @@ fun Screen(
 ) {
 
     val name by uiState.name.collectAsState()
-    val quantity by uiState.quantity.collectAsState()
-    val price by uiState.price.collectAsState()
+    val laborPrice by uiState.laborPrice.collectAsState()
+    val profitMargin by uiState.profitMargin.collectAsState()
+    val variableExpenses by uiState.variableExpenses.collectAsState()
     val unities by uiState.unities.collectAsState()
     val isExpanded by uiState.isExpanded.collectAsState()
     val selectedUnit by uiState.selectedUnit.collectAsState()
@@ -91,34 +96,45 @@ fun Screen(
             )
 
             OutlinedTextField(
-                value = price,
+                value = laborPrice,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.Price(it)) },
+                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.LaborPrice(it)) },
                 placeholder = { Text(stringResource(R.string.labor_price)) },
                 label = { Text(stringResource(R.string.labor_price)) },
                 modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
             )
 
             OutlinedTextField(
-                value = price,
+                value = variableExpenses,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.Price(it)) },
+                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.VariableExpenses(it)) },
                 placeholder = { Text(stringResource(R.string.thirty_reals)) },
                 label = { Text(stringResource(R.string.variable_expenses)) },
                 modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
             )
 
             OutlinedTextField(
-                value = price,
+                value = profitMargin,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.Price(it)) },
+                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.ProfitMargin(it)) },
                 placeholder = { Text(stringResource(R.string.ten_percent)) },
                 label = { Text(stringResource(R.string.profit_margin)) },
                 modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
             )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            Text(
+                stringResource(R.string.supplies),
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
 
             Spacer(modifier = Modifier.weight(1f))
 
