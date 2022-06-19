@@ -80,16 +80,6 @@ fun Screen(
                 modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
             )
 
-            OutlinedTextField(
-                value = quantity,
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.Quantity(it)) },
-                placeholder = { Text(stringResource(R.string.five_hundred)) },
-                label = { Text(stringResource(R.string.quantity)) },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
-            )
-
             DropdownMenuOutlined(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                 expanded = isExpanded,
@@ -105,8 +95,28 @@ fun Screen(
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.Price(it)) },
+                placeholder = { Text(stringResource(R.string.labor_price)) },
+                label = { Text(stringResource(R.string.labor_price)) },
+                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+            )
+
+            OutlinedTextField(
+                value = price,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.Price(it)) },
                 placeholder = { Text(stringResource(R.string.thirty_reals)) },
-                label = { Text(stringResource(R.string.price)) },
+                label = { Text(stringResource(R.string.variable_expenses)) },
+                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+            )
+
+            OutlinedTextField(
+                value = price,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.Price(it)) },
+                placeholder = { Text(stringResource(R.string.ten_percent)) },
+                label = { Text(stringResource(R.string.profit_margin)) },
                 modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
             )
 

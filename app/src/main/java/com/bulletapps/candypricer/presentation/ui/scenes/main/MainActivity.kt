@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.ScreenAddProduct
 import com.bulletapps.candypricer.presentation.ui.scenes.main.addSupply.ScreenAddSupply
 import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.ScreenMenu
 import com.bulletapps.candypricer.presentation.ui.scenes.main.products.ScreenProducs
@@ -45,7 +46,7 @@ class MainActivity : ComponentActivity() {
             ScreenProducs(sharedViewModel = sharedViewModel)
         }
         composable(MainViewModel.Navigation.AddProduct.router) {
-            ScreenProducs(sharedViewModel = sharedViewModel)
+            ScreenAddProduct(sharedViewModel = sharedViewModel)
         }
     }
 
