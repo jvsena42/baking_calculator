@@ -28,20 +28,20 @@ class AddProductViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    fun onClickConfirm() {
+    private fun onClickConfirm() {
 
     }
 
-    fun onItemSelected(index: Int) {
+    private fun onItemSelected(index: Int) {
         uiState.isExpanded.value = false
         uiState.selectedUnit.value = uiState.unities.value[index].label
     }
 
-    fun onChangeExpanded() {
+    private fun onChangeExpanded() {
         uiState.isExpanded.value = !uiState.isExpanded.value
     }
 
-    fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
+    private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
         is FieldsTexts.Name -> uiState.name.value = fieldsTexts.text
         is FieldsTexts.LaborPrice -> uiState.laborPrice.value = fieldsTexts.text
         is FieldsTexts.ProfitMargin -> uiState.profitMargin.value = fieldsTexts.text
@@ -53,6 +53,20 @@ class AddProductViewModel @Inject constructor() : ViewModel() {
         data class LaborPrice(val text: String) : FieldsTexts()
         data class ProfitMargin(val text: String) : FieldsTexts()
         data class VariableExpenses(val text: String) : FieldsTexts()
+    }
+
+    fun onAction(action: ScreenActions) = when(action) {
+        is ScreenActions.OnChangeExpanded -> onChangeExpanded()
+        is ScreenActions.OnClickConfirm -> onClickConfirm()
+        is ScreenActions.OnItemSelected -> onItemSelected(action.index)
+        is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
+    }
+
+    sealed class ScreenActions {
+        object OnClickConfirm : ScreenActions()
+        object OnChangeExpanded : ScreenActions()
+        data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
+        data class OnItemSelected(val index: Int) : ScreenActions()
     }
 
     class UIState {

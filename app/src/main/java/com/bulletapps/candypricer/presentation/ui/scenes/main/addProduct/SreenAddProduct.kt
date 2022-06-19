@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -24,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.ScreenActions.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.*
 
@@ -34,21 +34,15 @@ fun ScreenAddProduct(
 ) {
     viewModel.setup() // todo: remove after integration
     Screen(
-        onClickConfirm = viewModel::onClickConfirm,
-        onchangeExpanded = viewModel::onChangeExpanded,
-        onTextChanged = viewModel::onTextChanged,
-        onItemSelected = { index -> viewModel.onItemSelected(index) },
+        onAction = { action -> viewModel.onAction(action) },
         viewModel.uiState
     )
 }
 
 @Composable
 private fun Screen(
-    onClickConfirm: () -> Unit,
-    onchangeExpanded: () -> Unit,
-    onTextChanged: (AddProductViewModel.FieldsTexts) -> Unit,
-    onItemSelected: ((Int) -> Unit),
-    uiState: AddProductViewModel.UIState,
+    onAction: ((ScreenActions) -> Unit),
+    uiState: UIState,
 ) {
 
     val name by uiState.name.collectAsState()
@@ -86,7 +80,7 @@ private fun Screen(
                     OutlinedTextField(
                         value = name,
                         singleLine = true,
-                        onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.Name(it)) },
+                        onValueChange = { onAction(OnTextChanged(FieldsTexts.Name(it))) },
                         placeholder = { Text(stringResource(R.string.cocoa_powder)) },
                         label = { Text(stringResource(R.string.name)) },
                         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
@@ -98,8 +92,8 @@ private fun Screen(
                         items = unities.map { it.label },
                         selectedItem = selectedUnit,
                         label = stringResource(R.string.select_a_unit),
-                        onClick = onchangeExpanded,
-                        onItemSelected = { index -> onItemSelected(index) }
+                        onClick = { onAction(OnChangeExpanded) },
+                        onItemSelected = { index -> OnItemSelected(index) }
                     )
 
                     OutlinedTextField(
@@ -107,8 +101,8 @@ private fun Screen(
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         onValueChange = {
-                            onTextChanged(
-                                AddProductViewModel.FieldsTexts.LaborPrice(
+                            OnTextChanged(
+                                FieldsTexts.LaborPrice(
                                     it
                                 )
                             )
@@ -123,8 +117,8 @@ private fun Screen(
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         onValueChange = {
-                            onTextChanged(
-                                AddProductViewModel.FieldsTexts.VariableExpenses(
+                            OnTextChanged(
+                                FieldsTexts.VariableExpenses(
                                     it
                                 )
                             )
@@ -139,8 +133,8 @@ private fun Screen(
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         onValueChange = {
-                            onTextChanged(
-                                AddProductViewModel.FieldsTexts.ProfitMargin(
+                            OnTextChanged(
+                                FieldsTexts.ProfitMargin(
                                     it
                                 )
                             )
@@ -174,7 +168,9 @@ private fun Screen(
 
 
                 item {
-                    NormalButton(text = stringResource(R.string.confirm), onClick = onClickConfirm)
+                    NormalButton(
+                        text = stringResource(R.string.confirm),
+                        onClick = { OnClickConfirm })
                 }
             }
         }
@@ -185,10 +181,7 @@ private fun Screen(
 @Composable
 fun Preview() {
     Screen(
-        onClickConfirm = {},
-        onchangeExpanded = {},
-        onTextChanged = {},
-        onItemSelected = {},
-        uiState = AddProductViewModel.UIState()
+        onAction = {},
+        uiState = UIState()
     )
 }
