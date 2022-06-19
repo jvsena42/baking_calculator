@@ -46,7 +46,6 @@ private fun Screen(
     uiState: UIState,
 ) {
 
-    val profitMargin by uiState.profitMargin.collectAsState()
     val suppliesList by uiState.suppliesList.collectAsState()
 
     CandyPricerTheme {
@@ -80,21 +79,7 @@ private fun Screen(
 
                     MakeFieldVariableExpenses(onAction, uiState)
 
-                    OutlinedTextField(
-                        value = profitMargin,
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        onValueChange = {
-                            OnTextChanged(
-                                FieldsTexts.ProfitMargin(
-                                    it
-                                )
-                            )
-                        },
-                        placeholder = { Text(stringResource(R.string.ten_percent)) },
-                        label = { Text(stringResource(R.string.profit_margin)) },
-                        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
-                    )
+                    MakeFieldProfitMargin(onAction, uiState)
 
                     Spacer(modifier = Modifier.height(32.dp))
 
@@ -127,6 +112,30 @@ private fun Screen(
             }
         }
     }
+}
+
+@Composable
+private fun MakeFieldProfitMargin(onAction: ((ScreenActions) -> Unit), uiState: UIState) {
+    val profitMargin by uiState.profitMargin.collectAsState()
+
+    OutlinedTextField(
+        value = profitMargin,
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        onValueChange = {
+            onAction(
+                OnTextChanged(
+                    FieldsTexts.ProfitMargin(
+                        it
+                    )
+                )
+            )
+
+        },
+        placeholder = { Text(stringResource(R.string.ten_percent)) },
+        label = { Text(stringResource(R.string.profit_margin)) },
+        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+    )
 }
 
 @Composable
