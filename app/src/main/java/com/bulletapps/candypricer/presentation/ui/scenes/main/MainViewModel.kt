@@ -15,7 +15,7 @@ class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.
 
     val menuItems: MutableStateFlow<List<MenuModel>> = MutableStateFlow(
         listOf(
-            MenuModel(R.string.my_products, R.drawable.ic_store, Navigation.MyProducts),
+            MenuModel(R.string.my_products, R.drawable.ic_store, Navigation.Products),
             MenuModel(R.string.supplies, R.drawable.ic_shopping_cart, Navigation.Supplies),
             MenuModel(R.string.settings, R.drawable.ic_build, Navigation.Settings),
         ),
@@ -27,7 +27,7 @@ class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.
 
     sealed class Navigation(val router: String) {
         object MainMenu : Navigation("main_menu")
-        object MyProducts : Navigation("my_products")
+        object Products : Navigation("products")
         object Supplies : Navigation("supplies")
         object AddSupply : Navigation("add_supply")
         object Settings : Navigation("settings")
