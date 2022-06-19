@@ -2,7 +2,11 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -21,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
+import com.bulletapps.candypricer.presentation.ui.widgets.CardSupply
 import com.bulletapps.candypricer.presentation.ui.widgets.DropdownMenuOutlined
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.SuppliesList
@@ -60,90 +65,95 @@ fun Screen(
 
     CandyPricerTheme {
 
-        Column(
+        TopAppBar(
+            title = {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    text = stringResource(R.string.add_product)
+                )
+            },
+        )
+
+        LazyColumn (
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colors.background),
             verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            TopAppBar(
-                title = {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        text = stringResource(R.string.add_product)
-                    )
-                },
-            )
+                ) {
+            item {
+                Spacer(Modifier.height(8.dp))
 
-            Spacer(Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = name,
+                    singleLine = true,
+                    onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.Name(it)) },
+                    placeholder = { Text(stringResource(R.string.cocoa_powder)) },
+                    label = { Text(stringResource(R.string.name)) },
+                    modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+                )
 
-            OutlinedTextField(
-                value = name,
-                singleLine = true,
-                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.Name(it)) },
-                placeholder = { Text(stringResource(R.string.cocoa_powder)) },
-                label = { Text(stringResource(R.string.name)) },
-                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
-            )
+                DropdownMenuOutlined(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                    expanded = isExpanded,
+                    items = unities.map { it.label },
+                    selectedItem = selectedUnit,
+                    label = stringResource(R.string.select_a_unit),
+                    onClick = onchangeExpanded,
+                    onItemSelected = { index -> onItemSelected(index) }
+                )
 
-            DropdownMenuOutlined(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
-                expanded = isExpanded,
-                items = unities.map { it.label },
-                selectedItem = selectedUnit,
-                label = stringResource(R.string.select_a_unit),
-                onClick = onchangeExpanded,
-                onItemSelected = { index -> onItemSelected(index) }
-            )
+                OutlinedTextField(
+                    value = laborPrice,
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.LaborPrice(it)) },
+                    placeholder = { Text(stringResource(R.string.labor_price)) },
+                    label = { Text(stringResource(R.string.labor_price)) },
+                    modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+                )
 
-            OutlinedTextField(
-                value = laborPrice,
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.LaborPrice(it)) },
-                placeholder = { Text(stringResource(R.string.labor_price)) },
-                label = { Text(stringResource(R.string.labor_price)) },
-                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
-            )
+                OutlinedTextField(
+                    value = variableExpenses,
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.VariableExpenses(it)) },
+                    placeholder = { Text(stringResource(R.string.thirty_reals)) },
+                    label = { Text(stringResource(R.string.variable_expenses)) },
+                    modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+                )
 
-            OutlinedTextField(
-                value = variableExpenses,
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.VariableExpenses(it)) },
-                placeholder = { Text(stringResource(R.string.thirty_reals)) },
-                label = { Text(stringResource(R.string.variable_expenses)) },
-                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
-            )
+                OutlinedTextField(
+                    value = profitMargin,
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.ProfitMargin(it)) },
+                    placeholder = { Text(stringResource(R.string.ten_percent)) },
+                    label = { Text(stringResource(R.string.profit_margin)) },
+                    modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+                )
 
-            OutlinedTextField(
-                value = profitMargin,
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                onValueChange = { onTextChanged(AddProductViewModel.FieldsTexts.ProfitMargin(it)) },
-                placeholder = { Text(stringResource(R.string.ten_percent)) },
-                label = { Text(stringResource(R.string.profit_margin)) },
-                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
-            )
+                Spacer(modifier = Modifier.height(32.dp))
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Text(
+                    stringResource(R.string.supplies),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
 
-            Text(
-                stringResource(R.string.supplies),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
 
-            SuppliesList(
-                supplyList = suppliesList,
-                modifier = Modifier.fillMaxWidth().wrapContentHeight()
-            )
+            }
 
-            Spacer(modifier = Modifier.weight(1f))
+            items(suppliesList) { supply ->
+                CardSupply(supply) {
 
-            NormalButton(text = stringResource(R.string.confirm), onClick = onClickConfirm)
+                }
+            }
+
+            item {
+                NormalButton(text = stringResource(R.string.confirm), onClick = onClickConfirm)
+            }
         }
     }
 }
