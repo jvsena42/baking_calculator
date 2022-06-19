@@ -46,7 +46,6 @@ private fun Screen(
     uiState: UIState,
 ) {
 
-    val laborPrice by uiState.laborPrice.collectAsState()
     val profitMargin by uiState.profitMargin.collectAsState()
     val variableExpenses by uiState.variableExpenses.collectAsState()
     val suppliesList by uiState.suppliesList.collectAsState()
@@ -78,24 +77,7 @@ private fun Screen(
 
                     MakeDropdownUnit(onAction, uiState)
 
-                    OutlinedTextField(
-                        value = laborPrice,
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        onValueChange = {
-                            onAction(
-                                OnTextChanged(
-                                    FieldsTexts.LaborPrice(
-                                        it
-                                    )
-                                )
-                            )
-
-                        },
-                        placeholder = { Text(stringResource(R.string.labor_price)) },
-                        label = { Text(stringResource(R.string.labor_price)) },
-                        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
-                    )
+                    MakeFieldLaborPrice(onAction, uiState)
 
                     OutlinedTextField(
                         value = variableExpenses,
@@ -162,10 +144,31 @@ private fun Screen(
     }
 }
 
-private fun MakeDropdownUnit(
-    onAction: ((ScreenActions) -> Unit),
-    uiState: UIState,
-) {
+private fun MakeFieldLaborPrice(onAction: ((ScreenActions) -> Unit), uiState: UIState) {
+    val laborPrice by uiState.laborPrice.collectAsState()
+
+    OutlinedTextField(
+        value = laborPrice,
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        onValueChange = {
+            onAction(
+                OnTextChanged(
+                    FieldsTexts.LaborPrice(
+                        it
+                    )
+                )
+            )
+
+        },
+        placeholder = { Text(stringResource(R.string.labor_price)) },
+        label = { Text(stringResource(R.string.labor_price)) },
+        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+    )
+}
+
+@Composable
+private fun MakeDropdownUnit(onAction: ((ScreenActions) -> Unit), uiState: UIState) {
     val unities by uiState.unities.collectAsState()
     val isExpanded by uiState.isExpanded.collectAsState()
     val selectedUnit by uiState.selectedUnit.collectAsState()
@@ -182,10 +185,7 @@ private fun MakeDropdownUnit(
 }
 
 @Composable
-private fun MakeFieldName(
-    onAction: ((ScreenActions) -> Unit),
-    uiState: UIState,
-) {
+private fun MakeFieldName(onAction: ((ScreenActions) -> Unit), uiState: UIState) {
     val name by uiState.name.collectAsState()
 
     OutlinedTextField(
