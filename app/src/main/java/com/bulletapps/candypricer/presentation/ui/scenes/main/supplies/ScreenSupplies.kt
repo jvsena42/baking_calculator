@@ -21,6 +21,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardSupply
+import com.bulletapps.candypricer.presentation.ui.widgets.SuppliesList
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
@@ -69,22 +70,6 @@ fun Screen(
             SuppliesList(items.value)
         }
     }
-}
-
-@Composable
-fun SuppliesList(supplyList: List<Supply>) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        content = {
-            items(supplyList.size) { index ->
-                val item = supplyList[index]
-                CardSupply(item) {
-
-                }
-            }
-        }
-    )
 }
 
 @Preview(showBackground = true)

@@ -23,6 +23,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.DropdownMenuOutlined
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.SuppliesList
 
 @Composable
 fun ScreenAddProduct(
@@ -34,7 +35,7 @@ fun ScreenAddProduct(
         onClickConfirm = viewModel::onClickConfirm,
         onchangeExpanded = viewModel::onChangeExpanded,
         onTextChanged = viewModel::onTextChanged,
-        onItemSelected = {index -> viewModel.onItemSelected(index)},
+        onItemSelected = { index -> viewModel.onItemSelected(index) },
         viewModel.uiState
     )
 }
@@ -55,6 +56,7 @@ fun Screen(
     val unities by uiState.unities.collectAsState()
     val isExpanded by uiState.isExpanded.collectAsState()
     val selectedUnit by uiState.selectedUnit.collectAsState()
+    val suppliesList by uiState.suppliesList.collectAsState()
 
     CandyPricerTheme {
 
@@ -134,7 +136,10 @@ fun Screen(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            SuppliesList(
+                supplyList = suppliesList,
+                modifier = Modifier.fillMaxWidth().wrapContentHeight()
+            )
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -146,5 +151,11 @@ fun Screen(
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    Screen(onClickConfirm = {}, onchangeExpanded = {}, onTextChanged = {}, onItemSelected = {}, uiState = AddProductViewModel.UIState())
+    Screen(
+        onClickConfirm = {},
+        onchangeExpanded = {},
+        onTextChanged = {},
+        onItemSelected = {},
+        uiState = AddProductViewModel.UIState()
+    )
 }

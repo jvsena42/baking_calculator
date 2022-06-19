@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct
 
 import androidx.lifecycle.ViewModel
+import com.bulletapps.candypricer.data.model.Supply
 import com.bulletapps.candypricer.domain.model.UnityModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,11 @@ class AddProductViewModel @Inject constructor() : ViewModel() {
             UnityModel("", "mg"),
             UnityModel("", "L"),
             UnityModel("", "ml"),
+        )
+        uiState.suppliesList.value = mutableListOf(
+            Supply(id = 0, name = "Leite Condensado Caixa", price = "R$ 5,00", quantity = 1.0, unitType = "Unidade" ),
+            Supply(id = 1, name = "Creme de leite Caixa", price = "R$ 6,00", quantity = 1.0, unitType = "Unidade" ),
+            Supply(id = 2, name = "Chocolate em pó", price = "R$ 38,00", quantity = 500.0, unitType = "Gramas" ),
         )
     }
 
@@ -57,6 +63,7 @@ class AddProductViewModel @Inject constructor() : ViewModel() {
         val unities = MutableStateFlow<List<UnityModel>>(listOf())
         val isExpanded = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow("")
+        val suppliesList = MutableStateFlow(mutableListOf<Supply>())
     }
 }
 
