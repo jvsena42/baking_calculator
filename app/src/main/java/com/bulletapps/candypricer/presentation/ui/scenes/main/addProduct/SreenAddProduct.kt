@@ -45,7 +45,6 @@ private fun Screen(
     uiState: UIState,
 ) {
 
-    val name by uiState.name.collectAsState()
     val laborPrice by uiState.laborPrice.collectAsState()
     val profitMargin by uiState.profitMargin.collectAsState()
     val variableExpenses by uiState.variableExpenses.collectAsState()
@@ -77,14 +76,7 @@ private fun Screen(
                 item {
                     Spacer(Modifier.height(16.dp))
 
-                    OutlinedTextField(
-                        value = name,
-                        singleLine = true,
-                        onValueChange = { onAction(OnTextChanged(FieldsTexts.Name(it))) },
-                        placeholder = { Text(stringResource(R.string.cocoa_powder)) },
-                        label = { Text(stringResource(R.string.name)) },
-                        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
-                    )
+                    MakeFieldName(onAction, uiState)
 
                     DropdownMenuOutlined(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
@@ -175,6 +167,23 @@ private fun Screen(
             }
         }
     }
+}
+
+@Composable
+private fun MakeFieldName(
+    onAction: ((ScreenActions) -> Unit),
+    uiState: UIState,
+) {
+    val name by uiState.name.collectAsState()
+
+    OutlinedTextField(
+        value = name,
+        singleLine = true,
+        onValueChange = { onAction(OnTextChanged(FieldsTexts.Name(it))) },
+        placeholder = { Text(stringResource(R.string.cocoa_powder)) },
+        label = { Text(stringResource(R.string.name)) },
+        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+    )
 }
 
 @Preview(showBackground = true)
