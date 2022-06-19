@@ -28,7 +28,7 @@ fun ScreenProducs(
     viewModel: ProductsViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    Screen(viewModel.productsList, onClickAdd = { sharedViewModel.navigate(MainViewModel.Navigation.AddSupply) })
+    Screen(viewModel.productsList, onClickAdd = { sharedViewModel.navigate(MainViewModel.Navigation.AddProduct) })
 }
 
 @Composable

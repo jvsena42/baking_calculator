@@ -44,6 +44,9 @@ class MainActivity : ComponentActivity() {
         composable(MainViewModel.Navigation.Products.router) {
             ScreenProducs(sharedViewModel = sharedViewModel)
         }
+        composable(MainViewModel.Navigation.AddProduct.router) {
+            ScreenProducs(sharedViewModel = sharedViewModel)
+        }
     }
 
     private fun navEvent(navController: NavController, navScreen: MainViewModel.Navigation) {

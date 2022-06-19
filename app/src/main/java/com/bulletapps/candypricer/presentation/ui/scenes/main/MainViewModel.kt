@@ -28,6 +28,7 @@ class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.
     sealed class Navigation(val router: String) {
         object MainMenu : Navigation("main_menu")
         object Products : Navigation("products")
+        object AddProduct : Navigation("add_product")
         object Supplies : Navigation("supplies")
         object AddSupply : Navigation("add_supply")
         object Settings : Navigation("settings")
