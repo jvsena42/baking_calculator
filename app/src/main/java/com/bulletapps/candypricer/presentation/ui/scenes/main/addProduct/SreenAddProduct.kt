@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.domain.model.UnityModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.ScreenActions.*
@@ -48,9 +49,6 @@ private fun Screen(
     val laborPrice by uiState.laborPrice.collectAsState()
     val profitMargin by uiState.profitMargin.collectAsState()
     val variableExpenses by uiState.variableExpenses.collectAsState()
-    val unities by uiState.unities.collectAsState()
-    val isExpanded by uiState.isExpanded.collectAsState()
-    val selectedUnit by uiState.selectedUnit.collectAsState()
     val suppliesList by uiState.suppliesList.collectAsState()
 
     CandyPricerTheme {
@@ -78,26 +76,21 @@ private fun Screen(
 
                     MakeFieldName(onAction, uiState)
 
-                    DropdownMenuOutlined(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
-                        expanded = isExpanded,
-                        items = unities.map { it.label },
-                        selectedItem = selectedUnit,
-                        label = stringResource(R.string.select_a_unit),
-                        onClick = { onAction(OnChangeExpanded) },
-                        onItemSelected = { index -> OnItemSelected(index) }
-                    )
+                    MakeDropdownUnit(onAction, uiState)
 
                     OutlinedTextField(
                         value = laborPrice,
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         onValueChange = {
-                            OnTextChanged(
-                                FieldsTexts.LaborPrice(
-                                    it
+                            onAction(
+                                OnTextChanged(
+                                    FieldsTexts.LaborPrice(
+                                        it
+                                    )
                                 )
                             )
+
                         },
                         placeholder = { Text(stringResource(R.string.labor_price)) },
                         label = { Text(stringResource(R.string.labor_price)) },
@@ -167,6 +160,25 @@ private fun Screen(
             }
         }
     }
+}
+
+private fun MakeDropdownUnit(
+    onAction: ((ScreenActions) -> Unit),
+    uiState: UIState,
+) {
+    val unities by uiState.unities.collectAsState()
+    val isExpanded by uiState.isExpanded.collectAsState()
+    val selectedUnit by uiState.selectedUnit.collectAsState()
+
+    DropdownMenuOutlined(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+        expanded = isExpanded,
+        items = unities.map { it.label },
+        selectedItem = selectedUnit,
+        label = stringResource(R.string.select_a_unit),
+        onClick = { onAction(OnChangeExpanded) },
+        onItemSelected = { index -> onAction(OnItemSelected(index)) }
+    )
 }
 
 @Composable
