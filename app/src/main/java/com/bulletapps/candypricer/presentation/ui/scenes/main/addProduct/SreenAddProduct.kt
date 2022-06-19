@@ -25,10 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
-import com.bulletapps.candypricer.presentation.ui.widgets.CardSupply
-import com.bulletapps.candypricer.presentation.ui.widgets.DropdownMenuOutlined
-import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
-import com.bulletapps.candypricer.presentation.ui.widgets.SuppliesList
+import com.bulletapps.candypricer.presentation.ui.widgets.*
 
 @Composable
 fun ScreenAddProduct(
@@ -46,7 +43,7 @@ fun ScreenAddProduct(
 }
 
 @Composable
-fun Screen(
+private fun Screen(
     onClickConfirm: () -> Unit,
     onchangeExpanded: () -> Unit,
     onTextChanged: (AddProductViewModel.FieldsTexts) -> Unit,
@@ -170,6 +167,11 @@ fun Screen(
 
                     }
                 }
+
+                item {
+                    OutlinedButtonCustom(text = stringResource(R.string.add_a_supply), onClick = {})
+                }
+
 
                 item {
                     NormalButton(text = stringResource(R.string.confirm), onClick = onClickConfirm)
