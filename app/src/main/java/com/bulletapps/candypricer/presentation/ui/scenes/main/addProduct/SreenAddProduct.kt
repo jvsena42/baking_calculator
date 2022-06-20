@@ -107,7 +107,8 @@ private fun Screen(
                 item {
                     NormalButton(
                         text = stringResource(R.string.confirm),
-                        onClick = { OnClickConfirm })
+                        onClick = { onAction(OnClickConfirm) }
+                    )
                 }
             }
         }
@@ -123,14 +124,7 @@ private fun MakeFieldProfitMargin(onAction: ((ScreenActions) -> Unit), uiState: 
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         onValueChange = {
-            onAction(
-                OnTextChanged(
-                    FieldsTexts.ProfitMargin(
-                        it
-                    )
-                )
-            )
-
+            onAction(OnTextChanged(FieldsTexts.ProfitMargin(it)))
         },
         placeholder = { Text(stringResource(R.string.ten_percent)) },
         label = { Text(stringResource(R.string.profit_margin)) },
@@ -147,13 +141,7 @@ private fun MakeFieldVariableExpenses(onAction: ((ScreenActions) -> Unit), uiSta
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         onValueChange = {
-            onAction(
-                OnTextChanged(
-                    FieldsTexts.VariableExpenses(
-                        it
-                    )
-                )
-            )
+            onAction(OnTextChanged(FieldsTexts.VariableExpenses(it)))
         },
         placeholder = { Text(stringResource(R.string.thirty_reals)) },
         label = { Text(stringResource(R.string.variable_expenses)) },
@@ -170,14 +158,7 @@ private fun MakeFieldLaborPrice(onAction: ((ScreenActions) -> Unit), uiState: UI
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         onValueChange = {
-            onAction(
-                OnTextChanged(
-                    FieldsTexts.LaborPrice(
-                        it
-                    )
-                )
-            )
-
+            onAction(OnTextChanged(FieldsTexts.LaborPrice(it)))
         },
         placeholder = { Text(stringResource(R.string.labor_price)) },
         label = { Text(stringResource(R.string.labor_price)) },
