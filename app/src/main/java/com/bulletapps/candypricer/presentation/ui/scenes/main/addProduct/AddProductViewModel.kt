@@ -3,12 +3,15 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct
 import androidx.lifecycle.ViewModel
 import com.bulletapps.candypricer.data.model.Supply
 import com.bulletapps.candypricer.domain.model.UnityModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.*
+import com.bulletapps.candypricer.presentation.util.EventFlow
+import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class AddProductViewModel @Inject constructor() : ViewModel() {
+class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
@@ -60,6 +63,11 @@ class AddProductViewModel @Inject constructor() : ViewModel() {
         is ScreenActions.OnClickConfirm -> onClickConfirm()
         is ScreenActions.OnItemSelected -> onItemSelected(action.index)
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
+    }
+
+    sealed class ScreenEvent {
+        object GoBack : ScreenEvent()
+        object OpenDialog : ScreenEvent()
     }
 
     sealed class ScreenActions {

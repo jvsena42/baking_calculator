@@ -10,9 +10,11 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -22,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.domain.model.UnityModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.ScreenActions.*
@@ -33,17 +36,31 @@ fun ScreenAddProduct(
     viewModel: AddProductViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    viewModel.setup() // todo: remove after integration
-    Screen(
-        onAction = { action -> viewModel.onAction(action) },
-        viewModel.uiState
-    )
+    val activity = LocalContext.current as MainActivity
+    LaunchedEffect(key1 = Unit) { viewModel.setup() }
+    Screen(viewModel.uiState, viewModel::onAction)
+    EventConsumer(activity, viewModel)
+}
+
+@Composable
+private fun EventConsumer(
+    activity: MainActivity,
+    viewModel: AddProductViewModel
+) {
+    LaunchedEffect(key1 = Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                ScreenEvent.GoBack -> activity.onBackPressed()
+                ScreenEvent.OpenDialog -> {}
+            }
+        }
+    }
 }
 
 @Composable
 private fun Screen(
-    onAction: ((ScreenActions) -> Unit),
     uiState: UIState,
+    onAction: (ScreenActions) -> Unit,
 ) {
 
     val suppliesList by uiState.suppliesList.collectAsState()
