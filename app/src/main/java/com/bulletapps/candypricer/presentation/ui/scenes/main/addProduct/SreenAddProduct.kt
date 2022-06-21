@@ -21,6 +21,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.domain.model.UnityModel
@@ -133,7 +135,7 @@ private fun Screen(
 }
 
 @Composable
-private fun MakeFieldProfitMargin(onAction: ((ScreenActions) -> Unit), uiState: UIState) {
+private fun MakeFieldProfitMargin(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val profitMargin by uiState.profitMargin.collectAsState()
 
     OutlinedTextField(
@@ -150,7 +152,7 @@ private fun MakeFieldProfitMargin(onAction: ((ScreenActions) -> Unit), uiState: 
 }
 
 @Composable
-private fun MakeFieldVariableExpenses(onAction: ((ScreenActions) -> Unit), uiState: UIState) {
+private fun MakeFieldVariableExpenses(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val variableExpenses by uiState.variableExpenses.collectAsState()
 
     OutlinedTextField(
@@ -167,7 +169,7 @@ private fun MakeFieldVariableExpenses(onAction: ((ScreenActions) -> Unit), uiSta
 }
 
 @Composable
-private fun MakeFieldLaborPrice(onAction: ((ScreenActions) -> Unit), uiState: UIState) {
+private fun MakeFieldLaborPrice(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val laborPrice by uiState.laborPrice.collectAsState()
 
     OutlinedTextField(
@@ -184,7 +186,7 @@ private fun MakeFieldLaborPrice(onAction: ((ScreenActions) -> Unit), uiState: UI
 }
 
 @Composable
-private fun MakeDropdownUnit(onAction: ((ScreenActions) -> Unit), uiState: UIState) {
+private fun MakeDropdownUnit(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val unities by uiState.unities.collectAsState()
     val isExpanded by uiState.isExpanded.collectAsState()
     val selectedUnit by uiState.selectedUnit.collectAsState()
@@ -201,7 +203,7 @@ private fun MakeDropdownUnit(onAction: ((ScreenActions) -> Unit), uiState: UISta
 }
 
 @Composable
-private fun MakeFieldName(onAction: ((ScreenActions) -> Unit), uiState: UIState) {
+private fun MakeFieldName(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val name by uiState.name.collectAsState()
 
     OutlinedTextField(
@@ -212,6 +214,55 @@ private fun MakeFieldName(onAction: ((ScreenActions) -> Unit), uiState: UIState)
         label = { Text(stringResource(R.string.name)) },
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
+}
+
+
+@Composable
+private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
+    val suppliesMenuList by uiState.suppliesMenuList.collectAsState()
+    val isMenuSuppliesExpanded by uiState.isMenuSuppliesExpanded.collectAsState()
+    val selectedSupplyItem by uiState.selectedSupplyItem.collectAsState()
+    val supplyQnt by uiState.supplyQnt.collectAsState()
+
+
+    Dialog(
+        onDismissRequest = {},
+        DialogProperties()
+    ) {
+        Column {
+
+            DropdownMenuOutlined(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                expanded = isMenuSuppliesExpanded,
+                items = suppliesMenuList.map { it.name },
+                selectedItem = selectedSupplyItem,
+                label = stringResource(R.string.select_a_unit),
+                onClick = { onAction(OnChangeExpandedMenu) },
+                onItemSelected = { index -> onAction(
+                    OnItemMenuSelected(
+                        index
+                    )
+                ) }
+            )
+
+            OutlinedTextField(
+                value = supplyQnt,
+                singleLine = true,
+                onValueChange = { onAction(
+                    OnTextChanged(
+                        FieldsTexts.Name(it))
+                ) },
+                placeholder = { Text(stringResource(R.string.fifty_grams)) },
+                label = { Text(stringResource(R.string.quantity)) },
+                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+            )
+
+            NormalButton(
+                text = stringResource(R.string.confirm),
+                onClick = { onAction(OnClickConfirmMenu) }
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
