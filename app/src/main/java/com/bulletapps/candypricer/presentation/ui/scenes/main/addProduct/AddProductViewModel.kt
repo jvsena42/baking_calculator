@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.data.model.Supply
 import com.bulletapps.candypricer.domain.model.UnityModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.*
@@ -80,6 +81,7 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         is ScreenActions.OnChangeExpandedMenu -> onChangeExpandedMenu()
         is ScreenActions.OnClickConfirmMenu -> onClickConfirmMenu()
         is ScreenActions.OnItemMenuSelected -> onItemMenuSelected(action.index)
+        is ScreenActions.OnClickAddSupply -> viewModelScope.sendEvent(ScreenEvent.OpenDialog)
     }
 
     sealed class ScreenEvent {
@@ -95,6 +97,7 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         data class OnItemMenuSelected(val index: Int) : ScreenActions()
         object OnClickConfirmMenu : ScreenActions()
         object OnChangeExpandedMenu: ScreenActions()
+        object OnClickAddSupply: ScreenActions()
     }
 
     class UIState {

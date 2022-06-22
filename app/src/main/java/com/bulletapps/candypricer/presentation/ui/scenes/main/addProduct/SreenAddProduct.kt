@@ -1,14 +1,12 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -119,7 +117,10 @@ private fun Screen(
                 }
 
                 item {
-                    OutlinedButtonCustom(text = stringResource(R.string.add_a_supply), onClick = {})
+                    MakeDialog(onAction, uiState)
+                    OutlinedButtonCustom(text = stringResource(R.string.add_a_supply), onClick = {
+                        onAction(OnClickAddSupply)
+                    })
                 }
 
 
@@ -229,38 +230,50 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
         onDismissRequest = {},
         DialogProperties()
     ) {
-        Column {
 
-            DropdownMenuOutlined(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
-                expanded = isMenuSuppliesExpanded,
-                items = suppliesMenuList.map { it.name },
-                selectedItem = selectedSupplyItem,
-                label = stringResource(R.string.select_a_unit),
-                onClick = { onAction(OnChangeExpandedMenu) },
-                onItemSelected = { index -> onAction(
-                    OnItemMenuSelected(
-                        index
-                    )
-                ) }
-            )
+        Card(
+            shape = MaterialTheme.shapes.medium
+        ) {
 
-            OutlinedTextField(
-                value = supplyQnt,
-                singleLine = true,
-                onValueChange = { onAction(
-                    OnTextChanged(
-                        FieldsTexts.Name(it))
-                ) },
-                placeholder = { Text(stringResource(R.string.fifty_grams)) },
-                label = { Text(stringResource(R.string.quantity)) },
-                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
-            )
+            Column(modifier = Modifier.padding(top = 16.dp)) {
 
-            NormalButton(
-                text = stringResource(R.string.confirm),
-                onClick = { onAction(OnClickConfirmMenu) }
-            )
+                DropdownMenuOutlined(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                    expanded = isMenuSuppliesExpanded,
+                    items = suppliesMenuList.map { it.name },
+                    selectedItem = selectedSupplyItem,
+                    label = stringResource(R.string.select_a_supply),
+                    onClick = { onAction(OnChangeExpandedMenu) },
+                    onItemSelected = { index ->
+                        onAction(
+                            OnItemMenuSelected(
+                                index
+                            )
+                        )
+                    }
+                )
+
+                OutlinedTextField(
+                    value = supplyQnt,
+                    singleLine = true,
+                    onValueChange = {
+                        onAction(
+                            OnTextChanged(
+                                FieldsTexts.Name(it)
+                            )
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    placeholder = { Text(stringResource(R.string.fifty_grams)) },
+                    label = { Text(stringResource(R.string.quantity)) },
+                    modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+                )
+
+                NormalButton(
+                    text = stringResource(R.string.confirm),
+                    onClick = { onAction(OnClickConfirmMenu) }
+                )
+            }
         }
     }
 }
