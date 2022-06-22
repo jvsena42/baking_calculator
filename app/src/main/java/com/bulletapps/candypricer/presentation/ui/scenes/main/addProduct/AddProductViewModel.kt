@@ -37,7 +37,7 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
     }
 
     private fun onClickConfirmMenu() {
-
+        uiState.isDialogVisible.value = false
     }
 
     private fun onItemSelected(index: Int) {
@@ -55,6 +55,10 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
     }
     private fun onChangeExpandedMenu() {
         uiState.isExpanded.value = !uiState.isMenuSuppliesExpanded.value
+    }
+
+    private fun onShowDialog() {
+        uiState.isDialogVisible.value = true
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
@@ -81,7 +85,7 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         is ScreenActions.OnChangeExpandedMenu -> onChangeExpandedMenu()
         is ScreenActions.OnClickConfirmMenu -> onClickConfirmMenu()
         is ScreenActions.OnItemMenuSelected -> onItemMenuSelected(action.index)
-        is ScreenActions.OnClickAddSupply -> viewModelScope.sendEvent(ScreenEvent.OpenDialog)
+        is ScreenActions.OnClickAddSupply -> onShowDialog()
     }
 
     sealed class ScreenEvent {
@@ -98,6 +102,7 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         object OnClickConfirmMenu : ScreenActions()
         object OnChangeExpandedMenu: ScreenActions()
         object OnClickAddSupply: ScreenActions()
+
     }
 
     class UIState {
@@ -113,6 +118,7 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         val isMenuSuppliesExpanded = MutableStateFlow(false)
         val selectedSupplyItem = MutableStateFlow("")
         val supplyQnt = MutableStateFlow("")
+        val isDialogVisible = MutableStateFlow(false)
     }
 }
 

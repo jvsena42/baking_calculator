@@ -224,55 +224,57 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val isMenuSuppliesExpanded by uiState.isMenuSuppliesExpanded.collectAsState()
     val selectedSupplyItem by uiState.selectedSupplyItem.collectAsState()
     val supplyQnt by uiState.supplyQnt.collectAsState()
+    val isVisible by uiState.isDialogVisible.collectAsState()
 
-
-    Dialog(
-        onDismissRequest = {},
-        DialogProperties()
-    ) {
-
-        Card(
-            shape = MaterialTheme.shapes.medium
+    if (isVisible) {
+        Dialog(
+            onDismissRequest = {},
+            DialogProperties()
         ) {
 
-            Column(modifier = Modifier.padding(top = 16.dp)) {
+            Card(
+                shape = MaterialTheme.shapes.medium
+            ) {
 
-                DropdownMenuOutlined(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
-                    expanded = isMenuSuppliesExpanded,
-                    items = suppliesMenuList.map { it.name },
-                    selectedItem = selectedSupplyItem,
-                    label = stringResource(R.string.select_a_supply),
-                    onClick = { onAction(OnChangeExpandedMenu) },
-                    onItemSelected = { index ->
-                        onAction(
-                            OnItemMenuSelected(
-                                index
+                Column(modifier = Modifier.padding(top = 16.dp)) {
+
+                    DropdownMenuOutlined(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                        expanded = isMenuSuppliesExpanded,
+                        items = suppliesMenuList.map { it.name },
+                        selectedItem = selectedSupplyItem,
+                        label = stringResource(R.string.select_a_supply),
+                        onClick = { onAction(OnChangeExpandedMenu) },
+                        onItemSelected = { index ->
+                            onAction(
+                                OnItemMenuSelected(
+                                    index
+                                )
                             )
-                        )
-                    }
-                )
+                        }
+                    )
 
-                OutlinedTextField(
-                    value = supplyQnt,
-                    singleLine = true,
-                    onValueChange = {
-                        onAction(
-                            OnTextChanged(
-                                FieldsTexts.Name(it)
+                    OutlinedTextField(
+                        value = supplyQnt,
+                        singleLine = true,
+                        onValueChange = {
+                            onAction(
+                                OnTextChanged(
+                                    FieldsTexts.Name(it)
+                                )
                             )
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    placeholder = { Text(stringResource(R.string.fifty_grams)) },
-                    label = { Text(stringResource(R.string.quantity)) },
-                    modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
-                )
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        placeholder = { Text(stringResource(R.string.fifty_grams)) },
+                        label = { Text(stringResource(R.string.quantity)) },
+                        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+                    )
 
-                NormalButton(
-                    text = stringResource(R.string.confirm),
-                    onClick = { onAction(OnClickConfirmMenu) }
-                )
+                    NormalButton(
+                        text = stringResource(R.string.confirm),
+                        onClick = { onAction(OnClickConfirmMenu) }
+                    )
+                }
             }
         }
     }
