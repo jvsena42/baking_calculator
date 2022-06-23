@@ -15,9 +15,9 @@ import com.bulletapps.candypricer.data.model.Supply
 import com.bulletapps.candypricer.data.model.UnitType
 
 @Composable
-fun CardSupply(supply: Supply, onClick: () -> Unit?) {
+fun CardSupply(supply: Supply,modifier: Modifier = Modifier, onClick: () -> Unit?) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(top = 8.dp, start = 16.dp, end = 16.dp)
             .clickable { onClick.invoke() }
             .fillMaxWidth(),
