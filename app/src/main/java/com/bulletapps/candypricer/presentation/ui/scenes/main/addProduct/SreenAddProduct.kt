@@ -228,7 +228,7 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
 
     if (isVisible) {
         Dialog(
-            onDismissRequest = {},
+            onDismissRequest = { onAction(OnDismissDialog) },
             DialogProperties()
         ) {
 
@@ -260,7 +260,7 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
                         onValueChange = {
                             onAction(
                                 OnTextChanged(
-                                    FieldsTexts.Name(it)
+                                    FieldsTexts.SupplyQnt(it)
                                 )
                             )
                         },

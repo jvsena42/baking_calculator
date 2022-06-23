@@ -9,6 +9,7 @@ import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,7 +17,13 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
 
     val uiState = UIState()
 
-    fun setup() {
+    fun setup() = viewModelScope.launch {
+        getUnities()
+        getSupplies()
+    }
+
+    //TODO MOCK
+    private suspend fun getUnities() {
         uiState.unities.value = listOf(
             UnityModel("", "Und."),
             UnityModel("", "Kg"),
@@ -25,7 +32,11 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
             UnityModel("", "L"),
             UnityModel("", "ml"),
         )
-        uiState.suppliesList.value = mutableListOf(
+    }
+
+    //TODO MOCK
+    private suspend fun getSupplies() {
+        uiState.suppliesMenuList.value = mutableListOf(
             Supply(id = 0, name = "Leite Condensado Caixa", price = "R$ 5,00", quantity = 1.0, unitType = "Unidade" ),
             Supply(id = 1, name = "Creme de leite Caixa", price = "R$ 6,00", quantity = 1.0, unitType = "Unidade" ),
             Supply(id = 2, name = "Chocolate em pó", price = "R$ 38,00", quantity = 500.0, unitType = "Gramas" ),
@@ -47,18 +58,21 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
 
     private fun onItemMenuSelected(index: Int) {
         uiState.isMenuSuppliesExpanded.value = false
-        uiState.selectedSupplyItem.value = uiState.suppliesList.value[index].name
+        uiState.selectedSupplyItem.value = uiState.suppliesMenuList.value[index].name
     }
 
     private fun onChangeExpanded() {
         uiState.isExpanded.value = !uiState.isExpanded.value
     }
     private fun onChangeExpandedMenu() {
-        uiState.isExpanded.value = !uiState.isMenuSuppliesExpanded.value
+        uiState.isMenuSuppliesExpanded.value = !uiState.isMenuSuppliesExpanded.value
     }
 
     private fun onShowDialog() {
         uiState.isDialogVisible.value = true
+    }
+    private fun onDismissDialog() {
+        uiState.isDialogVisible.value = false
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
@@ -86,6 +100,7 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         is ScreenActions.OnClickConfirmMenu -> onClickConfirmMenu()
         is ScreenActions.OnItemMenuSelected -> onItemMenuSelected(action.index)
         is ScreenActions.OnClickAddSupply -> onShowDialog()
+        is ScreenActions.OnDismissDialog -> onDismissDialog()
     }
 
     sealed class ScreenEvent {
@@ -102,6 +117,7 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         object OnClickConfirmMenu : ScreenActions()
         object OnChangeExpandedMenu: ScreenActions()
         object OnClickAddSupply: ScreenActions()
+        object OnDismissDialog: ScreenActions()
 
     }
 
