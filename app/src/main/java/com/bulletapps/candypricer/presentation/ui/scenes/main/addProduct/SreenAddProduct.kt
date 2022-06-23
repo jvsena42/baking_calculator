@@ -110,11 +110,16 @@ private fun Screen(
 
                 }
 
-                items(suppliesList) { supply ->
-                    CardSupply(supply) {
-
-                    }
+                items(suppliesList) { itemSupply ->
+                    CardTwoItemsHorizontal(
+                        firstLabel = R.string.name_label,
+                        secondLabel = R.string.quantity_label,
+                        firsName = itemSupply.name,
+                        secondName = itemSupply.qut,
+                        onClick = {}
+                    )
                 }
+
 
                 item {
                     MakeDialog(onAction, uiState)

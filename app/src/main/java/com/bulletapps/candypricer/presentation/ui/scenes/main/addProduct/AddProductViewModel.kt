@@ -43,12 +43,28 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         )
     }
 
+    //todo fix id
     private fun onClickConfirm() {
 
     }
 
+    private fun clearMenuSelection() {
+        uiState.selectedSupplyItem.value = ""
+        uiState.supplyQnt.value = ""
+    }
+
     private fun onClickConfirmMenu() {
         uiState.isDialogVisible.value = false
+
+        val newItem = MenuItemModel(
+            id = "",
+            name = uiState.selectedSupplyItem.value,
+            qut = uiState.supplyQnt.value
+        )
+        val currentList = uiState.suppliesList.value.apply { add(newItem) }
+        uiState.suppliesList.value = currentList
+
+        clearMenuSelection()
     }
 
     private fun onItemSelected(index: Int) {
@@ -129,7 +145,7 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         val unities = MutableStateFlow<List<UnityModel>>(listOf())
         val isExpanded = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow("")
-        val suppliesList = MutableStateFlow(mutableListOf<Supply>())
+        val suppliesList = MutableStateFlow(mutableListOf<MenuItemModel>())
         val suppliesMenuList = MutableStateFlow(mutableListOf<Supply>())
         val isMenuSuppliesExpanded = MutableStateFlow(false)
         val selectedSupplyItem = MutableStateFlow("")
@@ -137,10 +153,10 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         val isDialogVisible = MutableStateFlow(false)
     }
 
-    data class menuItemModel(
+    data class MenuItemModel(
         val id: String,
         val name: String,
-        val qut: Double
+        val qut: String
     )
 }
 
