@@ -34,19 +34,54 @@ fun CardProduct(supply: Product, onClick: () -> Unit?) {
     }
 }
 
+@Composable
+fun CardTwoItemsHorizontal(
+    firstLabel: Int,
+    firsName: String,
+    secondLabel: Int,
+    secondName: String,
+    onClick: () -> Unit?
+) {
+    Card(
+        modifier = Modifier
+            .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+            .clickable { onClick.invoke() }
+            .fillMaxWidth(),
+        elevation = 1.dp
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            TextWithLabel(stringResource(id = firstLabel), firsName)
+            TextWithLabel(stringResource(id = secondLabel), secondName)
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    CardProduct(
-        Product(
-            id = "",
-            name = "Brigadeiro",
-            price = "R$ 5,00",
-            quantity = 1.0,
-            unitType = "Unidade",
-            componentIds = listOf()
+    Column {
+        CardProduct(
+            Product(
+                id = "",
+                name = "Brigadeiro",
+                price = "R$ 5,00",
+                quantity = 1.0,
+                unitType = "Unidade",
+                componentIds = listOf(),
+            ),
+            onClick = {}
         )
-    ) {
 
+        CardTwoItemsHorizontal(
+            firstLabel = R.string.name_label,
+            secondLabel = R.string.quantity_label,
+            firsName = "teste",
+            secondName = "teste",
+            onClick = {}
+        )
     }
+
 }

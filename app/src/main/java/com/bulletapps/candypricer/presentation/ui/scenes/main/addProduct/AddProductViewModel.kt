@@ -136,5 +136,11 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         val supplyQnt = MutableStateFlow("")
         val isDialogVisible = MutableStateFlow(false)
     }
+
+    data class menuItemModel(
+        val id: String,
+        val name: String,
+        val qut: Double
+    )
 }
 
