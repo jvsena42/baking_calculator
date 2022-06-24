@@ -121,7 +121,6 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
 
     sealed class ScreenEvent {
         object GoBack : ScreenEvent()
-        object OpenDialog : ScreenEvent()
     }
 
     sealed class ScreenActions {

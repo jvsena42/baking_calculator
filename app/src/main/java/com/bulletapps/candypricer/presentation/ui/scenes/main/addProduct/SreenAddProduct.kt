@@ -51,7 +51,6 @@ private fun EventConsumer(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 ScreenEvent.GoBack -> activity.onBackPressed()
-                ScreenEvent.OpenDialog -> {}
             }
         }
     }
