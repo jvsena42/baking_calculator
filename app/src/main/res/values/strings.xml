@@ -13,6 +13,8 @@
     <string name="add_a_supply">Adicione um insumo</string>
     <string name="add_product">Adicionar Produto</string>
     <string name="name">Nome</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
     <string name="quantity">Quantidade</string>
     <string name="cocoa_powder">Cacau em pó</string>
     <string name="five_hundred">500</string>
@@ -20,6 +22,9 @@
     <string name="thirty_reals">R$ 30,00</string>
     <string name="ten_percent">10%</string>
     <string name="confirm">Confirmar</string>
+    <string name="login">Login</string>
+    <string name="dont_you_have_an_account">Não tem conta?</string>
+    <string name="do_sign_in">Cadastre-se</string>
     <string name="select_a_unit">Selecione uma unidade</string>
     <string name="select_a_supply">Selecione um insumo</string>
     <string name="price">Preço</string>
