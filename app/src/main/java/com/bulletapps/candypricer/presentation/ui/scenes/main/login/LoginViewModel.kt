@@ -38,6 +38,7 @@ class LoginViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenEvent>
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnClickConfirm -> onClickConfirm()
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
+        ScreenActions.OnClickRegister -> {}
     }
 
     sealed class ScreenEvent {
@@ -46,6 +47,7 @@ class LoginViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenEvent>
 
     sealed class ScreenActions {
         object OnClickConfirm : ScreenActions()
+        object OnClickRegister : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
     }
 

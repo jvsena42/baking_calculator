@@ -5,11 +5,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,7 +35,7 @@ fun ScreenLogin(
 
 @Composable
 private fun Screen(
-    uiState: LoginViewModel.UIState,
+    uiState: UIState,
     onAction: (ScreenActions) -> Unit,
 ) {
     CandyPricerTheme {
@@ -40,11 +43,14 @@ private fun Screen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = MaterialTheme.colors.background)
+                .background(color = MaterialTheme.colors.background),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(16.dp))
 
             MakeFieldEmail(onAction, uiState)
+
+            Spacer(Modifier.height(4.dp))
 
             MakeFieldPassword(onAction, uiState)
 
@@ -52,6 +58,22 @@ private fun Screen(
                 text = stringResource(R.string.login),
                 onClick = { onAction(OnClickConfirm) }
             )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            MakeRegisterText(onAction)
+
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
+
+@Composable
+private fun MakeRegisterText(onAction: (ScreenActions) -> Unit) {
+    Column() {
+        Text(stringResource(R.string.dont_you_have_an_account))
+        TextButton(onClick = { onAction(ScreenActions.OnClickRegister) }) {
+            Text(stringResource(R.string.do_sign_in))
         }
     }
 }
@@ -72,10 +94,10 @@ private fun MakeFieldEmail(onAction: (ScreenActions) -> Unit, uiState: UIState) 
 
 @Composable
 private fun MakeFieldPassword(onAction: (ScreenActions) -> Unit, uiState: UIState) {
-    val name by uiState.email.collectAsState()
+    val password by uiState.password.collectAsState()
 
     OutlinedTextField(
-        value = name,
+        value = password,
         singleLine = true,
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Password(it))) },
         label = { Text(stringResource(R.string.password)) },
