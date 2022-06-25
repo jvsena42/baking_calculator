@@ -9,6 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.ScreenAddProduct
 import com.bulletapps.candypricer.presentation.ui.scenes.main.addSupply.ScreenAddSupply
+import com.bulletapps.candypricer.presentation.ui.scenes.main.login.ScreenLogin
 import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.ScreenMenu
 import com.bulletapps.candypricer.presentation.ui.scenes.main.products.ScreenProducs
 import com.bulletapps.candypricer.presentation.ui.scenes.main.supplies.ScreenSupplies
@@ -24,7 +25,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             setNavigation(
-                startDestination = MainViewModel.Navigation.MainMenu.router,
+                startDestination = MainViewModel.Navigation.Login.router,
                 navGraphBuilder = ::navigationBuilder,
                 navEventFlow = sharedViewModel.eventFlow,
                 navEvent = ::navEvent
@@ -35,6 +36,9 @@ class MainActivity : ComponentActivity() {
     private fun navigationBuilder(builder: NavGraphBuilder) = builder.apply {
         composable(MainViewModel.Navigation.MainMenu.router) {
             ScreenMenu(sharedViewModel = sharedViewModel)
+        } 
+        composable(MainViewModel.Navigation.Login.router) {
+            ScreenLogin(sharedViewModel = sharedViewModel)
         }
         composable(MainViewModel.Navigation.Supplies.router) {
             ScreenSupplies(sharedViewModel = sharedViewModel)
