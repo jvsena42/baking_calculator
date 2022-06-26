@@ -2,27 +2,23 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
+class LoginViewModel @Inject constructor() : ViewModel(), EventFlow<LoginViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
-    fun setup() = viewModelScope.launch {
-
+    private fun onClickConfirm() {
+        viewModelScope.sendEvent(ScreenEvent.MainScreen)
     }
 
-
-
-    private fun onClickConfirm() {
-
+    private fun onCLickRegister() {
+        viewModelScope.sendEvent(ScreenEvent.RegisterScreen)
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
@@ -38,11 +34,12 @@ class LoginViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenEvent>
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnClickConfirm -> onClickConfirm()
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
-        ScreenActions.OnClickRegister -> {}
+        is ScreenActions.OnClickRegister -> onCLickRegister()
     }
 
     sealed class ScreenEvent {
-        object GoBack : ScreenEvent()
+        object MainScreen : ScreenEvent()
+        object RegisterScreen : ScreenEvent()
     }
 
     sealed class ScreenActions {
