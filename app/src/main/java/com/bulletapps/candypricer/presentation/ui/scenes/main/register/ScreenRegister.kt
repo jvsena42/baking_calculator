@@ -24,7 +24,7 @@ import com.bulletapps.candypricer.presentation.ui.widgets.LogoWithText
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 
 @Composable
-fun ScreenLogin(
+fun ScreenRegister(
     viewModel: RegisterViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
@@ -51,11 +51,23 @@ private fun Screen(
 
             Spacer(Modifier.height(32.dp))
 
+            MakeFieldName(onAction, uiState)
+
+            Spacer(Modifier.height(4.dp))
+
             MakeFieldEmail(onAction, uiState)
 
             Spacer(Modifier.height(4.dp))
 
+            MakeFieldPhone(onAction, uiState)
+
+            Spacer(Modifier.height(4.dp))
+
             MakeFieldPassword(onAction, uiState)
+
+            Spacer(Modifier.height(4.dp))
+
+            MakeFieldConfirmPassword(onAction, uiState)
 
             NormalButton(
                 text = stringResource(R.string.confirm),
@@ -66,16 +78,42 @@ private fun Screen(
     }
 }
 
-
 @Composable
-private fun MakeFieldEmail(onAction: (ScreenActions) -> Unit, uiState: UIState) {
-    val name by uiState.email.collectAsState()
+private fun MakeFieldName(onAction: (ScreenActions) -> Unit, uiState: UIState) {
+    val name by uiState.name.collectAsState()
 
     OutlinedTextField(
         value = name,
         singleLine = true,
+        onValueChange = { onAction(OnTextChanged(FieldsTexts.Name(it))) },
+        label = { Text(stringResource(R.string.name)) },
+        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+    )
+}
+
+@Composable
+private fun MakeFieldEmail(onAction: (ScreenActions) -> Unit, uiState: UIState) {
+    val email by uiState.email.collectAsState()
+
+    OutlinedTextField(
+        value = email,
+        singleLine = true,
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Email(it))) },
         label = { Text(stringResource(R.string.email)) },
+        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+    )
+}
+
+@Composable
+private fun MakeFieldPhone(onAction: (ScreenActions) -> Unit, uiState: UIState) {
+    val phone by uiState.phone.collectAsState()
+
+    OutlinedTextField(
+        value = phone,
+        singleLine = true,
+        onValueChange = { onAction(OnTextChanged(FieldsTexts.Phone(it))) },
+        placeholder = { Text(stringResource(R.string.phone_placeholder)) },
+        label = { Text(stringResource(R.string.phone_whatsapp)) },
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
 }
@@ -89,6 +127,19 @@ private fun MakeFieldPassword(onAction: (ScreenActions) -> Unit, uiState: UIStat
         singleLine = true,
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Password(it))) },
         label = { Text(stringResource(R.string.password)) },
+        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+    )
+}
+
+@Composable
+private fun MakeFieldConfirmPassword(onAction: (ScreenActions) -> Unit, uiState: UIState) {
+    val confirmPassword by uiState.confirmPassword.collectAsState()
+
+    OutlinedTextField(
+        value = confirmPassword,
+        singleLine = true,
+        onValueChange = { onAction(OnTextChanged(FieldsTexts.ConfirmPassword(it))) },
+        label = { Text(stringResource(R.string.repeat_password)) },
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
 }

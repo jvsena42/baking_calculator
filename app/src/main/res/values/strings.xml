@@ -16,7 +16,10 @@
     <string name="add_product">Adicionar Produto</string>
     <string name="name">Nome</string>
     <string name="email">Email</string>
-    <string name="password">Password</string>
+    <string name="phone_whatsapp">Celular/Whatsapp</string>
+    <string name="phone_placeholder">(00) 9 0000–0000</string>
+    <string name="password">Senha</string>
+    <string name="repeat_password">Confirme a senha</string>
     <string name="quantity">Quantidade</string>
     <string name="cocoa_powder">Cacau em pó</string>
     <string name="five_hundred">500</string>

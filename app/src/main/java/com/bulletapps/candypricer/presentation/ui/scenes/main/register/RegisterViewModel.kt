@@ -24,19 +24,24 @@ class RegisterViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenEve
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
+        is FieldsTexts.Name -> uiState.name.value = fieldsTexts.text
         is FieldsTexts.Email -> uiState.email.value = fieldsTexts.text
+        is FieldsTexts.Phone -> uiState.phone.value = fieldsTexts.text
         is FieldsTexts.Password -> uiState.password.value = fieldsTexts.text
+        is FieldsTexts.ConfirmPassword -> uiState.confirmPassword.value = fieldsTexts.text
     }
 
     sealed class FieldsTexts {
+        data class Name(val text: String) : FieldsTexts()
         data class Email(val text: String) : FieldsTexts()
+        data class Phone(val text: String) : FieldsTexts()
         data class Password(val text: String) : FieldsTexts()
+        data class ConfirmPassword(val text: String) : FieldsTexts()
     }
 
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnClickConfirm -> onClickConfirm()
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
-        ScreenActions.OnClickRegister -> {}
     }
 
     sealed class ScreenEvent {
@@ -45,7 +50,6 @@ class RegisterViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenEve
 
     sealed class ScreenActions {
         object OnClickConfirm : ScreenActions()
-        object OnClickRegister : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
     }
 
