@@ -23,8 +23,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+            buildConfigField "String", "BASE_URL", DEV_BASE_URL
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
+            buildConfigField "String", "BASE_URL", PROD_BASE_URL
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
