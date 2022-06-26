@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.register
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,10 +19,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.login.LoginViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.register.RegisterViewModel.*
-import com.bulletapps.candypricer.presentation.ui.scenes.main.register.RegisterViewModel.ScreenActions.OnClickConfirm
-import com.bulletapps.candypricer.presentation.ui.scenes.main.register.RegisterViewModel.ScreenActions.OnTextChanged
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel.ScreenActions.OnClickConfirm
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel.ScreenActions.OnTextChanged
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoWithText
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton

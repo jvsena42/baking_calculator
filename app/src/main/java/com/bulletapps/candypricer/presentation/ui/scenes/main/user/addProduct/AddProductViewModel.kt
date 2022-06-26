@@ -1,10 +1,10 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.domain.model.Supply
 import com.bulletapps.candypricer.domain.model.UnitModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel

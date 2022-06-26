@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.settings
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

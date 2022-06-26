@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,8 +24,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.*
-import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.ScreenActions.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.ScreenActions.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.*
 

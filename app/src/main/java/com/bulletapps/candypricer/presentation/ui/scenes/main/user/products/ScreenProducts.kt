@@ -1,10 +1,13 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.supplies
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.products
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -13,28 +16,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
-import com.bulletapps.candypricer.domain.model.Supply
+import com.bulletapps.candypricer.domain.model.Product
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
-import com.bulletapps.candypricer.presentation.ui.widgets.SuppliesList
+import com.bulletapps.candypricer.presentation.ui.widgets.CardProduct
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
-fun ScreenSupplies(
-    viewModel: SuppliesViewModel = hiltViewModel(),
+fun ScreenProducs(
+    viewModel: ProductsViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    Screen(viewModel.suppliesList, onClickAdd = { sharedViewModel.navigate(MainViewModel.Navigation.AddSupply) })
+    Screen(viewModel.productsList, onClickAdd = { sharedViewModel.navigate(MainViewModel.Navigation.AddProduct) })
 }
 
 @Composable
 fun Screen(
-    itemsState: MutableStateFlow<List<Supply>>,
+    itemsState: MutableStateFlow<List<Product>>,
     onClickAdd: () -> Unit,
     ) {
     val items = itemsState.collectAsState()
-    val activity = LocalContext.current as MainActivity
 
     CandyPricerTheme {
         Scaffold(
@@ -45,7 +47,7 @@ fun Screen(
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
-                            text = stringResource(R.string.supplies)
+                            text = stringResource(R.string.my_products)
                         )
                     },
                 )
@@ -58,43 +60,62 @@ fun Screen(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_add_),
-                        contentDescription = stringResource(id = R.string.add_supply),
+                        contentDescription = stringResource(id = R.string.add_product),
                     )
                 }
             }
         ) {
-            SuppliesList(items.value)
+            ProductsList(items.value)
         }
     }
 }
 
+@Composable
+private fun ProductsList(supplyList: List<Product>) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        content = {
+            items(supplyList.size) { index ->
+                val item = supplyList[index]
+                CardProduct(item) {
+
+                }
+            }
+        }
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
-fun Preview() {
+private fun Preview() {
     Screen(
         MutableStateFlow(
             listOf(
-                Supply(
-                    id = 0,
-                    name = "Leite Condensado Caixa",
+                Product(
+                    id = "",
+                    name = "Brigadeiro",
                     price = "R$ 5,00",
                     quantity = 1.0,
-                    unitType = "Unidade"
+                    unitType = "Unidade",
+                    componentIds = listOf()
                 ),
-                Supply(
-                    id = 1,
-                    name = "Creme de leite Caixa",
-                    price = "R$ 6,00",
+                Product(
+                    id = "",
+                    name = "Brigadeiro",
+                    price = "R$ 5,00",
                     quantity = 1.0,
-                    unitType = "Unidade"
+                    unitType = "Unidade",
+                    componentIds = listOf()
                 ),
-                Supply(
-                    id = 2,
-                    name = "Chocolate em pó",
-                    price = "R$ 38,00",
-                    quantity = 500.0,
-                    unitType = "Gramas"
-                ),
+                Product(
+                    id = "",
+                    name = "Brigadeiro",
+                    price = "R$ 5,00",
+                    quantity = 1.0,
+                    unitType = "Unidade",
+                    componentIds = listOf()
+                )
             )
         ),
         {}

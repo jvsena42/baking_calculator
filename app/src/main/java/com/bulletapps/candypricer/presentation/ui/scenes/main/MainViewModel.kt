@@ -34,6 +34,7 @@ class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.
         object Settings : Navigation("settings")
         object Login : Navigation("login")
         object Register : Navigation("register")
+        object Clients : Navigation("clients")
     }
 }
 

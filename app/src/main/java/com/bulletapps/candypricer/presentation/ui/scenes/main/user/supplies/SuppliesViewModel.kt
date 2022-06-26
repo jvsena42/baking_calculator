@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.supplies
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies
 
 import androidx.lifecycle.ViewModel
 import com.bulletapps.candypricer.domain.model.Supply

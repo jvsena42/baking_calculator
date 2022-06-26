@@ -1,5 +1,7 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.products
+package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,12 +21,13 @@ import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.domain.model.Product
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardProduct
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
-fun ScreenProducs(
+fun ScreenClients(
     viewModel: ProductsViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
@@ -36,43 +39,29 @@ fun Screen(
     itemsState: MutableStateFlow<List<Product>>,
     onClickAdd: () -> Unit,
     ) {
-    val items = itemsState.collectAsState()
-    val activity = LocalContext.current as MainActivity
 
     CandyPricerTheme {
-        Scaffold(
-            backgroundColor = colors.background,
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            text = stringResource(R.string.my_products)
-                        )
-                    },
-                )
-            },
-            floatingActionButton = {
-                FloatingActionButton(
-                    backgroundColor = colors.secondary,
-                    contentColor = colors.background,
-                    onClick = onClickAdd,
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_add_),
-                        contentDescription = stringResource(id = R.string.add_product),
-                    )
-                }
-            }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = colors.background),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ProductsList(items.value)
+            TopAppBar(
+                title = {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(R.string.clients)
+                    )
+                },
+            )
         }
     }
 }
 
 @Composable
-fun ProductsList(supplyList: List<Product>) {
+private fun ProductsList(supplyList: List<Product>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -89,7 +78,7 @@ fun ProductsList(supplyList: List<Product>) {
 
 @Preview(showBackground = true)
 @Composable
-fun Preview() {
+private fun Preview() {
     Screen(
         MutableStateFlow(
             listOf(
