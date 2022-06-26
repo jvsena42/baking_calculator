@@ -35,7 +35,7 @@ fun ScreenClients(
 }
 
 @Composable
-fun Screen(
+private fun Screen(
     itemsState: MutableStateFlow<List<Product>>,
     onClickAdd: () -> Unit,
     ) {
