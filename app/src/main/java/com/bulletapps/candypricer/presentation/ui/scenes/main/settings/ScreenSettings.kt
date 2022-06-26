@@ -18,9 +18,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenActions
 import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenActions.OnClickLogout
-import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenEvent.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenEvent.GoBack
+import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenEvent.Login
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoCircle
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
@@ -31,7 +32,7 @@ fun ScreenSettings(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    Screen(viewModel.uiState, viewModel::onAction)
+    Screen(viewModel::onAction)
     EventConsumer(activity, viewModel, sharedViewModel)
 }
 
@@ -53,7 +54,6 @@ private fun EventConsumer(
 
 @Composable
 private fun Screen(
-    uiState: UIState,
     onAction: (ScreenActions) -> Unit,
 ) {
     CandyPricerTheme {
@@ -84,7 +84,6 @@ private fun Screen(
 @Composable
 fun Preview() {
     Screen(
-        onAction = {},
-        uiState = UIState()
+        onAction = {}
     )
 }
