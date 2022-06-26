@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Precificando</string>
     <string name="pricing_with_tricia">Precificando\ncom Tricia</string>
+    <string name="do_sign_in">Faça seu cadastro</string>
     <string name="main_menu">Menu Principal</string>
     <string name="my_products">Meus Produtos</string>
     <string name="supplies">Insumos</string>
@@ -25,7 +26,7 @@
     <string name="confirm">Confirmar</string>
     <string name="login">Login</string>
     <string name="dont_you_have_an_account">Não tem conta?</string>
-    <string name="do_sign_in"><u>Cadastre-se</u></string>
+    <string name="sign_in"><u>Cadastre-se</u></string>
     <string name="select_a_unit">Selecione uma unidade</string>
     <string name="select_a_supply">Selecione um insumo</string>
     <string name="price">Preço</string>
