@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Precificando</string>
+    <string name="pricing_with_tricia">Precificando\ncom Tricia</string>
+    <string name="do_sign_in">Faça seu cadastro</string>
     <string name="main_menu">Menu Principal</string>
     <string name="my_products">Meus Produtos</string>
     <string name="supplies">Insumos</string>
@@ -14,7 +16,10 @@
     <string name="add_product">Adicionar Produto</string>
     <string name="name">Nome</string>
     <string name="email">Email</string>
-    <string name="password">Password</string>
+    <string name="phone_whatsapp">Celular/Whatsapp</string>
+    <string name="phone_placeholder">(00) 9 0000–0000</string>
+    <string name="password">Senha</string>
+    <string name="repeat_password">Confirme a senha</string>
     <string name="quantity">Quantidade</string>
     <string name="cocoa_powder">Cacau em pó</string>
     <string name="five_hundred">500</string>
@@ -24,7 +29,7 @@
     <string name="confirm">Confirmar</string>
     <string name="login">Login</string>
     <string name="dont_you_have_an_account">Não tem conta?</string>
-    <string name="do_sign_in">Cadastre-se</string>
+    <string name="sign_in"><u>Cadastre-se</u></string>
     <string name="select_a_unit">Selecione uma unidade</string>
     <string name="select_a_supply">Selecione um insumo</string>
     <string name="price">Preço</string>
