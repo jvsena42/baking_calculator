@@ -6,16 +6,20 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.login.LoginViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.register.RegisterViewModel.*
 import com.bulletapps.candypricer.presentation.ui.scenes.main.register.RegisterViewModel.ScreenActions.OnClickConfirm
 import com.bulletapps.candypricer.presentation.ui.scenes.main.register.RegisterViewModel.ScreenActions.OnTextChanged
@@ -28,7 +32,24 @@ fun ScreenRegister(
     viewModel: RegisterViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
+    val activity = LocalContext.current as MainActivity
     Screen(viewModel.uiState, viewModel::onAction)
+    EventConsumer(activity, viewModel, sharedViewModel)
+}
+
+@Composable
+private fun EventConsumer(
+    activity: MainActivity,
+    viewModel: RegisterViewModel,
+    sharedViewModel: MainViewModel
+) {
+    LaunchedEffect(key1 = Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                ScreenEvent.GoBack -> activity.onBackPressed()
+            }
+        }
+    }
 }
 
 @Composable

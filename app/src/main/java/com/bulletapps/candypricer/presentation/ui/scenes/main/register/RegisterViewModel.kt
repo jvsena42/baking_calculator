@@ -2,25 +2,19 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
+class RegisterViewModel @Inject constructor() : ViewModel(), EventFlow<RegisterViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
-    fun setup() = viewModelScope.launch {
-
-    }
-
     private fun onClickConfirm() {
-
+        viewModelScope.sendEvent(ScreenEvent.GoBack)
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
