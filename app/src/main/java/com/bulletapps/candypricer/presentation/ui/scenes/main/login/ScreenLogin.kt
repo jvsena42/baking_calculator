@@ -8,9 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,6 +18,8 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.login.LoginViewMod
 import com.bulletapps.candypricer.presentation.ui.scenes.main.login.LoginViewModel.ScreenActions.OnClickConfirm
 import com.bulletapps.candypricer.presentation.ui.scenes.main.login.LoginViewModel.ScreenActions.OnTextChanged
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
+import com.bulletapps.candypricer.presentation.ui.widgets.LogoCircle
+import com.bulletapps.candypricer.presentation.ui.widgets.LogoWithText
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 
 @Composable
@@ -29,7 +29,6 @@ fun ScreenLogin(
 ) {
     Screen(viewModel.uiState, viewModel::onAction)
 }
-
 
 @Composable
 private fun Screen(
@@ -45,15 +44,11 @@ private fun Screen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            Spacer(Modifier.height(64.dp))
+
+            LogoWithText()
+
             Spacer(Modifier.height(32.dp))
-
-            Icon(
-                painter = painterResource(id = R.drawable.ic_logo_yellow),
-                contentDescription = stringResource(id = R.string.app_name),
-                modifier = Modifier.padding(16.dp)
-            )
-
-            Spacer(Modifier.height(16.dp))
 
             MakeFieldEmail(onAction, uiState)
 
@@ -77,7 +72,7 @@ private fun Screen(
 
 @Composable
 private fun MakeRegisterText(onAction: (ScreenActions) -> Unit) {
-    Column() {
+    Column {
         Text(stringResource(R.string.dont_you_have_an_account))
         TextButton(onClick = { onAction(ScreenActions.OnClickRegister) }) {
             Text(stringResource(R.string.do_sign_in))
