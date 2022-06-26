@@ -1,7 +1,6 @@
 package com.bulletapps.candypricer.domain.usecase
 
-import android.net.Uri
-import com.bulletapps.candypricer.data.model.Supply
+import com.bulletapps.candypricer.domain.model.Supply
 
 interface CreateSupplyUseCase {
     suspend operator fun invoke(supply: Supply)

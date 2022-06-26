@@ -1,7 +1,7 @@
 package com.bulletapps.candypricer.data.db
 
 import androidx.room.*
-import com.bulletapps.candypricer.data.model.Supply
+import com.bulletapps.candypricer.domain.model.Supply
 
 @Dao
 interface SupplyDAO {

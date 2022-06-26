@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.data.datasource.di
+package com.bulletapps.candypricer.config.di
 
 import com.bulletapps.candypricer.data.datasource.SupplyDataSource
 import com.bulletapps.candypricer.data.datasource.SupplyLocalDataSourceImpl

@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.bulletapps.candypricer.data.model.Supply
+import com.bulletapps.candypricer.domain.model.Supply
 
 @Composable
 fun SuppliesList(supplyList: List<Supply>, modifier: Modifier = Modifier) {

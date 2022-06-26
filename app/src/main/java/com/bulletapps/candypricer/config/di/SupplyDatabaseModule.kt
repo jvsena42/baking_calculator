@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.data.db.di
+package com.bulletapps.candypricer.config.di
 
 import android.app.Application
 import androidx.room.Room

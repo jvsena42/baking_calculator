@@ -1,7 +1,7 @@
 package com.bulletapps.candypricer.data.datasource
 
 import com.bulletapps.candypricer.data.db.SupplyDAO
-import com.bulletapps.candypricer.data.model.Supply
+import com.bulletapps.candypricer.domain.model.Supply
 import javax.inject.Inject
 
 class SupplyLocalDataSourceImpl @Inject constructor(private val supplyDAO: SupplyDAO ): SupplyDataSource {

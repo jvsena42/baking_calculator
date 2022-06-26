@@ -2,8 +2,8 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bulletapps.candypricer.data.model.Supply
-import com.bulletapps.candypricer.domain.model.UnityModel
+import com.bulletapps.candypricer.domain.model.Supply
+import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
@@ -25,12 +25,12 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
     //TODO MOCK
     private suspend fun getUnities() {
         uiState.unities.value = listOf(
-            UnityModel("", "Und."),
-            UnityModel("", "Kg"),
-            UnityModel("", "g"),
-            UnityModel("", "mg"),
-            UnityModel("", "L"),
-            UnityModel("", "ml"),
+            UnitModel("", "Und."),
+            UnitModel("", "Kg"),
+            UnitModel("", "g"),
+            UnitModel("", "mg"),
+            UnitModel("", "L"),
+            UnitModel("", "ml"),
         )
     }
 
@@ -141,7 +141,7 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         val laborPrice = MutableStateFlow("")
         val profitMargin = MutableStateFlow("")
         val variableExpenses = MutableStateFlow("")
-        val unities = MutableStateFlow<List<UnityModel>>(listOf())
+        val unities = MutableStateFlow<List<UnitModel>>(listOf())
         val isExpanded = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow("")
         val suppliesList = MutableStateFlow(mutableListOf<MenuItemModel>())
