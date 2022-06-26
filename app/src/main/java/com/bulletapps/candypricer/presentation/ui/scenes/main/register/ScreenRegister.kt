@@ -47,7 +47,7 @@ private fun Screen(
 
             Spacer(Modifier.height(64.dp))
 
-            LogoWithText()
+            LogoWithText(text = stringResource(R.string.do_sign_in))
 
             Spacer(Modifier.height(32.dp))
 
