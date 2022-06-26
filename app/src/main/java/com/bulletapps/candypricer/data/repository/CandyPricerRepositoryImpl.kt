@@ -1,7 +1,7 @@
 package com.bulletapps.candypricer.data.repository
 
 import com.bulletapps.candypricer.data.datasource.SupplyDataSource
-import com.bulletapps.candypricer.data.model.Supply
+import com.bulletapps.candypricer.domain.model.Supply
 import javax.inject.Inject
 
 class CandyPricerRepositoryImpl @Inject constructor(

@@ -1,6 +1,6 @@
 package com.bulletapps.candypricer.domain.usecase
 
-import com.bulletapps.candypricer.data.model.Supply
+import com.bulletapps.candypricer.domain.model.Supply
 import com.bulletapps.candypricer.data.repository.CandyPricerRepository
 
 class DeleteSupplyUseCaseImpl(

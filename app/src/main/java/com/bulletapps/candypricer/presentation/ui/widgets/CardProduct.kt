@@ -3,17 +3,13 @@ package com.bulletapps.candypricer.presentation.ui.widgets
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bulletapps.candypricer.R
-import com.bulletapps.candypricer.data.model.Product
-import com.bulletapps.candypricer.data.model.Supply
-import com.bulletapps.candypricer.data.model.UnitType
+import com.bulletapps.candypricer.domain.model.Product
 
 @Composable
 fun CardProduct(supply: Product, onClick: () -> Unit?) {
