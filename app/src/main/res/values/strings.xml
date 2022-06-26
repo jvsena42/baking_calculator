@@ -37,4 +37,6 @@
     <string name="labor_price">Mão de obra</string>
     <string name="variable_expenses">Gastos variáveis</string>
     <string name="profit_margin">Margem de lucro</string>
+    <string name="change_expiring_date">Alterar expiração</string>
+    <string name="send_message">Enviar mensagem</string>
 </resources>
