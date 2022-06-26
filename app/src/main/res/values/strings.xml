@@ -28,6 +28,7 @@
     <string name="ten_percent">10%</string>
     <string name="confirm">Confirmar</string>
     <string name="login">Login</string>
+    <string name="logout">Sair</string>
     <string name="dont_you_have_an_account">Não tem conta?</string>
     <string name="sign_in"><u>Cadastre-se</u></string>
     <string name="select_a_unit">Selecione uma unidade</string>

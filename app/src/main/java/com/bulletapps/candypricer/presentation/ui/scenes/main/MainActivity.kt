@@ -13,6 +13,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.login.ScreenLogin
 import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.ScreenMenu
 import com.bulletapps.candypricer.presentation.ui.scenes.main.products.ScreenProducs
 import com.bulletapps.candypricer.presentation.ui.scenes.main.register.ScreenRegister
+import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.ScreenSettings
 import com.bulletapps.candypricer.presentation.ui.scenes.main.supplies.ScreenSupplies
 import com.bulletapps.candypricer.presentation.util.setNavigation
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,6 +56,9 @@ class MainActivity : ComponentActivity() {
         }
         composable(MainViewModel.Navigation.AddProduct.router) {
             ScreenAddProduct(sharedViewModel = sharedViewModel)
+        }
+        composable(MainViewModel.Navigation.Settings.router) {
+            ScreenSettings(sharedViewModel = sharedViewModel)
         }
     }
 
