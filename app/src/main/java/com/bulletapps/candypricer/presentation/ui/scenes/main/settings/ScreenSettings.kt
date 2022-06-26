@@ -1,7 +1,10 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.settings
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,9 +20,9 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.*
 import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenActions.OnClickLogout
-import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenEvent.GoBack
+import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenEvent.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
-import com.bulletapps.candypricer.presentation.ui.widgets.LogoWithText
+import com.bulletapps.candypricer.presentation.ui.widgets.LogoCircle
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 
 @Composable
@@ -42,6 +45,7 @@ private fun EventConsumer(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 GoBack -> activity.onBackPressed()
+                Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
             }
         }
     }
@@ -63,12 +67,12 @@ private fun Screen(
 
             Spacer(Modifier.height(64.dp))
 
-            LogoWithText(text = stringResource(R.string.do_sign_in))
+            LogoCircle()
 
             Spacer(Modifier.weight(1f))
 
             OutlinedButtonCustom(
-                text = stringResource(R.string.login),
+                text = stringResource(R.string.logout),
                 onClick = { onAction(OnClickLogout) }
             )
 

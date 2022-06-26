@@ -14,7 +14,7 @@ class SettingsViewModel @Inject constructor() : ViewModel(), EventFlow<SettingsV
     val uiState = UIState()
 
     private fun onClickConfirm() {
-        viewModelScope.sendEvent(ScreenEvent.GoBack)
+        viewModelScope.sendEvent(ScreenEvent.Login)
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
@@ -39,6 +39,7 @@ class SettingsViewModel @Inject constructor() : ViewModel(), EventFlow<SettingsV
 
     sealed class ScreenEvent {
         object GoBack : ScreenEvent()
+        object Login : ScreenEvent()
     }
 
     sealed class ScreenActions {
