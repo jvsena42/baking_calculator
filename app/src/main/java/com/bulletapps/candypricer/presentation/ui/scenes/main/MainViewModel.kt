@@ -17,6 +17,7 @@ class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.
         listOf(
             MenuModel(R.string.my_products, R.drawable.ic_store, Navigation.Products),
             MenuModel(R.string.supplies, R.drawable.ic_shopping_cart, Navigation.Supplies),
+            MenuModel(R.string.clients, R.drawable.ic_clients, Navigation.Clients),
             MenuModel(R.string.settings, R.drawable.ic_build, Navigation.Settings),
         ),
     )

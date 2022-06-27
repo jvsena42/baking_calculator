@@ -1,9 +1,7 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
@@ -17,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
@@ -69,7 +68,7 @@ private fun ProductsList(
     val list by uiState.clients.collectAsState()
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(top = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         content = {
             items(list.size) { index ->
@@ -84,6 +83,7 @@ private fun ProductsList(
                     onClickLeft = { onAction(ScreenActions.OnClickChangeExpirationDate) },
                     onClickRight = { onAction(ScreenActions.OnClickMessage) }
                 )
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     )
