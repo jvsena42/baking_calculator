@@ -1,11 +1,12 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.bulletapps.candypricer.domain.model.User
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,8 +14,29 @@ class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsVie
 
     val uiState = UIState()
 
-    fun setup() {
-
+    suspend fun setup() {
+        uiState.clients.value = listOf(
+            User(
+                name = "Maria Júlia",
+                expirationDate = Calendar.getInstance(),
+                phone = "86998006407"
+            ),
+            User(
+                name = "Ana Maria Braga",
+                expirationDate = Calendar.getInstance(),
+                phone = "86998006407"
+            ),
+            User(
+                name = "Pequeno Chef",
+                expirationDate = Calendar.getInstance(),
+                phone = "86998006407"
+            ),
+            User(
+                name = "Teste da silva",
+                expirationDate = Calendar.getInstance(),
+                phone = "86998006407"
+            ),
+        )
     }
 
     private fun onClickMessage() {
@@ -60,6 +82,7 @@ class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsVie
     class UIState {
         val date = MutableStateFlow("")
         val isDialogVisible = MutableStateFlow(false)
+        val clients = MutableStateFlow<List<User>>(listOf())
     }
 }
 
