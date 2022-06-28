@@ -99,6 +99,8 @@ fun BuildCalendar(
     uiState: UIState,
     onAction: (ScreenActions) -> Unit
 ) {
+    val isDialogVisible by  uiState.isDialogVisible.collectAsState()
+
     val context = LocalContext.current
 
     val year: Int
@@ -119,7 +121,11 @@ fun BuildCalendar(
         }, year, month, day
     )
 
-    datePickerDialog.show()
+    if (isDialogVisible && !datePickerDialog.isShowing) {
+        datePickerDialog.show()
+    } else if(!isDialogVisible && datePickerDialog.isShowing) {
+        datePickerDialog.dismiss()
+    }
 }
 
 @Preview(showBackground = true)
