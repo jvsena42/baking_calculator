@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -99,7 +100,7 @@ fun BuildCalendar(
     uiState: UIState,
     onAction: (ScreenActions) -> Unit
 ) {
-    val isDialogVisible by  uiState.isDialogVisible.collectAsState()
+    val isDialogVisible by uiState.isDialogVisible.collectAsState()
 
     val context = LocalContext.current
 
@@ -107,6 +108,7 @@ fun BuildCalendar(
     val month: Int
     val day: Int
 
+    // TODO ALTERAR PARA A DATA DO MODEL
     val calendar = Calendar.getInstance()
     year = calendar.get(Calendar.YEAR)
     month = calendar.get(Calendar.MONTH)
@@ -119,11 +121,15 @@ fun BuildCalendar(
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
             date.value = "$dayOfMonth/$month/$year"
         }, year, month, day
-    )
+    ).apply {
+        setOnDismissListener {
+            onAction(ScreenActions.OnDismissDialog)
+        }
+    }
 
     if (isDialogVisible && !datePickerDialog.isShowing) {
         datePickerDialog.show()
-    } else if(!isDialogVisible && datePickerDialog.isShowing) {
+    } else if (!isDialogVisible && datePickerDialog.isShowing) {
         datePickerDialog.dismiss()
     }
 }

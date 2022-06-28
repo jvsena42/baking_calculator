@@ -66,6 +66,7 @@ class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsVie
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
         is ScreenActions.OnClickMessage -> onClickMessage()
         is ScreenActions.OnClickChangeExpirationDate -> onShowDialog()
+        ScreenActions.OnDismissDialog -> onDismissDialog()
     }
 
     sealed class ScreenEvent {
@@ -76,6 +77,7 @@ class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsVie
     sealed class ScreenActions {
         object OnClickMessage : ScreenActions()
         object OnClickChangeExpirationDate : ScreenActions()
+        object OnDismissDialog : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
     }
 
