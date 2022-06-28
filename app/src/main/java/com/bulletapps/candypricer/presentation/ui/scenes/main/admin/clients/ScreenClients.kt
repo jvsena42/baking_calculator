@@ -18,11 +18,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.domain.model.User
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ClientsViewModel.ScreenActions
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ClientsViewModel.UIState
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardClient
+import com.bulletapps.candypricer.presentation.util.formatToDayMonthYear
+import java.util.*
 
 @Composable
 fun ScreenClients(
@@ -55,13 +58,13 @@ private fun Screen(
                     )
                 },
             )
-            ProductsList(uiState, onAction)
+            CLientsList(uiState, onAction)
         }
     }
 }
 
 @Composable
-private fun ProductsList(
+private fun CLientsList(
     uiState: UIState,
     onAction: (ScreenActions) -> Unit
 ) {
@@ -77,7 +80,7 @@ private fun ProductsList(
                     firstLabel = R.string.name_label,
                     secondLabel = R.string.expires_at_label,
                     firsName = user.name,
-                    secondName = user.phone,
+                    secondName = user.expirationDate.time.formatToDayMonthYear(),
                     leftBTLabel = R.string.change_expiring_date,
                     rightBTLabel = R.string.send_message,
                     onClickLeft = { onAction(ScreenActions.OnClickChangeExpirationDate) },
@@ -94,6 +97,19 @@ private fun ProductsList(
 private fun Preview() {
     Screen(
         onAction = {},
-        uiState = UIState()
+        uiState = UIState().apply {
+            clients.value = listOf(
+                User(
+                    name = "Maria Júlia",
+                    expirationDate = Calendar.getInstance(),
+                    phone = "86998006407"
+                ),
+                User(
+                    name = "Ana Maria Braga",
+                    expirationDate = Calendar.getInstance(),
+                    phone = "86998006407"
+                ),
+            )
+        }
     )
 }
