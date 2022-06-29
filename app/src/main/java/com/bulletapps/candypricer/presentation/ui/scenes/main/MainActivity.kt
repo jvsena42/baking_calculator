@@ -7,14 +7,15 @@ import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.bulletapps.candypricer.presentation.ui.scenes.main.addProduct.ScreenAddProduct
-import com.bulletapps.candypricer.presentation.ui.scenes.main.addSupply.ScreenAddSupply
-import com.bulletapps.candypricer.presentation.ui.scenes.main.login.ScreenLogin
+import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ScreenClients
 import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.ScreenMenu
-import com.bulletapps.candypricer.presentation.ui.scenes.main.products.ScreenProducs
-import com.bulletapps.candypricer.presentation.ui.scenes.main.register.ScreenRegister
-import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.ScreenSettings
-import com.bulletapps.candypricer.presentation.ui.scenes.main.supplies.ScreenSupplies
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.ScreenAddProduct
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply.ScreenAddSupply
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.ScreenLogin
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ScreenProducs
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.ScreenRegister
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.ScreenSettings
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.ScreenSupplies
 import com.bulletapps.candypricer.presentation.util.setNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,6 +60,9 @@ class MainActivity : ComponentActivity() {
         }
         composable(MainViewModel.Navigation.Settings.router) {
             ScreenSettings(sharedViewModel = sharedViewModel)
+        }
+        composable(MainViewModel.Navigation.Clients.router) {
+            ScreenClients(sharedViewModel = sharedViewModel)
         }
     }
 

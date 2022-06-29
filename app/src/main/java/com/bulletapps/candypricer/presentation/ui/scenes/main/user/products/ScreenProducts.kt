@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.products
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.products
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,7 +37,6 @@ fun Screen(
     onClickAdd: () -> Unit,
     ) {
     val items = itemsState.collectAsState()
-    val activity = LocalContext.current as MainActivity
 
     CandyPricerTheme {
         Scaffold(
@@ -72,7 +71,7 @@ fun Screen(
 }
 
 @Composable
-fun ProductsList(supplyList: List<Product>) {
+private fun ProductsList(supplyList: List<Product>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -89,7 +88,7 @@ fun ProductsList(supplyList: List<Product>) {
 
 @Preview(showBackground = true)
 @Composable
-fun Preview() {
+private fun Preview() {
     Screen(
         MutableStateFlow(
             listOf(

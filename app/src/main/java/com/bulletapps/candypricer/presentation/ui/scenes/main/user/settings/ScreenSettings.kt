@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.settings
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,10 +18,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenActions
-import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenActions.OnClickLogout
-import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenEvent.GoBack
-import com.bulletapps.candypricer.presentation.ui.scenes.main.settings.SettingsViewModel.ScreenEvent.Login
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenActions
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenActions.OnClickLogout
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.GoBack
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.Login
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoCircle
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom

@@ -31,6 +31,31 @@ fun CardProduct(supply: Product, onClick: () -> Unit?) {
 }
 
 @Composable
+fun CardTwoItemsVertical(
+    firstLabel: Int,
+    firsName: String,
+    secondLabel: Int,
+    secondName: String,
+    onClick: () -> Unit = {}
+) {
+    Card(
+        modifier = Modifier
+            .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+            .clickable { onClick.invoke() }
+            .fillMaxWidth(),
+        elevation = 1.dp
+    ) {
+        Column (
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            TextWithLabel(stringResource(id = firstLabel), firsName)
+            TextWithLabel(stringResource(id = secondLabel), secondName)
+        }
+    }
+}
+
+@Composable
 fun CardTwoItemsHorizontal(
     firstLabel: Int,
     firsName: String,
@@ -78,6 +103,13 @@ private fun Preview() {
             secondName = "teste",
             onClick = {}
         )
+
+        CardTwoItemsVertical(
+            firstLabel = R.string.name_label,
+            secondLabel = R.string.quantity_label,
+            firsName = "teste",
+            secondName = "teste"
+        ) {}
     }
 
 }

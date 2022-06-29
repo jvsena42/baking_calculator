@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.login
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,19 +9,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
-import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.login.LoginViewModel.*
-import com.bulletapps.candypricer.presentation.ui.scenes.main.login.LoginViewModel.ScreenActions.OnClickConfirm
-import com.bulletapps.candypricer.presentation.ui.scenes.main.login.LoginViewModel.ScreenActions.OnTextChanged
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel.ScreenActions.OnClickConfirm
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel.ScreenActions.OnTextChanged
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
-import com.bulletapps.candypricer.presentation.ui.widgets.LogoCircle
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoWithText
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 

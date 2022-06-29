@@ -15,7 +15,7 @@ fun NormalButton(modifier: Modifier = Modifier, text: String, onClick: () -> Uni
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 32.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colors.secondary
         )
@@ -36,7 +36,7 @@ fun OutlinedButtonCustom(modifier: Modifier = Modifier, text: String, onClick: (
         ),
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 32.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
         Text(text, color = MaterialTheme.colors.secondary)
     }

@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.supplies
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*

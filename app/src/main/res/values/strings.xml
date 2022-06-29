@@ -7,6 +7,7 @@
     <string name="supplies">Insumos</string>
     <string name="settings">Configurações</string>
     <string name="name_label">Nome: </string>
+    <string name="expires_at_label">Expira em: </string>
     <string name="quantity_label">Qnt: </string>
     <string name="measure_type_label">Medida: </string>
     <string name="cost_label">Custo: </string>
@@ -37,4 +38,7 @@
     <string name="labor_price">Mão de obra</string>
     <string name="variable_expenses">Gastos variáveis</string>
     <string name="profit_margin">Margem de lucro</string>
+    <string name="change_expiring_date">Alterar expiração</string>
+    <string name="send_message">Enviar mensagem</string>
+    <string name="clients">Clientes</string>
 </resources>
