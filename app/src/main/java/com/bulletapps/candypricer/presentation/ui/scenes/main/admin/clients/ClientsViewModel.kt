@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.domain.model.User
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
@@ -29,7 +30,7 @@ class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsVie
             User(
                 name = "Pequeno Chef",
                 expirationDate = Calendar.getInstance(),
-                phone = "86998006407"
+                phone = "86981133033"
             ),
             User(
                 name = "Teste da silva",
@@ -39,15 +40,15 @@ class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsVie
         )
     }
 
-    private fun onClickMessage() {
-
+    private fun onClickMessage(phone: String) {
+        viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp(phone))
     }
 
     private fun changeExpirationDate() {
 
     }
 
-    private fun onShowDialog() {
+    private fun onShowDialog(selectedUser: User) {
         uiState.isDialogVisible.value = true
     }
     private fun onDismissDialog() {
@@ -64,19 +65,18 @@ class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsVie
 
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
-        is ScreenActions.OnClickMessage -> onClickMessage()
-        is ScreenActions.OnClickChangeExpirationDate -> onShowDialog()
+        is ScreenActions.OnClickMessage -> onClickMessage(action.phone)
+        is ScreenActions.OnClickChangeExpirationDate -> onShowDialog(action.user)
         ScreenActions.OnDismissDialog -> onDismissDialog()
     }
 
     sealed class ScreenEvent {
-        object MainScreen : ScreenEvent()
-        object RegisterScreen : ScreenEvent()
+        data class OpenWhatsApp(val number: String) : ScreenEvent()
     }
 
     sealed class ScreenActions {
-        object OnClickMessage : ScreenActions()
-        object OnClickChangeExpirationDate : ScreenActions()
+        data class OnClickMessage(val phone: String) : ScreenActions()
+        data class OnClickChangeExpirationDate(val user: User) : ScreenActions()
         object OnDismissDialog : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
     }

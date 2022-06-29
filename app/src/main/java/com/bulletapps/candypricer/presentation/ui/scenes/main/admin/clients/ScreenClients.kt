@@ -2,6 +2,8 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 
 import android.app.DatePickerDialog
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,9 +26,11 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ClientsViewModel.ScreenActions
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ClientsViewModel.UIState
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardClient
 import com.bulletapps.candypricer.presentation.util.formatToDayMonthYear
+import com.bulletapps.candypricer.presentation.util.openWhatsapp
 import java.util.*
 
 @Composable
@@ -34,8 +38,25 @@ fun ScreenClients(
     viewModel: ClientsViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
+    val activity = LocalContext.current as MainActivity
     LaunchedEffect(key1 = Unit) { viewModel.setup() }
     Screen(viewModel.uiState, viewModel::onAction)
+    EventConsumer(activity, viewModel, sharedViewModel)
+}
+
+@Composable
+private fun EventConsumer(
+    activity: MainActivity,
+    viewModel: ClientsViewModel,
+    sharedViewModel: MainViewModel
+) {
+    LaunchedEffect(key1 = Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is ClientsViewModel.ScreenEvent.OpenWhatsApp -> activity.openWhatsapp(event.number)
+            }
+        }
+    }
 }
 
 @Composable
@@ -86,8 +107,8 @@ private fun CLientsList(
                     secondName = user.expirationDate.time.formatToDayMonthYear(),
                     leftBTLabel = R.string.change_expiring_date,
                     rightBTLabel = R.string.send_message,
-                    onClickLeft = { onAction(ScreenActions.OnClickChangeExpirationDate) },
-                    onClickRight = { onAction(ScreenActions.OnClickMessage) }
+                    onClickLeft = { onAction(ScreenActions.OnClickChangeExpirationDate(user)) },
+                    onClickRight = { onAction(ScreenActions.OnClickMessage(user.phone)) }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }
