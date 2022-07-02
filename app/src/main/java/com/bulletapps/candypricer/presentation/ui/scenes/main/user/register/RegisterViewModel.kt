@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
-import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
-import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.*
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val submitEmailUseCase: SubmitEmailUseCase,
-    private val submitPasswordUseCase: SubmitPasswordUseCase
+    private val submitPasswordUseCase: SubmitPasswordUseCase,
+    private val validatePswConfUseCase: ValidatePasswordConfirmationUseCase,
+    private val validateEmptyTextUseCase: ValidateEmptyTextUseCase
 ) : ViewModel(), EventFlow<RegisterViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -24,27 +25,56 @@ class RegisterViewModel @Inject constructor(
     private fun onClickConfirm() {
         viewModelScope.launch {
             uiState.isLoading.value = true
+            val nameResult = validateEmptyTextUseCase(text = uiState.name.value)
             val emailResult = submitEmailUseCase(email = uiState.email.value)
+            val phoneResult = validateEmptyTextUseCase(text = uiState.phone.value)
             val passwordResult = submitPasswordUseCase(password = uiState.password.value)
+            val confPasswordResult = validatePswConfUseCase(
+                password = uiState.password.value,
+                passwordConfirmation = uiState.confirmPassword.value
+            )
 
-            when(emailResult) {
+
+            when (nameResult) {
+                is Resource.Error -> uiState.nameError.value = nameResult.message
+                is Resource.Success -> uiState.nameError.value = null
+            }
+
+            when (emailResult) {
                 is Resource.Error -> uiState.emailError.value = emailResult.message
                 is Resource.Success -> uiState.emailError.value = null
             }
 
-            when(passwordResult) {
+            when (phoneResult) {
+                is Resource.Error -> uiState.phoneError.value = phoneResult.message
+                is Resource.Success -> uiState.phoneError.value = null
+            }
+
+            when (passwordResult) {
                 is Resource.Error -> uiState.passwordError.value = passwordResult.message
                 is Resource.Success -> uiState.passwordError.value = null
             }
 
+            when (confPasswordResult) {
+                is Resource.Error -> uiState.passwordConfError.value = confPasswordResult.message
+                is Resource.Success -> uiState.passwordConfError.value = null
+            }
+
             uiState.isLoading.value = false
-            if (emailResult is Resource.Success && passwordResult is Resource.Success) {
+
+            if (
+                nameResult is Resource.Success
+                && emailResult is Resource.Success
+                && phoneResult is Resource.Success
+                && passwordResult is Resource.Success
+                && confPasswordResult is Resource.Success
+            ) {
                 viewModelScope.sendEvent(ScreenEvent.GoBack)
             }
         }
     }
 
-    private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
+    private fun onTextChanged(fieldsTexts: FieldsTexts) = when (fieldsTexts) {
         is FieldsTexts.Name -> uiState.name.value = fieldsTexts.text
         is FieldsTexts.Email -> uiState.email.value = fieldsTexts.text
         is FieldsTexts.Phone -> uiState.phone.value = fieldsTexts.text
@@ -60,7 +90,7 @@ class RegisterViewModel @Inject constructor(
         data class ConfirmPassword(val text: String) : FieldsTexts()
     }
 
-    fun onAction(action: ScreenActions) = when(action) {
+    fun onAction(action: ScreenActions) = when (action) {
         is ScreenActions.OnClickConfirm -> onClickConfirm()
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
     }
@@ -82,8 +112,11 @@ class RegisterViewModel @Inject constructor(
         val confirmPassword = MutableStateFlow("")
         val isPasswordVisible = MutableStateFlow(false)
         val isPasswordConfirmVisible = MutableStateFlow(false)
+        val nameError = MutableStateFlow<UiText?>(null)
         val emailError = MutableStateFlow<UiText?>(null)
+        val phoneError = MutableStateFlow<UiText?>(null)
         val passwordError = MutableStateFlow<UiText?>(null)
+        val passwordConfError = MutableStateFlow<UiText?>(null)
         val isLoading = MutableStateFlow(false)
     }
 }
