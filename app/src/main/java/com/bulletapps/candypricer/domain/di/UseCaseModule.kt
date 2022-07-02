@@ -2,6 +2,10 @@ package com.bulletapps.candypricer.domain.di
 
 import com.bulletapps.candypricer.data.repository.CandyPricerRepository
 import com.bulletapps.candypricer.domain.usecase.*
+import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCaseImpl
+import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
