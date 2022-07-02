@@ -42,5 +42,5 @@
     <string name="send_message">Enviar mensagem</string>
     <string name="clients">Clientes</string>
     <string name="error_invalid_email">Digite um email válido</string>
-    <string name="error_invalid_password">Digite uma senha de pelo menos 6 caracteres</string>
+    <string name="error_invalid_password">Sua senha deve conter pelo menos 6 caracteres</string>
 </resources>
