@@ -55,6 +55,10 @@ class LoginViewModel @Inject constructor(
         is FieldsTexts.Password -> uiState.password.value = fieldsTexts.text
     }
 
+    private fun onClickTogglePassword() {
+        uiState.isPasswordVisible.value = !uiState.isPasswordVisible.value
+    }
+
     sealed class FieldsTexts {
         data class Email(val text: String) : FieldsTexts()
         data class Password(val text: String) : FieldsTexts()
@@ -64,6 +68,7 @@ class LoginViewModel @Inject constructor(
         is ScreenActions.OnClickConfirm -> onClickConfirm()
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
         is ScreenActions.OnClickRegister -> onCLickRegister()
+        ScreenActions.OnClickTogglePassword -> onClickTogglePassword()
     }
 
     sealed class ScreenEvent {
@@ -74,12 +79,14 @@ class LoginViewModel @Inject constructor(
     sealed class ScreenActions {
         object OnClickConfirm : ScreenActions()
         object OnClickRegister : ScreenActions()
+        object OnClickTogglePassword : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
     }
 
     class UIState {
         val email = MutableStateFlow("")
         val password = MutableStateFlow("")
+        val isPasswordVisible = MutableStateFlow(false)
         val emailError = MutableStateFlow<UiText?>(null)
         val passwordError = MutableStateFlow<UiText?>(null)
         val isLoading = MutableStateFlow(false)
