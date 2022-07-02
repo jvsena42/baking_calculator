@@ -10,9 +10,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun NormalButton(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
+fun NormalButton(modifier: Modifier = Modifier, isEnabled: Boolean = true, text: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
+        enabled = isEnabled,
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -24,13 +25,14 @@ fun NormalButton(modifier: Modifier = Modifier, text: String, onClick: () -> Uni
     }
 }
 @Composable
-fun OutlinedButtonCustom(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
+fun OutlinedButtonCustom(modifier: Modifier = Modifier, isEnabled: Boolean = true, text: String, onClick: () -> Unit) {
     OutlinedButton(
         onClick = onClick,
         border = BorderStroke(
             width = 1.dp,
             color = MaterialTheme.colors.secondary
         ),
+        enabled = isEnabled,
         colors = ButtonDefaults.outlinedButtonColors(
             backgroundColor = Color.Transparent
         ),

@@ -25,6 +25,7 @@ class LoginViewModel @Inject constructor(
 
     private fun onClickConfirm() {
         viewModelScope.launch {
+            uiState.isLoading.value = true
             val emailResult = submitEmailUseCase(email = uiState.email.value)
             val passwordResult = submitPasswordUseCase(password = uiState.password.value)
 
@@ -38,6 +39,7 @@ class LoginViewModel @Inject constructor(
                 is Resource.Success -> uiState.passwordError.value = null
             }
 
+            uiState.isLoading.value = false
             if (emailResult is Resource.Success && passwordResult is Resource.Success) {
                 sendEvent(ScreenEvent.MainScreen)
             }
@@ -80,6 +82,7 @@ class LoginViewModel @Inject constructor(
         val password = MutableStateFlow("")
         val emailError = MutableStateFlow<UiText?>(null)
         val passwordError = MutableStateFlow<UiText?>(null)
+        val isLoading = MutableStateFlow(false)
     }
 }
 

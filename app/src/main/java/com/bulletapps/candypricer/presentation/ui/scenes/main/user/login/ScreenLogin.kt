@@ -72,10 +72,7 @@ private fun Screen(
 
             MakeFieldPassword(onAction, uiState)
 
-            NormalButton(
-                text = stringResource(R.string.login),
-                onClick = { onAction(OnClickConfirm) }
-            )
+            MakeButtonLogin(onAction, uiState)
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -84,6 +81,18 @@ private fun Screen(
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
+}
+
+
+@Composable
+private fun MakeButtonLogin(onAction: (ScreenActions) -> Unit, uiState: UIState) {
+    val isLoading by uiState.isLoading.collectAsState()
+
+    NormalButton(
+        isEnabled = !isLoading,
+        text = stringResource(R.string.login),
+        onClick = { onAction(OnClickConfirm) }
+    )
 }
 
 @Composable
