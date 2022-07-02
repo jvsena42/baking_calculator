@@ -41,4 +41,5 @@
     <string name="change_expiring_date">Alterar expiração</string>
     <string name="send_message">Enviar mensagem</string>
     <string name="clients">Clientes</string>
+    <string name="error_invalid_email">Digite um email válido</string>
 </resources>
