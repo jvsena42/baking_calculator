@@ -103,12 +103,16 @@ private fun MakeRegisterText(onAction: (ScreenActions) -> Unit) {
 @Composable
 private fun MakeFieldEmail(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val name by uiState.email.collectAsState()
+    val error by uiState.emailError.collectAsState()
+
+    val isError = !error?.asString().isNullOrEmpty()
 
     OutlinedTextField(
         value = name,
         singleLine = true,
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Email(it))) },
-        label = { Text(stringResource(R.string.email)) },
+        label = { Text(error?.asString() ?: stringResource(R.string.email)) },
+        isError = isError,
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
 }
@@ -116,12 +120,15 @@ private fun MakeFieldEmail(onAction: (ScreenActions) -> Unit, uiState: UIState) 
 @Composable
 private fun MakeFieldPassword(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val password by uiState.password.collectAsState()
+    val error by uiState.passwordError.collectAsState()
+
 
     OutlinedTextField(
         value = password,
         singleLine = true,
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Password(it))) },
-        label = { Text(stringResource(R.string.password)) },
+        label = { Text(error?.asString() ?: stringResource(R.string.password)) },
+        isError = !error?.asString().isNullOrEmpty(),
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
 }

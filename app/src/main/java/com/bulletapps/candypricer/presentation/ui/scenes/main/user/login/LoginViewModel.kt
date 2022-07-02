@@ -34,7 +34,7 @@ class LoginViewModel @Inject constructor(
             }
 
             when(passwordResult) {
-                is Resource.Error -> uiState.passwordError.value = emailResult.message
+                is Resource.Error -> uiState.passwordError.value = passwordResult.message
                 is Resource.Success -> uiState.passwordError.value = null
             }
 
