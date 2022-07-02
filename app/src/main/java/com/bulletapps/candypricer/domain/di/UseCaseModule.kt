@@ -41,4 +41,16 @@ class UseCaseModule {
     fun providesUpdateSupplyUseCaseImplUseCase(repository: CandyPricerRepository) : UpdateSupplyUseCase {
         return UpdateSupplyUseCaseImpl(repository)
     }
+
+    @Singleton
+    @Provides
+    fun providesSubmitEmailUseCaseImpl() : SubmitEmailUseCase {
+        return SubmitEmailUseCaseImpl()
+    }
+
+    @Singleton
+    @Provides
+    fun providesSubmitPasswordUseCaseImpl() : SubmitPasswordUseCase {
+        return SubmitPasswordUseCaseImpl()
+    }
 }

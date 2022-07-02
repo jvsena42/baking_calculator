@@ -2,19 +2,46 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bulletapps.candypricer.config.Resource
+import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.domain.usecase.SubmitEmailUseCase
+import com.bulletapps.candypricer.domain.usecase.SubmitPasswordUseCase
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import okhttp3.internal.wait
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel(), EventFlow<LoginViewModel.ScreenEvent> by EventFlowImpl() {
+class LoginViewModel @Inject constructor(
+    private val submitEmailUseCase: SubmitEmailUseCase,
+    private val submitPasswordUseCase: SubmitPasswordUseCase
+) : ViewModel(), EventFlow<LoginViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
     private fun onClickConfirm() {
-        viewModelScope.sendEvent(ScreenEvent.MainScreen)
+        viewModelScope.launch {
+            val emailResult = submitEmailUseCase(email = uiState.email.value)
+            val passwordResult = submitPasswordUseCase(password = uiState.password.value)
+
+            when(emailResult) {
+                is Resource.Error -> uiState.emailError.value = emailResult.message
+                is Resource.Success -> uiState.emailError.value = null
+            }
+
+            when(passwordResult) {
+                is Resource.Error -> uiState.passwordError.value = emailResult.message
+                is Resource.Success -> uiState.passwordError.value = null
+            }
+
+            if (emailResult is Resource.Success && passwordResult is Resource.Success) {
+                sendEvent(ScreenEvent.MainScreen)
+            }
+        }
     }
 
     private fun onCLickRegister() {
@@ -51,6 +78,8 @@ class LoginViewModel @Inject constructor() : ViewModel(), EventFlow<LoginViewMod
     class UIState {
         val email = MutableStateFlow("")
         val password = MutableStateFlow("")
+        val emailError = MutableStateFlow<UiText?>(null)
+        val passwordError = MutableStateFlow<UiText?>(null)
     }
 }
 
