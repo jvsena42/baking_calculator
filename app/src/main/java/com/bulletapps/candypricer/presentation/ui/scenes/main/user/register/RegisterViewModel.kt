@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.domain.usecase.inputValidation.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -74,6 +75,16 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+
+    private fun onClickTogglePassword() {
+        uiState.isPasswordVisible.value = !uiState.isPasswordVisible.value
+    }
+
+
+    private fun onClickTogglePasswordConf() {
+        uiState.isPasswordConfirmVisible.value = !uiState.isPasswordConfirmVisible.value
+    }
+
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when (fieldsTexts) {
         is FieldsTexts.Name -> uiState.name.value = fieldsTexts.text
         is FieldsTexts.Email -> uiState.email.value = fieldsTexts.text
@@ -93,6 +104,8 @@ class RegisterViewModel @Inject constructor(
     fun onAction(action: ScreenActions) = when (action) {
         is ScreenActions.OnClickConfirm -> onClickConfirm()
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
+        is ScreenActions.OnClickTogglePassword -> onClickTogglePassword()
+        is ScreenActions.OnClickTogglePasswordConf -> onClickTogglePasswordConf()
     }
 
     sealed class ScreenEvent {
@@ -102,6 +115,8 @@ class RegisterViewModel @Inject constructor(
     sealed class ScreenActions {
         object OnClickConfirm : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
+        object OnClickTogglePassword : ScreenActions()
+        object OnClickTogglePasswordConf : ScreenActions()
     }
 
     class UIState {

@@ -66,7 +66,7 @@ class LoginViewModel @Inject constructor(
         is ScreenActions.OnClickConfirm -> onClickConfirm()
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
         is ScreenActions.OnClickRegister -> onCLickRegister()
-        ScreenActions.OnClickTogglePassword -> onClickTogglePassword()
+        is ScreenActions.OnClickTogglePassword -> onClickTogglePassword()
     }
 
     sealed class ScreenEvent {
