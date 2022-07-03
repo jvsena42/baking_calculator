@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.util
+package com.bulletapps.candypricer.presentation.util.visualTransformation
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping

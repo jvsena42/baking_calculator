@@ -29,6 +29,8 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.Regi
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoWithText
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.util.visualTransformation.MaskPatterns.BR_PHONE_MASK
+import com.bulletapps.candypricer.presentation.util.visualTransformation.MaskVisualTransformation
 
 @Composable
 fun ScreenRegister(
@@ -155,6 +157,7 @@ private fun MakeFieldPhone(onAction: (ScreenActions) -> Unit, uiState: UIState) 
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Phone(it))) },
+        visualTransformation = MaskVisualTransformation(BR_PHONE_MASK),
         placeholder = { Text(stringResource(R.string.phone_placeholder)) },
         label = { Text(error?.asString() ?: stringResource(R.string.phone_whatsapp)) },
         isError = isError,
