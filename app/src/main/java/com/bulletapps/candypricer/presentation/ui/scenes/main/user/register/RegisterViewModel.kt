@@ -35,7 +35,6 @@ class RegisterViewModel @Inject constructor(
                 passwordConfirmation = uiState.confirmPassword.value
             )
 
-
             when (nameResult) {
                 is Resource.Error -> uiState.nameError.value = nameResult.message
                 is Resource.Success -> uiState.nameError.value = null
