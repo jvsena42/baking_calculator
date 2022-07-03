@@ -4,15 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
-import com.bulletapps.candypricer.domain.usecase.SubmitEmailUseCase
-import com.bulletapps.candypricer.domain.usecase.SubmitPasswordUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import okhttp3.internal.wait
 import javax.inject.Inject
 
 @HiltViewModel
@@ -68,7 +66,7 @@ class LoginViewModel @Inject constructor(
         is ScreenActions.OnClickConfirm -> onClickConfirm()
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
         is ScreenActions.OnClickRegister -> onCLickRegister()
-        ScreenActions.OnClickTogglePassword -> onClickTogglePassword()
+        is ScreenActions.OnClickTogglePassword -> onClickTogglePassword()
     }
 
     sealed class ScreenEvent {

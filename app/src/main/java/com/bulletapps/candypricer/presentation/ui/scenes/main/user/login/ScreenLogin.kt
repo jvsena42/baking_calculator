@@ -2,6 +2,7 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -122,6 +124,7 @@ private fun MakeFieldEmail(onAction: (ScreenActions) -> Unit, uiState: UIState) 
     OutlinedTextField(
         value = name,
         singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Email(it))) },
         label = { Text(error?.asString() ?: stringResource(R.string.email)) },
         isError = isError,
@@ -140,6 +143,7 @@ private fun MakeFieldPassword(onAction: (ScreenActions) -> Unit, uiState: UIStat
     OutlinedTextField(
         value = password,
         singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = if (passwordVisible)  VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(onClick = { onAction(ScreenActions.OnClickTogglePassword) }) {

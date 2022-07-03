@@ -2,6 +2,7 @@ package com.bulletapps.candypricer.domain.di
 
 import com.bulletapps.candypricer.data.repository.CandyPricerRepository
 import com.bulletapps.candypricer.domain.usecase.*
+import com.bulletapps.candypricer.domain.usecase.inputValidation.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,13 +45,25 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun providesSubmitEmailUseCaseImpl() : SubmitEmailUseCase {
+    fun providesSubmitEmailUseCase() : SubmitEmailUseCase {
         return SubmitEmailUseCaseImpl()
     }
 
     @Singleton
     @Provides
-    fun providesSubmitPasswordUseCaseImpl() : SubmitPasswordUseCase {
+    fun providesSubmitPasswordUseCase() : SubmitPasswordUseCase {
         return SubmitPasswordUseCaseImpl()
+    }
+
+    @Singleton
+    @Provides
+    fun providesValidatePasswordConfirmationUseCase() : ValidatePasswordConfirmationUseCase {
+        return ValidatePasswordConfirmationUseCaseImpl()
+    }
+
+    @Singleton
+    @Provides
+    fun providesValidateEmptyTextUseCase() : ValidateEmptyTextUseCase {
+        return ValidateEmptyTextUseCaseImpl()
     }
 }

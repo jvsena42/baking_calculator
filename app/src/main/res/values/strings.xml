@@ -41,7 +41,9 @@
     <string name="change_expiring_date">Alterar expiração</string>
     <string name="send_message">Enviar mensagem</string>
     <string name="clients">Clientes</string>
+    <string name="mandatory_field">Campo obrigatório</string>
     <string name="error_invalid_email">Digite um email válido</string>
     <string name="change_visibility">Alterar visibilidade</string>
     <string name="error_invalid_password">Sua senha deve conter pelo menos 6 caracteres</string>
+    <string name="error_confirm_password">Senhas não compatíveis</string>
 </resources>
