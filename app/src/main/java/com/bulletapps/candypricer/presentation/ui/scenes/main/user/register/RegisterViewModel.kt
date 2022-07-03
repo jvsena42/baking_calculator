@@ -8,6 +8,7 @@ import com.bulletapps.candypricer.domain.usecase.inputValidation.*
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.visualTransformation.MaskPatterns.BR_PHONE_LENGTH
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -74,6 +75,14 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    private fun handlePhoneChange(fieldsTexts: FieldsTexts.Phone): String {
+        return if (fieldsTexts.text.length < BR_PHONE_LENGTH) {
+            fieldsTexts.text
+        } else {
+            uiState.phone.value
+        }
+    }
+
 
     private fun onClickTogglePassword() {
         uiState.isPasswordVisible.value = !uiState.isPasswordVisible.value
@@ -87,7 +96,7 @@ class RegisterViewModel @Inject constructor(
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when (fieldsTexts) {
         is FieldsTexts.Name -> uiState.name.value = fieldsTexts.text
         is FieldsTexts.Email -> uiState.email.value = fieldsTexts.text
-        is FieldsTexts.Phone -> uiState.phone.value = fieldsTexts.text
+        is FieldsTexts.Phone -> uiState.phone.value = handlePhoneChange(fieldsTexts)
         is FieldsTexts.Password -> uiState.password.value = fieldsTexts.text
         is FieldsTexts.ConfirmPassword -> uiState.confirmPassword.value = fieldsTexts.text
     }

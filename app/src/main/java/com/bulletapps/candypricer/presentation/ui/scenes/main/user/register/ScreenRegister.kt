@@ -155,7 +155,7 @@ private fun MakeFieldPhone(onAction: (ScreenActions) -> Unit, uiState: UIState) 
     OutlinedTextField(
         value = phone,
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Phone(it))) },
         visualTransformation = MaskVisualTransformation(BR_PHONE_MASK),
         placeholder = { Text(stringResource(R.string.phone_placeholder)) },
