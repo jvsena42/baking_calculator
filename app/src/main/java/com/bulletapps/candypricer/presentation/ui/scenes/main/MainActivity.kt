@@ -11,6 +11,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.Scre
 import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.ScreenMenu
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.ScreenAddProduct
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply.ScreenAddSupply
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ScreenExpired
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.ScreenLogin
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ScreenProducs
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.ScreenRegister
@@ -63,6 +64,9 @@ class MainActivity : ComponentActivity() {
         }
         composable(MainViewModel.Navigation.Clients.router) {
             ScreenClients(sharedViewModel = sharedViewModel)
+        }
+        composable(MainViewModel.Navigation.Expired.router) {
+            ScreenExpired(sharedViewModel = sharedViewModel)
         }
     }
 

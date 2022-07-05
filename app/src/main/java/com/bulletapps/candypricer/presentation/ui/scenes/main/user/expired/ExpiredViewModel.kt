@@ -19,17 +19,13 @@ class ExpiredViewModel @Inject constructor() : ViewModel(), EventFlow<ExpiredVie
         viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp("+5586981133033"))
     }
 
-    private fun changeExpirationDate() {
+    private fun onClickLogout() {
 
-    }
-
-
-    sealed class FieldsTexts {
-        data class Date(val text: String) : FieldsTexts()
     }
 
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnClickMessage -> onClickMessage()
+        is ScreenActions.OnClickLogout -> onClickLogout()
     }
 
     sealed class ScreenEvent {
@@ -37,7 +33,8 @@ class ExpiredViewModel @Inject constructor() : ViewModel(), EventFlow<ExpiredVie
     }
 
     sealed class ScreenActions {
-        data class OnClickMessage(val phone: String) : ScreenActions()
+        object OnClickMessage : ScreenActions()
+        object OnClickLogout : ScreenActions()
     }
 
     class UIState {
