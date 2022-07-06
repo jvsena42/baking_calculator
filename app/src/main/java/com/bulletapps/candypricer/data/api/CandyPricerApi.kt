@@ -1,5 +1,9 @@
 package com.bulletapps.candypricer.data.api
 
+import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
+import com.bulletapps.candypricer.data.parameters.CreateUserParameters
+import com.bulletapps.candypricer.data.parameters.LoginParameters
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -13,11 +17,17 @@ interface CandyPricerApi {
     )
 
     @POST("/supply")
-    suspend fun createSupply()
+    suspend fun createSupply(
+        @Body parameters: CreateSupplyParameters
+    )
 
     @POST("/user")
-    suspend fun createUser()
+    suspend fun createUser(
+        @Body parameters: CreateUserParameters
+    )
 
     @POST("/login")
-    suspend fun login()
+    suspend fun login(
+        @Body parameters: LoginParameters
+    )
 }
