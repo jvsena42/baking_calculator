@@ -15,7 +15,7 @@ class SupplyCandyPricerRepository {
 
     @Singleton
     @Provides
-    fun providesCandyPricerRepository (supplyLocalDataSource: SupplyDataSource): CandyPricerRepository {
-        return CandyPricerRepositoryImpl(supplyLocalDataSource)
+    fun providesCandyPricerRepository (supplyDataSource: SupplyDataSource): CandyPricerRepository {
+        return CandyPricerRepositoryImpl(supplyDataSource)
     }
 }
