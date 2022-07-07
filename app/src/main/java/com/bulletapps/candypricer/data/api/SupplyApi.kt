@@ -7,14 +7,12 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-interface CandyPricerApi {
-    @POST("/user")
-    suspend fun createUser(
-        @Body parameters: CreateUserParameters
-    ): UserResponse
+interface SupplyApi {
+    @POST("/supply")
+    suspend fun createSupply(
+        @Body parameters: CreateSupplyParameters
+    ): SupplyResponse
 
-    @POST("/login")
-    suspend fun login(
-        @Body parameters: LoginParameters
-    ): LoginResponse
+    @GET("/supply")
+    suspend fun getSupplies(): List<SupplyResponse>
 }
