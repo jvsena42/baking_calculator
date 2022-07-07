@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.data.api
 
 import com.bulletapps.candypricer.data.parameters.*
+import com.bulletapps.candypricer.data.response.LoginResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -43,5 +44,5 @@ interface CandyPricerApi {
     @POST("/login")
     suspend fun login(
         @Body parameters: LoginParameters
-    )
+    ): LoginResponse
 }
