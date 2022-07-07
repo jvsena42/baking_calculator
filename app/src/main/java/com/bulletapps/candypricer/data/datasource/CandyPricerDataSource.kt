@@ -1,9 +1,13 @@
-package com.bulletapps.candypricer.data.repository
+package com.bulletapps.candypricer.data.datasource
 
 import com.bulletapps.candypricer.data.parameters.*
 import com.bulletapps.candypricer.data.response.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 
-interface CandyPricerRepository {
+interface CandyPricerDataSource {
 
     suspend fun createUser(parameters: CreateUserParameters): UserResponse
 

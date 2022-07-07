@@ -1,19 +1,48 @@
 package com.bulletapps.candypricer.data.repository
 
-import com.bulletapps.candypricer.data.datasource.SupplyDataSource
+import com.bulletapps.candypricer.data.datasource.CandyPricerDataSource
+import com.bulletapps.candypricer.data.parameters.*
+import com.bulletapps.candypricer.data.response.*
 import com.bulletapps.candypricer.domain.model.Supply
 import javax.inject.Inject
 
 class CandyPricerRepositoryImpl @Inject constructor(
-    private val supplyDataSource: SupplyDataSource
+    private val dataSource: CandyPricerDataSource
 ): CandyPricerRepository {
-    override suspend fun createSupply(supply: Supply) = supplyDataSource.createSupply(supply)
+    override suspend fun createUser(parameters: CreateUserParameters): UserResponse {
+        TODO("Not yet implemented")
+    }
 
-    override suspend fun getSupply(id: Int) = supplyDataSource.getSupply(id)
+    override suspend fun login(parameters: LoginParameters): LoginResponse {
+        TODO("Not yet implemented")
+    }
 
-    override suspend fun getAllSupplies(): List<Supply> = supplyDataSource.getAllSupplies()
+    override suspend fun createProduct(parameters: CreateProductParameters): ProductResponse {
+        TODO("Not yet implemented")
+    }
 
-    override suspend fun updateSupply(supply: Supply) = supplyDataSource.updateSupply(supply)
+    override suspend fun getProducts(): List<ProductResponse> {
+        TODO("Not yet implemented")
+    }
 
-    override suspend fun deleteSupply(supply: Supply) = supplyDataSource.deleteSupply(supply)
+    override suspend fun createSupply(parameters: CreateSupplyParameters): SupplyResponse {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getSupplies(): List<SupplyResponse> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun createUnit(parameters: CreateUnitParameters): UnitResponse {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUnits(
+        key: String,
+        value: String,
+        disabled: Boolean
+    ): List<UnitResponse> {
+        TODO("Not yet implemented")
+    }
+
 }

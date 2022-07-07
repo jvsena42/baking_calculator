@@ -17,4 +17,32 @@ interface CandyPricerApi {
     suspend fun login(
         @Body parameters: LoginParameters
     ): LoginResponse
+
+    @POST("/product")
+    suspend fun createProduct(
+        @Body parameters: CreateProductParameters
+    ): ProductResponse
+
+    @GET("/product")
+    suspend fun getProducts(): List<ProductResponse>
+
+    @POST("/supply")
+    suspend fun createSupply(
+        @Body parameters: CreateSupplyParameters
+    ): SupplyResponse
+
+    @GET("/supply")
+    suspend fun getSupplies(): List<SupplyResponse>
+
+    @POST("/unit")
+    suspend fun createUnit(
+        @Body parameters: CreateUnitParameters
+    ): UnitResponse
+
+    @GET("/unit")
+    suspend fun getUnits(
+        @Query("key") key: String,
+        @Query("value") value: String,
+        @Query("disabled") disabled: Boolean,
+    ): List<UnitResponse>
 }
