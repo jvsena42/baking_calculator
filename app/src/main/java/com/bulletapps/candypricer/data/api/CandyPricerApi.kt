@@ -1,7 +1,7 @@
 package com.bulletapps.candypricer.data.api
 
 import com.bulletapps.candypricer.data.parameters.*
-import com.bulletapps.candypricer.data.response.LoginResponse
+import com.bulletapps.candypricer.data.response.*
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -11,35 +11,35 @@ interface CandyPricerApi {
     @POST("/unit")
     suspend fun createUnit(
         @Body parameters: CreateUnitParameters
-    ) //todo add return
+    ): UnitResponse
 
     @GET("/unit")
     suspend fun getUnits(
         @Query("key") key: String,
         @Query("value") value: String,
         @Query("disabled") disabled: Boolean,
-    ) //todo add return
+    ): List<UnitResponse>
 
     @POST("/supply")
     suspend fun createSupply(
         @Body parameters: CreateSupplyParameters
-    ) //todo add return
+    ): SupplyResponse
 
     @GET("/supply")
-    suspend fun getSupplies() //todo add return
+    suspend fun getSupplies(): List<SupplyResponse>
 
     @POST("/product")
     suspend fun createProduct(
         @Body parameters: CreateProductParameters
-    ) //todo add return
+    ): ProductResponse
 
     @GET("/product")
-    suspend fun getProducts() //todo add return
+    suspend fun getProducts(): List<ProductResponse>
 
     @POST("/user")
     suspend fun createUser(
         @Body parameters: CreateUserParameters
-    )
+    ): UserResponse
 
     @POST("/login")
     suspend fun login(
