@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.data.parameters.CreateUserParameters
 import com.bulletapps.candypricer.domain.usecase.inputValidation.*
+import com.bulletapps.candypricer.domain.usecase.user.CreateUserUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
@@ -19,7 +21,8 @@ class RegisterViewModel @Inject constructor(
     private val submitEmailUseCase: SubmitEmailUseCase,
     private val submitPasswordUseCase: SubmitPasswordUseCase,
     private val validatePswConfUseCase: ValidatePasswordConfirmationUseCase,
-    private val validateEmptyTextUseCase: ValidateEmptyTextUseCase
+    private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
+    private val createUserUseCase: CreateUserUseCase
 ) : ViewModel(), EventFlow<RegisterViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -70,6 +73,15 @@ class RegisterViewModel @Inject constructor(
                 && passwordResult is Resource.Success
                 && confPasswordResult is Resource.Success
             ) {
+                val result = createUserUseCase(
+                    CreateUserParameters(
+                        name = uiState.name.value,
+                        phone = uiState.phone.value,
+                        password = uiState.password.value,
+                        email = uiState.email.value,
+                    )
+                )
+
                 viewModelScope.sendEvent(ScreenEvent.GoBack)
             }
         }
