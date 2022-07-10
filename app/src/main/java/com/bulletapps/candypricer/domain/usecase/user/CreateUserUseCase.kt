@@ -1,8 +1,9 @@
 package com.bulletapps.candypricer.domain.usecase.user
 
 import com.bulletapps.candypricer.data.parameters.CreateUserParameters
-import com.bulletapps.candypricer.data.response.UserResponse
+import com.bulletapps.candypricer.data.repository.CandyPricerRepository
+import javax.inject.Inject
 
-interface CreateUserUseCase {
-    suspend operator fun invoke(parameters: CreateUserParameters) : UserResponse
+class CreateUserUseCase @Inject constructor(private val repository: CandyPricerRepository) {
+    suspend operator fun invoke(parameters: CreateUserParameters) = repository.createUser(parameters)
 }

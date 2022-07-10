@@ -4,7 +4,6 @@ import com.bulletapps.candypricer.data.repository.CandyPricerRepository
 import com.bulletapps.candypricer.domain.usecase.*
 import com.bulletapps.candypricer.domain.usecase.inputValidation.*
 import com.bulletapps.candypricer.domain.usecase.user.CreateUserUseCase
-import com.bulletapps.candypricer.domain.usecase.user.CreateUserUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,13 +17,13 @@ class UseCaseModule {
     @Singleton
     @Provides
     fun providesCreateUserUseCase(repository: CandyPricerRepository) : CreateUserUseCase {
-        return CreateUserUseCaseImpl(repository)
+        return CreateUserUseCase(repository)
     }
 
     @Singleton
     @Provides
     fun providesCreateSupplyUseCase(repository: CandyPricerRepository) : CreateSupplyUseCase {
-        return CreateSupplyUseCaseImpl(repository)
+        return CreateSupplyUseCase(repository)
     }
 
     @Singleton

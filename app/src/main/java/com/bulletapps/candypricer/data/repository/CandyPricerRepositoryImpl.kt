@@ -1,10 +1,9 @@
 package com.bulletapps.candypricer.data.repository
 
+import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.datasource.CandyPricerDataSource
 import com.bulletapps.candypricer.data.parameters.*
 import com.bulletapps.candypricer.data.response.*
-import com.bulletapps.candypricer.domain.model.Result
-import com.bulletapps.candypricer.domain.model.Supply
 import com.bulletapps.candypricer.presentation.util.safeRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +25,7 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.createProduct(parameters)
     }
 
-    override suspend fun getProducts(): Result<List<ProductResponse>> = safeRequest(dispatcher) {
+    override suspend fun getProducts(): Resource<List<ProductResponse>> = safeRequest(dispatcher) {
         dataSource.getProducts()
     }
 
@@ -34,7 +33,7 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.createSupply(parameters)
     }
 
-    override suspend fun getSupplies(): Result<List<SupplyResponse>> = safeRequest(dispatcher) {
+    override suspend fun getSupplies(): Resource<List<SupplyResponse>> = safeRequest(dispatcher) {
         dataSource.getSupplies()
     }
 
