@@ -26,6 +26,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginVi
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoWithText
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 
 @Composable
 fun ScreenLogin(
@@ -84,10 +85,18 @@ private fun Screen(
             MakeRegisterText(onAction)
 
             Spacer(modifier = Modifier.height(24.dp))
+
+            DisplayToast(uiState)
         }
     }
 }
 
+
+@Composable
+private fun DisplayToast(uiState: UIState) {
+    val toastMessage by uiState.textToast.collectAsState()
+    Toast(toastMessage)
+}
 
 @Composable
 private fun MakeButtonLogin(onAction: (ScreenActions) -> Unit, uiState: UIState) {

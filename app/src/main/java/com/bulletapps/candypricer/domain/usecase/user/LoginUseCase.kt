@@ -1,6 +1,5 @@
 package com.bulletapps.candypricer.domain.usecase.user
 
-import com.bulletapps.candypricer.data.parameters.CreateUserParameters
 import com.bulletapps.candypricer.data.parameters.LoginParameters
 import com.bulletapps.candypricer.data.repository.CandyPricerRepository
 import javax.inject.Inject

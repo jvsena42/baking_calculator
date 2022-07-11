@@ -4,8 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.data.parameters.LoginParameters
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
+import com.bulletapps.candypricer.domain.usecase.user.LoginUseCase
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val submitEmailUseCase: SubmitEmailUseCase,
-    private val submitPasswordUseCase: SubmitPasswordUseCase
+    private val submitPasswordUseCase: SubmitPasswordUseCase,
+    private val loginUseCase: LoginUseCase,
 ) : ViewModel(), EventFlow<LoginViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -38,10 +42,27 @@ class LoginViewModel @Inject constructor(
             }
 
             uiState.isLoading.value = false
-            if (emailResult is Resource.Success && passwordResult is Resource.Success) {
-                sendEvent(ScreenEvent.MainScreen)
+            if (
+                emailResult is Resource.Success
+                && passwordResult is Resource.Success
+            ) {
+                loginUseCase(
+                    LoginParameters(
+                        email = uiState.email.value,
+                        password = uiState.password.value
+                    )
+                ).also { result ->
+                    when (result) {
+                        is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.MainScreen)
+                        is Resource.Error -> showToast(result.message?.asString())
+                    }
+                }
             }
         }
+    }
+
+    private fun showToast(message: String?) {
+        message?.let{ uiState.textToast.value = it }
     }
 
     private fun onCLickRegister() {
@@ -88,6 +109,7 @@ class LoginViewModel @Inject constructor(
         val emailError = MutableStateFlow<UiText?>(null)
         val passwordError = MutableStateFlow<UiText?>(null)
         val isLoading = MutableStateFlow(false)
+        val textToast = MutableStateFlow("")
     }
 }
 
