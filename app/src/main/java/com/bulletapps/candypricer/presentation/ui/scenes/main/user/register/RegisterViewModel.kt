@@ -4,8 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
-import com.bulletapps.candypricer.domain.usecase.inputValidation.*
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
+import com.bulletapps.candypricer.data.parameters.CreateUserParameters
+import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidatePasswordConfirmationUseCase
+import com.bulletapps.candypricer.domain.usecase.user.CreateUserUseCase
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import com.bulletapps.candypricer.presentation.util.visualTransformation.MaskPatterns.BR_PHONE_LENGTH
@@ -19,58 +23,69 @@ class RegisterViewModel @Inject constructor(
     private val submitEmailUseCase: SubmitEmailUseCase,
     private val submitPasswordUseCase: SubmitPasswordUseCase,
     private val validatePswConfUseCase: ValidatePasswordConfirmationUseCase,
-    private val validateEmptyTextUseCase: ValidateEmptyTextUseCase
+    private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
+    private val createUserUseCase: CreateUserUseCase
 ) : ViewModel(), EventFlow<RegisterViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
-    private fun onClickConfirm() {
-        viewModelScope.launch {
-            uiState.isLoading.value = true
-            val nameResult = validateEmptyTextUseCase(text = uiState.name.value)
-            val emailResult = submitEmailUseCase(email = uiState.email.value)
-            val phoneResult = validateEmptyTextUseCase(text = uiState.phone.value)
-            val passwordResult = submitPasswordUseCase(password = uiState.password.value)
-            val confPasswordResult = validatePswConfUseCase(
-                password = uiState.password.value,
-                passwordConfirmation = uiState.confirmPassword.value
-            )
+    private fun onClickConfirm() = viewModelScope.launch {
+        uiState.isLoading.value = true
+        val nameResult = validateEmptyTextUseCase(text = uiState.name.value)
+        val emailResult = submitEmailUseCase(email = uiState.email.value)
+        val phoneResult = validateEmptyTextUseCase(text = uiState.phone.value)
+        val passwordResult = submitPasswordUseCase(password = uiState.password.value)
+        val confPasswordResult = validatePswConfUseCase(
+            password = uiState.password.value,
+            passwordConfirmation = uiState.confirmPassword.value
+        )
 
-            when (nameResult) {
-                is Resource.Error -> uiState.nameError.value = nameResult.message
-                is Resource.Success -> uiState.nameError.value = null
-            }
+        when (nameResult) {
+            is Resource.Error -> uiState.nameError.value = nameResult.message
+            is Resource.Success -> uiState.nameError.value = null
+        }
 
-            when (emailResult) {
-                is Resource.Error -> uiState.emailError.value = emailResult.message
-                is Resource.Success -> uiState.emailError.value = null
-            }
+        when (emailResult) {
+            is Resource.Error -> uiState.emailError.value = emailResult.message
+            is Resource.Success -> uiState.emailError.value = null
+        }
 
-            when (phoneResult) {
-                is Resource.Error -> uiState.phoneError.value = phoneResult.message
-                is Resource.Success -> uiState.phoneError.value = null
-            }
+        when (phoneResult) {
+            is Resource.Error -> uiState.phoneError.value = phoneResult.message
+            is Resource.Success -> uiState.phoneError.value = null
+        }
 
-            when (passwordResult) {
-                is Resource.Error -> uiState.passwordError.value = passwordResult.message
-                is Resource.Success -> uiState.passwordError.value = null
-            }
+        when (passwordResult) {
+            is Resource.Error -> uiState.passwordError.value = passwordResult.message
+            is Resource.Success -> uiState.passwordError.value = null
+        }
 
-            when (confPasswordResult) {
-                is Resource.Error -> uiState.passwordConfError.value = confPasswordResult.message
-                is Resource.Success -> uiState.passwordConfError.value = null
-            }
+        when (confPasswordResult) {
+            is Resource.Error -> uiState.passwordConfError.value = confPasswordResult.message
+            is Resource.Success -> uiState.passwordConfError.value = null
+        }
 
-            uiState.isLoading.value = false
+        uiState.isLoading.value = false
 
-            if (
-                nameResult is Resource.Success
-                && emailResult is Resource.Success
-                && phoneResult is Resource.Success
-                && passwordResult is Resource.Success
-                && confPasswordResult is Resource.Success
-            ) {
-                viewModelScope.sendEvent(ScreenEvent.GoBack)
+        if (
+            nameResult is Resource.Success
+            && emailResult is Resource.Success
+            && phoneResult is Resource.Success
+            && passwordResult is Resource.Success
+            && confPasswordResult is Resource.Success
+        ) {
+            createUserUseCase(
+                CreateUserParameters(
+                    name = uiState.name.value,
+                    phone = uiState.phone.value,
+                    password = uiState.password.value,
+                    email = uiState.email.value,
+                )
+            ).also { result ->
+                when (result) {
+                    is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                    is Resource.Error -> showToast(result.message?.asString())
+                }
             }
         }
     }
@@ -83,6 +98,9 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    private fun showToast(message: String?) {
+        message?.let{ uiState.textToast.value = it }
+    }
 
     private fun onClickTogglePassword() {
         uiState.isPasswordVisible.value = !uiState.isPasswordVisible.value
@@ -141,6 +159,7 @@ class RegisterViewModel @Inject constructor(
         val passwordError = MutableStateFlow<UiText?>(null)
         val passwordConfError = MutableStateFlow<UiText?>(null)
         val isLoading = MutableStateFlow(false)
+        val textToast = MutableStateFlow("")
     }
 }
 
