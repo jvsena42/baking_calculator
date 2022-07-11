@@ -29,6 +29,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.Regi
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoWithText
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 import com.bulletapps.candypricer.presentation.util.visualTransformation.MaskPatterns.BR_PHONE_MASK
 import com.bulletapps.candypricer.presentation.util.visualTransformation.MaskVisualTransformation
 
@@ -98,8 +99,16 @@ private fun Screen(
             Spacer(Modifier.height(16.dp))
 
             MakeConfirmButton(onAction, uiState)
+
+            DisplayToast(uiState)
         }
     }
+}
+
+@Composable
+private fun DisplayToast(uiState: UIState) {
+    val toastMessage by uiState.textToast.collectAsState()
+    Toast(toastMessage)
 }
 
 @Composable

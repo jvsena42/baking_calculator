@@ -84,7 +84,7 @@ class RegisterViewModel @Inject constructor(
             ).also { result ->
                 when (result) {
                     is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
-                    is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.OnFailure(result.message))
+                    is Resource.Error -> showToast(result.message?.asString())
                 }
             }
         }
@@ -98,6 +98,9 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    private fun showToast(message: String?) {
+        message?.let{ uiState.textToast.value = it }
+    }
 
     private fun onClickTogglePassword() {
         uiState.isPasswordVisible.value = !uiState.isPasswordVisible.value
@@ -133,7 +136,6 @@ class RegisterViewModel @Inject constructor(
 
     sealed class ScreenEvent {
         object GoBack : ScreenEvent()
-        data class OnFailure(val text: UiText?) : ScreenEvent()
     }
 
     sealed class ScreenActions {
@@ -157,6 +159,7 @@ class RegisterViewModel @Inject constructor(
         val passwordError = MutableStateFlow<UiText?>(null)
         val passwordConfError = MutableStateFlow<UiText?>(null)
         val isLoading = MutableStateFlow(false)
+        val textToast = MutableStateFlow("")
     }
 }
 
