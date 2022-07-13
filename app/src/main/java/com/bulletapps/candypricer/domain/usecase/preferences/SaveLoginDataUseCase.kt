@@ -7,5 +7,5 @@ import javax.inject.Inject
 class SaveLoginDataUseCase @Inject constructor(
     private val preferencesRepository: UserPreferencesRepositoryImpl
 ) {
-    suspend fun invoke(loginResponse: LoginResponse) = preferencesRepository.updateLoginResponse(loginResponse)
+    suspend operator fun invoke(loginResponse: LoginResponse) = preferencesRepository.updateLoginResponse(loginResponse)
 }

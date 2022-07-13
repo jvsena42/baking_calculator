@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.LoginParameters
+import com.bulletapps.candypricer.data.response.LoginResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
+import com.bulletapps.candypricer.domain.usecase.preferences.SaveLoginDataUseCase
 import com.bulletapps.candypricer.domain.usecase.user.LoginUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
@@ -21,6 +23,7 @@ class LoginViewModel @Inject constructor(
     private val submitEmailUseCase: SubmitEmailUseCase,
     private val submitPasswordUseCase: SubmitPasswordUseCase,
     private val loginUseCase: LoginUseCase,
+    private val saveLoginDataUseCase: SaveLoginDataUseCase,
 ) : ViewModel(), EventFlow<LoginViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -53,12 +56,17 @@ class LoginViewModel @Inject constructor(
                     )
                 ).also { result ->
                     when (result) {
-                        is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.MainScreen)
+                        is Resource.Success -> handleSuccess(result.data!!)
                         is Resource.Error -> showToast(result.message?.asString())
                     }
                 }
             }
         }
+    }
+
+    private fun handleSuccess(loginResponse: LoginResponse) {
+        viewModelScope.launch { saveLoginDataUseCase(loginResponse) }
+        viewModelScope.sendEvent(ScreenEvent.MainScreen)
     }
 
     private fun showToast(message: String?) {
