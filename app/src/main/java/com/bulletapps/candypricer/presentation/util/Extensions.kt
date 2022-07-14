@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 
-private const val ZERO = 0
-private const val ZERO_DOUBLE = 0.0
-private const val ZERO_FLOAT = 0f
+const val ZERO = 0
+const val ZERO_DOUBLE = 0.0
+const val ZERO_FLOAT = 0f
 
 fun Int?.orZero() = this ?: ZERO
 fun Double?.orZero() = this ?: ZERO_DOUBLE

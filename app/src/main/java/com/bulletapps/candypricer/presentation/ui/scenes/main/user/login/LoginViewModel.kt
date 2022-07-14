@@ -8,6 +8,7 @@ import com.bulletapps.candypricer.data.parameters.LoginParameters
 import com.bulletapps.candypricer.data.response.LoginResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
+import com.bulletapps.candypricer.domain.usecase.preferences.GetLoginDataUseCase
 import com.bulletapps.candypricer.domain.usecase.preferences.SaveLoginDataUseCase
 import com.bulletapps.candypricer.domain.usecase.user.LoginUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel
@@ -24,9 +25,15 @@ class LoginViewModel @Inject constructor(
     private val submitPasswordUseCase: SubmitPasswordUseCase,
     private val loginUseCase: LoginUseCase,
     private val saveLoginDataUseCase: SaveLoginDataUseCase,
+    private val getLoginDataUseCase: GetLoginDataUseCase
 ) : ViewModel(), EventFlow<LoginViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
+
+    fun checkToken() = viewModelScope.launch {
+        val token = getLoginDataUseCase().accessToken
+        if (token.isNotEmpty()) viewModelScope.sendEvent(ScreenEvent.MainScreen)
+    }
 
     private fun onClickConfirm() {
         viewModelScope.launch {
