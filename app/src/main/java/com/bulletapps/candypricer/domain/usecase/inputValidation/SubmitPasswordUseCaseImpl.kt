@@ -12,6 +12,6 @@ class SubmitPasswordUseCaseImpl @Inject constructor(): SubmitPasswordUseCase {
                 UiText.StringResource(R.string.error_invalid_password)
             )
         }
-        return Resource.Success(null)
+        return Resource.Success(Unit)
     }
 }

@@ -64,7 +64,7 @@ class LoginViewModel @Inject constructor(
                 ).also { result ->
                     when (result) {
                         is Resource.Success -> handleSuccess(result.data!!)
-                        is Resource.Error -> showToast(result.message?.asString())
+                        is Resource.Error -> showToast(result.message)
                     }
                 }
             }
@@ -76,7 +76,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.sendEvent(ScreenEvent.MainScreen)
     }
 
-    private fun showToast(message: String?) {
+    private fun showToast(message: UiText?) {
         message?.let{ uiState.textToast.value = it }
     }
 
@@ -124,7 +124,7 @@ class LoginViewModel @Inject constructor(
         val emailError = MutableStateFlow<UiText?>(null)
         val passwordError = MutableStateFlow<UiText?>(null)
         val isLoading = MutableStateFlow(false)
-        val textToast = MutableStateFlow("")
+        val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
 }
 

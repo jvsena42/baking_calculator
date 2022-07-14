@@ -8,7 +8,7 @@ import javax.inject.Inject
 class ValidatePasswordConfirmationUseCaseImpl @Inject constructor() : ValidatePasswordConfirmationUseCase {
     override suspend fun invoke(password: String, passwordConfirmation: String): Resource<Unit> {
         return if (password == passwordConfirmation) {
-            Resource.Success(null)
+            Resource.Success(Unit)
         } else {
             Resource.Error(UiText.StringResource(R.string.error_confirm_password))
         }
