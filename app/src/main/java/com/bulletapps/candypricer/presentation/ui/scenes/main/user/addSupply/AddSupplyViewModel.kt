@@ -22,20 +22,27 @@ class AddSupplyViewModel @Inject constructor() : ViewModel() {
         )
     }
 
+    fun onAction(action: ScreenActions) = when(action) {
+        is ScreenActions.OnChangeExpanded -> onChangeExpanded()
+        is ScreenActions.OnClickConfirm -> onClickConfirm()
+        is ScreenActions.OnItemSelected -> onItemSelected(action.index)
+        is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
+    }
+
     fun onClickConfirm() {
 
     }
 
-    fun onItemSelected(index: Int) {
+    private fun onItemSelected(index: Int) {
         uiState.isExpanded.value = false
         uiState.selectedUnit.value = uiState.unities.value[index].label
     }
 
-    fun onChangeExpanded() {
+    private fun onChangeExpanded() {
         uiState.isExpanded.value = !uiState.isExpanded.value
     }
 
-    fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
+    private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
         is FieldsTexts.Name -> uiState.name.value = fieldsTexts.text
         is FieldsTexts.Price -> uiState.price.value = fieldsTexts.text
         is FieldsTexts.Quantity -> uiState.quantity.value = fieldsTexts.text
@@ -54,6 +61,13 @@ class AddSupplyViewModel @Inject constructor() : ViewModel() {
         val unities = MutableStateFlow<List<UnitModel>>(listOf())
         val isExpanded = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow("")
+    }
+
+    sealed class ScreenActions {
+        object OnClickConfirm : ScreenActions()
+        object OnChangeExpanded : ScreenActions()
+        data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
+        data class OnItemSelected(val index: Int) : ScreenActions()
     }
 }
 
