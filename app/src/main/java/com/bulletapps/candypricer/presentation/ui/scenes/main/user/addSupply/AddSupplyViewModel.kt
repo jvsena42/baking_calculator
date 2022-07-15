@@ -2,13 +2,14 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply
 
 import androidx.lifecycle.ViewModel
 import com.bulletapps.candypricer.domain.model.UnitModel
+import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class AddSupplyViewModel @Inject constructor(
-
+    private val getUnitsUseCase: GetUnitsUseCase
 ) : ViewModel() {
 
     val uiState = UIState()
