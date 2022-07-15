@@ -8,7 +8,7 @@ import javax.inject.Inject
 class SubmitEmailUseCaseImpl @Inject constructor() : SubmitEmailUseCase {
     override suspend fun invoke(email: String): Resource<Unit> {
         if (email.isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            return Resource.Success(null)
+            return Resource.Success(Unit)
         }
         return Resource.Error(
             UiText.StringResource(R.string.error_invalid_email)

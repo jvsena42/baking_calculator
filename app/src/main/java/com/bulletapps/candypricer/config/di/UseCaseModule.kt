@@ -1,8 +1,9 @@
 package com.bulletapps.candypricer.config.di
 
 import com.bulletapps.candypricer.data.repository.CandyPricerRepository
-import com.bulletapps.candypricer.domain.usecase.*
 import com.bulletapps.candypricer.domain.usecase.inputValidation.*
+import com.bulletapps.candypricer.domain.usecase.supply.CreateSupplyUseCase
+import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.domain.usecase.user.CreateUserUseCase
 import dagger.Module
 import dagger.Provides
@@ -28,26 +29,8 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun providesDeleteSupplyUseCaseUseCase(repository: CandyPricerRepository) : DeleteSupplyUseCase {
-        return DeleteSupplyUseCaseImpl(repository)
-    }
-
-    @Singleton
-    @Provides
     fun providesGetAllSuppliesUseCaseUseCase(repository: CandyPricerRepository) : GetAllSuppliesUseCase {
-        return GetAllSuppliesUseCaseImpl(repository)
-    }
-
-    @Singleton
-    @Provides
-    fun providesGetSupplyUseCaseUseCase(repository: CandyPricerRepository) : GetSupplyUseCase {
-        return GetSupplyUseCaseImpl(repository)
-    }
-
-    @Singleton
-    @Provides
-    fun providesUpdateSupplyUseCaseImplUseCase(repository: CandyPricerRepository) : UpdateSupplyUseCase {
-        return UpdateSupplyUseCaseImpl(repository)
+        return GetAllSuppliesUseCase(repository)
     }
 
     @Singleton

@@ -8,7 +8,7 @@ import javax.inject.Inject
 class ValidateEmptyTextUseCaseImpl @Inject constructor() : ValidateEmptyTextUseCase {
     override suspend fun invoke(text: String): Resource<Unit> {
         return if (text.isNotEmpty()) {
-            Resource.Success(null)
+            Resource.Success(Unit)
         } else {
             Resource.Error(UiText.StringResource(
                 R.string.mandatory_field))

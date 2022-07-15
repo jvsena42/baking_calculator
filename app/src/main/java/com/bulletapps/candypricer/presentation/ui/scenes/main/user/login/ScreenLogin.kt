@@ -26,12 +26,14 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginVi
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoWithText
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 
 @Composable
 fun ScreenLogin(
     viewModel: LoginViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
+    LaunchedEffect(key1 = Unit) { viewModel.checkToken() }
     Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(viewModel, sharedViewModel)
 }
@@ -84,10 +86,18 @@ private fun Screen(
             MakeRegisterText(onAction)
 
             Spacer(modifier = Modifier.height(24.dp))
+
+            DisplayToast(uiState)
         }
     }
 }
 
+
+@Composable
+private fun DisplayToast(uiState: UIState) {
+    val toastMessage by uiState.textToast.collectAsState()
+    Toast(toastMessage.asString())
+}
 
 @Composable
 private fun MakeButtonLogin(onAction: (ScreenActions) -> Unit, uiState: UIState) {

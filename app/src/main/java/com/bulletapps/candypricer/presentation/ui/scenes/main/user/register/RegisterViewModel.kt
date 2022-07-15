@@ -84,7 +84,7 @@ class RegisterViewModel @Inject constructor(
             ).also { result ->
                 when (result) {
                     is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
-                    is Resource.Error -> showToast(result.message?.asString())
+                    is Resource.Error -> showToast(result.message)
                 }
             }
         }
@@ -98,7 +98,7 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    private fun showToast(message: String?) {
+    private fun showToast(message: UiText?) {
         message?.let{ uiState.textToast.value = it }
     }
 
@@ -159,7 +159,7 @@ class RegisterViewModel @Inject constructor(
         val passwordError = MutableStateFlow<UiText?>(null)
         val passwordConfError = MutableStateFlow<UiText?>(null)
         val isLoading = MutableStateFlow(false)
-        val textToast = MutableStateFlow("")
+        val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
 }
 
