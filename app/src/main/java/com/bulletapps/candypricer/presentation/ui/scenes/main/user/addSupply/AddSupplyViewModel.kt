@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class AddSupplyViewModel @Inject constructor() : ViewModel() {
+class AddSupplyViewModel @Inject constructor(
+
+) : ViewModel() {
 
     val uiState = UIState()
 

@@ -20,9 +20,5 @@ interface CandyPricerRepository {
 
     suspend fun createUnit(parameters: CreateUnitParameters): Resource<UnitResponse>
 
-    suspend fun getUnits(
-        key: String,
-        value: String,
-        disabled: Boolean,
-    ): Resource<List<UnitResponse>>
+    suspend fun getUnits(): Resource<List<UnitResponse>>
 }
