@@ -45,7 +45,6 @@ fun Screen(
     onAction: (ScreenActions) -> Unit,
 ) {
     CandyPricerTheme {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()

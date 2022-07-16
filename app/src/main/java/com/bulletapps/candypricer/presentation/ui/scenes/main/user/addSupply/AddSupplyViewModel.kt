@@ -1,19 +1,23 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.model.UnitModel
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddSupplyViewModel @Inject constructor(
     private val getUnitsUseCase: GetUnitsUseCase,
-) : ViewModel() {
+    private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
+    ) : ViewModel() {
 
     val uiState = UIState()
 
@@ -38,6 +42,42 @@ class AddSupplyViewModel @Inject constructor(
 
     fun onClickConfirm() {
 
+        viewModelScope.launch {
+            uiState.isLoading.value = true
+
+            val nameResult = validateEmptyTextUseCase(text = uiState.name.value)
+            val unitResult = validateEmptyTextUseCase(text = uiState.selectedUnit.value?.name.orEmpty())
+            val qntResult = validateEmptyTextUseCase(text = uiState.quantity.value)
+            val priceResult = validateEmptyTextUseCase(text = uiState.price.value)
+
+            when(nameResult) {
+                is Resource.Error -> uiState.nameError.value = nameResult.message
+                is Resource.Success -> uiState.nameError.value = null
+            }
+            when(unitResult) {
+                is Resource.Error -> uiState.unitError.value = unitResult.message
+                is Resource.Success -> uiState.unitError.value = null
+            }
+            when(qntResult) {
+                is Resource.Error -> uiState.qntError.value = qntResult.message
+                is Resource.Success -> uiState.qntError.value = null
+            }
+            when(priceResult) {
+                is Resource.Error -> uiState.priceError.value = priceResult.message
+                is Resource.Success -> uiState.priceError.value = null
+            }
+
+            uiState.isLoading.value = false
+
+            if(
+                nameResult is Resource.Success
+                && unitResult is Resource.Success
+                && qntResult is Resource.Success
+                && priceResult is Resource.Success
+            ) {
+                //TODO
+            }
+        }
     }
 
     private fun onItemSelected(index: Int) {
@@ -70,6 +110,10 @@ class AddSupplyViewModel @Inject constructor(
         val isLoading = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow<UnitResponse?>(null)
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
+        val nameError = MutableStateFlow<UiText?>(null)
+        val unitError = MutableStateFlow<UiText?>(null)
+        val qntError = MutableStateFlow<UiText?>(null)
+        val priceError = MutableStateFlow<UiText?>(null)
     }
 
     sealed class ScreenActions {
