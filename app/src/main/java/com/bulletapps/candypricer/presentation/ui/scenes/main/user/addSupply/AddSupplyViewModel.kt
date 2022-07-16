@@ -4,10 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
 import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
+import com.bulletapps.candypricer.domain.usecase.supply.CreateSupplyUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel
+import com.bulletapps.candypricer.presentation.util.EventFlow
+import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -17,7 +23,8 @@ import javax.inject.Inject
 class AddSupplyViewModel @Inject constructor(
     private val getUnitsUseCase: GetUnitsUseCase,
     private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
-    ) : ViewModel() {
+    private val createSupplyUseCase: CreateSupplyUseCase
+    ) : ViewModel(), EventFlow<AddSupplyViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
@@ -75,7 +82,19 @@ class AddSupplyViewModel @Inject constructor(
                 && qntResult is Resource.Success
                 && priceResult is Resource.Success
             ) {
-                //TODO
+                createSupplyUseCase(
+                    CreateSupplyParameters(
+                        name = uiState.name.value,
+                        quantity = uiState.quantity.value.toInt(),
+                        price = uiState.price.value.toDouble(),
+                        unitId = uiState.selectedUnit.value?.id.orZero(),
+                    )
+                ).also { result ->
+                    when (result) {
+                        is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                        is Resource.Error -> showToast(result.message)
+                    }
+                }
             }
         }
     }
@@ -121,6 +140,10 @@ class AddSupplyViewModel @Inject constructor(
         object OnChangeExpanded : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
         data class OnItemSelected(val index: Int) : ScreenActions()
+    }
+
+    sealed class ScreenEvent {
+        object GoBack : ScreenEvent()
     }
 }
 
