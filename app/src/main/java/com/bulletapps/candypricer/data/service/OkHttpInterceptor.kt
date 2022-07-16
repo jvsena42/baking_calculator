@@ -16,7 +16,7 @@ class OkHttpInterceptor @Inject constructor(
         val request = chain.request()
             .newBuilder()
             .addHeader("X-API-KEY", BuildConfig.BASE_URL)
-            .addHeader("X-API-KEY", "bearer ${prefs.getPref(PreferencesKeys.ACCESS_TOKEN, "")}")
+            .addHeader("Authorization", "Bearer ${prefs.getPref(PreferencesKeys.ACCESS_TOKEN, "")}")
             .build()
         return chain.proceed(request)
     }
