@@ -3,8 +3,12 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,13 +24,14 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply.Add
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.DropdownMenuOutlined
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 
 @Composable
 fun ScreenAddSupply(
     viewModel: AddSupplyViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    viewModel.setup() // todo: remove after integration
+    LaunchedEffect(key1 = Unit) { viewModel.setup() }
     Screen(
         viewModel.uiState,
         viewModel::onAction
@@ -69,8 +74,16 @@ fun Screen(
             Spacer(modifier = Modifier.weight(1f))
 
             NormalButton(text = stringResource(R.string.confirm), onClick = { onAction(ScreenActions.OnClickConfirm) })
+
+            DisplayToast(uiState)
         }
     }
+}
+
+@Composable
+private fun DisplayToast(uiState: UIState) {
+    val toastMessage by uiState.textToast.collectAsState()
+    Toast(toastMessage.asString())
 }
 
 @Composable
@@ -111,8 +124,8 @@ private fun MakeFieldUnit(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     DropdownMenuOutlined(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
         expanded = isExpanded,
-        items = unities.map { it.label },
-        selectedItem = selectedUnit,
+        items = unities.map { it.name },
+        selectedItem = selectedUnit?.name.orEmpty(),
         label = stringResource(R.string.select_a_unit),
         onClick = { onAction(ScreenActions.OnChangeExpanded) },
         onItemSelected = { index -> onAction(ScreenActions.OnItemSelected(index)) }

@@ -1,6 +1,9 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply
 
 import androidx.lifecycle.ViewModel
+import com.bulletapps.candypricer.config.Resource
+import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,20 +12,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddSupplyViewModel @Inject constructor(
-    private val getUnitsUseCase: GetUnitsUseCase
+    private val getUnitsUseCase: GetUnitsUseCase,
 ) : ViewModel() {
 
     val uiState = UIState()
 
-    fun setup() {
-        uiState.unities.value = listOf(
-            UnitModel("", "Und."),
-            UnitModel("", "Kg"),
-            UnitModel("", "g"),
-            UnitModel("", "mg"),
-            UnitModel("", "L"),
-            UnitModel("", "ml"),
-        )
+    suspend fun setup() {
+        val unitsResult = getUnitsUseCase()
+        when(unitsResult) {
+            is Resource.Error -> uiState.unities.value = unitsResult.data.orEmpty()
+            is Resource.Success -> showToast(uiState.textToast.value)
+        }
+    }
+
+    private fun showToast(message: UiText?) {
+        message?.let{ uiState.textToast.value = it }
     }
 
     fun onAction(action: ScreenActions) = when(action) {
@@ -38,7 +42,7 @@ class AddSupplyViewModel @Inject constructor(
 
     private fun onItemSelected(index: Int) {
         uiState.isExpanded.value = false
-        uiState.selectedUnit.value = uiState.unities.value[index].label
+        uiState.selectedUnit.value = uiState.unities.value[index]
     }
 
     private fun onChangeExpanded() {
@@ -61,9 +65,10 @@ class AddSupplyViewModel @Inject constructor(
         val name = MutableStateFlow("")
         val quantity = MutableStateFlow("")
         val price = MutableStateFlow("")
-        val unities = MutableStateFlow<List<UnitModel>>(listOf())
+        val unities = MutableStateFlow<List<UnitResponse>>(listOf())
         val isExpanded = MutableStateFlow(false)
-        val selectedUnit = MutableStateFlow("")
+        val selectedUnit = MutableStateFlow<UnitResponse?>(null)
+        val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
 
     sealed class ScreenActions {
