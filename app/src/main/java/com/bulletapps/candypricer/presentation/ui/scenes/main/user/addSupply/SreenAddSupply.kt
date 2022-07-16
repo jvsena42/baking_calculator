@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply.AddSupplyViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.DropdownMenuOutlined
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
@@ -73,7 +74,7 @@ fun Screen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            NormalButton(text = stringResource(R.string.confirm), onClick = { onAction(ScreenActions.OnClickConfirm) })
+            MakeButtonConfirm(onAction, uiState)
 
             DisplayToast(uiState)
         }
@@ -144,6 +145,17 @@ private fun MakeFieldPrice(onAction: (ScreenActions) -> Unit, uiState: UIState) 
         placeholder = { Text(stringResource(R.string.thirty_reals)) },
         label = { Text(stringResource(R.string.price)) },
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+    )
+}
+
+@Composable
+private fun MakeButtonConfirm(onAction: (ScreenActions) -> Unit, uiState: UIState) {
+    val isLoading by uiState.isLoading.collectAsState()
+
+    NormalButton(
+        isEnabled = !isLoading,
+        text = stringResource(R.string.confirm),
+        onClick = { onAction(ScreenActions.OnClickConfirm) }
     )
 }
 

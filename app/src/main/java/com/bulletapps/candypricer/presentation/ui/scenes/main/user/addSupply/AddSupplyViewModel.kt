@@ -67,6 +67,7 @@ class AddSupplyViewModel @Inject constructor(
         val price = MutableStateFlow("")
         val unities = MutableStateFlow<List<UnitResponse>>(listOf())
         val isExpanded = MutableStateFlow(false)
+        val isLoading = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow<UnitResponse?>(null)
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
