@@ -2,12 +2,15 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies
 
 import androidx.lifecycle.ViewModel
 import com.bulletapps.candypricer.domain.model.Supply
+import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class SuppliesViewModel @Inject constructor() : ViewModel() {
+class SuppliesViewModel @Inject constructor(
+    private val getAllSuppliesUseCase: GetAllSuppliesUseCase
+) : ViewModel() {
 
     val suppliesList: MutableStateFlow<List<Supply>> = MutableStateFlow(
         listOf(
