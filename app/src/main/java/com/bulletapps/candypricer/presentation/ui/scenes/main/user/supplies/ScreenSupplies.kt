@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -14,23 +15,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
-import com.bulletapps.candypricer.domain.model.Supply
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.SuppliesViewModel.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.SuppliesList
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun ScreenSupplies(
     viewModel: SuppliesViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
+    val activity = LocalContext.current as MainActivity
+    LaunchedEffect(key1 = Unit) { viewModel.setup() }
     Screen(
         viewModel.uiState,
         viewModel::onAction
     )
+    EventConsumer(activity, viewModel, sharedViewModel)
+}
+
+@Composable
+private fun EventConsumer(
+    activity: MainActivity,
+    viewModel: SuppliesViewModel,
+    sharedViewModel: MainViewModel
+) {
+    LaunchedEffect(key1 = Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is ScreenEvent.NavigateToAddSupply -> sharedViewModel.navigate(MainViewModel.Navigation.AddSupply)
+            }
+        }
+    }
 }
 
 @Composable
