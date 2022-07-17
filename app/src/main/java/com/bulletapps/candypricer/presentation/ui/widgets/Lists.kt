@@ -6,10 +6,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.domain.model.Supply
 
 @Composable
-fun SuppliesList(supplyList: List<Supply>, modifier: Modifier = Modifier) {
+fun SuppliesList(supplyList: List<SupplyResponse>, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier.fillMaxWidth().fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,

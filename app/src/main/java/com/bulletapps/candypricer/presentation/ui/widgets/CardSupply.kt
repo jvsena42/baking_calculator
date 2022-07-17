@@ -9,10 +9,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.data.response.SupplyResponse
+import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.model.Supply
 
 @Composable
-fun CardSupply(supply: Supply, modifier: Modifier = Modifier, onClick: () -> Unit?) {
+fun CardSupply(supply: SupplyResponse, modifier: Modifier = Modifier, onClick: () -> Unit?) {
     Card(
         modifier = modifier
             .padding(top = 8.dp, start = 16.dp, end = 16.dp)
@@ -30,8 +32,8 @@ fun CardSupply(supply: Supply, modifier: Modifier = Modifier, onClick: () -> Uni
                     stringResource(id = R.string.quantity_label),
                     supply.quantity.toString()
                 )
-                TextWithLabel(stringResource(id = R.string.measure_type_label), supply.unitType)
-                TextWithLabel(stringResource(id = R.string.cost_label), supply.price)
+                TextWithLabel(stringResource(id = R.string.measure_type_label), supply.unit?.name.orEmpty())
+                TextWithLabel(stringResource(id = R.string.cost_label), supply.value.toString())
             }
         }
     }
@@ -41,12 +43,12 @@ fun CardSupply(supply: Supply, modifier: Modifier = Modifier, onClick: () -> Uni
 @Composable
 private fun Preview() {
     CardSupply(
-        Supply(
+        SupplyResponse(
             id = 0,
             name = "Leite Condensado Caixa",
-            price = "R$ 5,00",
-            quantity = 1.0,
-            unitType = "Unidade"
+            value = 5.0,
+            quantity = 1,
+            unit = UnitResponse(0,"und")
         )
     ) {
 
