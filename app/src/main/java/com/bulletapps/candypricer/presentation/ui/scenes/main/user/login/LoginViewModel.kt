@@ -4,16 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
 import com.bulletapps.candypricer.data.parameters.LoginParameters
 import com.bulletapps.candypricer.data.response.LoginResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
-import com.bulletapps.candypricer.domain.usecase.preferences.GetLoginDataUseCase
-import com.bulletapps.candypricer.domain.usecase.preferences.SaveLoginDataUseCase
 import com.bulletapps.candypricer.domain.usecase.user.LoginUseCase
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.PreferencesKeys.ACCESS_TOKEN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -24,14 +23,13 @@ class LoginViewModel @Inject constructor(
     private val submitEmailUseCase: SubmitEmailUseCase,
     private val submitPasswordUseCase: SubmitPasswordUseCase,
     private val loginUseCase: LoginUseCase,
-    private val saveLoginDataUseCase: SaveLoginDataUseCase,
-    private val getLoginDataUseCase: GetLoginDataUseCase
+    private val preferencesDataSource: PreferencesDataSource
 ) : ViewModel(), EventFlow<LoginViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
     fun checkToken() = viewModelScope.launch {
-        val token = getLoginDataUseCase().accessToken
+        val token = preferencesDataSource.getPref(ACCESS_TOKEN , "")
         if (token.isNotEmpty()) viewModelScope.sendEvent(ScreenEvent.MainScreen)
     }
 
@@ -72,7 +70,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun handleSuccess(loginResponse: LoginResponse) {
-        viewModelScope.launch { saveLoginDataUseCase(loginResponse) }
+        preferencesDataSource.setPref(ACCESS_TOKEN, loginResponse.accessToken)
         viewModelScope.sendEvent(ScreenEvent.MainScreen)
     }
 

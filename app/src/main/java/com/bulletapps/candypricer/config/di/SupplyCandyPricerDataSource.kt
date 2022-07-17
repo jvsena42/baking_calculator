@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.config.di
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
@@ -10,8 +11,7 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import com.bulletapps.candypricer.data.api.CandyPricerApi
 import com.bulletapps.candypricer.data.datasource.CandyPricerDataSource
 import com.bulletapps.candypricer.data.datasource.CandyPricerRemoteDataSource
-import com.bulletapps.candypricer.data.repository.CandyPricerRepository
-import com.bulletapps.candypricer.data.repository.CandyPricerRepositoryImpl
+import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,5 +44,11 @@ class SupplyCandyPricerDataSource {
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
             produceFile = { appContext.preferencesDataStoreFile(USER_PREFERENCES) }
         )
+    }
+
+    @Singleton
+    @Provides
+    fun providesCandyPricerRemoteDataSource(@ApplicationContext appContext: Context): PreferencesDataSource {
+        return PreferencesDataSource(appContext.getSharedPreferences(USER_PREFERENCES, Context.MODE_PRIVATE))
     }
 }

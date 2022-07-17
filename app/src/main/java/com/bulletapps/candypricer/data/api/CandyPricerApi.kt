@@ -40,9 +40,5 @@ interface CandyPricerApi {
     ): UnitResponse
 
     @GET("/unit")
-    suspend fun getUnits(
-        @Query("key") key: String,
-        @Query("value") value: String,
-        @Query("disabled") disabled: Boolean,
-    ): List<UnitResponse>
+    suspend fun getUnits(): List<UnitResponse>
 }

@@ -23,9 +23,5 @@ interface CandyPricerDataSource {
 
     suspend fun createUnit(parameters: CreateUnitParameters): UnitResponse
 
-    suspend fun getUnits(
-        key: String,
-        value: String,
-        disabled: Boolean,
-    ): List<UnitResponse>
+    suspend fun getUnits(): List<UnitResponse>
 }

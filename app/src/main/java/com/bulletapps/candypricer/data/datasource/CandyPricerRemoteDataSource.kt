@@ -20,9 +20,5 @@ class CandyPricerRemoteDataSource @Inject constructor(private val api: CandyPric
 
     override suspend fun createUnit(parameters: CreateUnitParameters) = api.createUnit(parameters)
 
-    override suspend fun getUnits(
-        key: String,
-        value: String,
-        disabled: Boolean
-    ) = api.getUnits(key, value, disabled)
+    override suspend fun getUnits(): List<UnitResponse> = api.getUnits()
 }

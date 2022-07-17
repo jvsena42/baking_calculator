@@ -41,12 +41,8 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.createUnit(parameters)
     }
 
-    override suspend fun getUnits(
-        key: String,
-        value: String,
-        disabled: Boolean
-    ) = safeRequest(dispatcher) {
-        dataSource.getUnits(key, value, disabled)
+    override suspend fun getUnits() = safeRequest(dispatcher) {
+        dataSource.getUnits()
     }
 
 
