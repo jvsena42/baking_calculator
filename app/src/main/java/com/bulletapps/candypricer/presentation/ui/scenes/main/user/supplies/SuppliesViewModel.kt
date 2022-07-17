@@ -27,6 +27,9 @@ class SuppliesViewModel @Inject constructor(
         }
     }
 
+    fun onAction(action: ScreenActions) = when(action) {
+        ScreenActions.OnClickAdd -> {}
+    }
 
     private fun showToast(message: UiText?) {
         message?.let{ uiState.textToast.value = it }
