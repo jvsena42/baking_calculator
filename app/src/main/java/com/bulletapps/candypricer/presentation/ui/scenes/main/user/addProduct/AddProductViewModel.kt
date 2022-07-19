@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.domain.model.Supply
 import com.bulletapps.candypricer.domain.model.UnitModel
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
+import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
+import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
@@ -13,7 +16,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
+class AddProductViewModel @Inject constructor(
+    private val getAllSuppliesUseCase: GetAllSuppliesUseCase,
+    private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
+    private val getUnitsUseCase: GetUnitsUseCase,
+    ) : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
