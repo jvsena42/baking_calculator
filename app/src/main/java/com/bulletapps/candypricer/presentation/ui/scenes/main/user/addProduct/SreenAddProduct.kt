@@ -112,7 +112,7 @@ private fun Screen(
                         firstLabel = R.string.name_label,
                         secondLabel = R.string.quantity_label,
                         firsName = itemSupply.name,
-                        secondName = itemSupply.qut,
+                        secondName = itemSupply.qut.toString(),
                         onClick = {}
                     )
                 }
@@ -197,7 +197,7 @@ private fun MakeDropdownUnit(onAction: (ScreenActions) -> Unit, uiState: UIState
     DropdownMenuOutlined(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
         expanded = isExpanded,
-        items = unities.map { it.label },
+        items = unities.map { it.name },
         selectedItem = selectedUnit,
         label = stringResource(R.string.select_a_unit),
         onClick = { onAction(OnChangeExpanded) },
@@ -244,7 +244,7 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                         expanded = isMenuSuppliesExpanded,
                         items = suppliesMenuList.map { it.name },
-                        selectedItem = selectedSupplyItem,
+                        selectedItem = selectedSupplyItem.name,
                         label = stringResource(R.string.select_a_supply),
                         onClick = { onAction(OnChangeExpandedMenu) },
                         onItemSelected = { index ->

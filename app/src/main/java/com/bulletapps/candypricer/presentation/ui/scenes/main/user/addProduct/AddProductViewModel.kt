@@ -30,6 +30,7 @@ class AddProductViewModel @Inject constructor(
     ) : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
+    private val emptySupply = SupplyResponse(id = -1, name = "", quantity = 0, value = 0.0, null)
 
     suspend fun setup() {
         getUnits()
@@ -48,31 +49,29 @@ class AddProductViewModel @Inject constructor(
         }
     }
 
-    //TODO MOCK
     private suspend fun getSupplies() {
         val suppliesResult = getAllSuppliesUseCase()
         when(suppliesResult) {
             is Resource.Error -> showToast(suppliesResult.message)
-            is Resource.Success -> uiState.suppliesList.value = suppliesResult.data.toMenuItem()
+            is Resource.Success -> uiState.suppliesMenuList.value = suppliesResult.data.orEmpty().toMutableList()
         }
     }
 
-    //todo fix id
     private fun onClickConfirm() {
 
     }
 
     private fun clearMenuSelection() {
-        uiState.selectedSupplyItem.value = ""
-        uiState.supplyQnt.value = ""
+        uiState.selectedSupplyItem.value = emptySupply
+        uiState.supplyQnt.value = 0
     }
 
     private fun onClickConfirmMenu() {
         uiState.isDialogVisible.value = false
 
         val newItem = MenuItemModel(
-            id = -1,
-            name = uiState.selectedSupplyItem.value,
+            id = uiState.selectedSupplyItem.value.id,
+            name = uiState.selectedSupplyItem.value.name,
             qut = uiState.supplyQnt.value
         )
         val currentList = uiState.suppliesList.value.apply { add(newItem) }
@@ -88,7 +87,7 @@ class AddProductViewModel @Inject constructor(
 
     private fun onItemMenuSelected(index: Int) {
         uiState.isMenuSuppliesExpanded.value = false
-        uiState.selectedSupplyItem.value = uiState.suppliesMenuList.value[index].name
+        uiState.selectedSupplyItem.value = uiState.suppliesMenuList.value[index]
     }
 
     private fun onChangeExpanded() {
@@ -110,7 +109,7 @@ class AddProductViewModel @Inject constructor(
         is FieldsTexts.LaborPrice -> uiState.laborPrice.value = fieldsTexts.text
         is FieldsTexts.ProfitMargin -> uiState.profitMargin.value = fieldsTexts.text
         is FieldsTexts.VariableExpenses -> uiState.variableExpenses.value = fieldsTexts.text
-        is FieldsTexts.SupplyQnt -> uiState.supplyQnt.value = fieldsTexts.text
+        is FieldsTexts.SupplyQnt -> uiState.supplyQnt.value = fieldsTexts.text.toInt()
     }
 
     sealed class FieldsTexts {
@@ -161,8 +160,8 @@ class AddProductViewModel @Inject constructor(
         val suppliesList = MutableStateFlow(mutableListOf<MenuItemModel>())
         val suppliesMenuList = MutableStateFlow(mutableListOf<SupplyResponse>())
         val isMenuSuppliesExpanded = MutableStateFlow(false)
-        val selectedSupplyItem = MutableStateFlow("")
-        val supplyQnt = MutableStateFlow("")
+        val selectedSupplyItem = MutableStateFlow(SupplyResponse(id = -1, name = "", quantity = 0, value = 0.0, null))
+        val supplyQnt = MutableStateFlow(0)
         val isDialogVisible = MutableStateFlow(false)
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
 
