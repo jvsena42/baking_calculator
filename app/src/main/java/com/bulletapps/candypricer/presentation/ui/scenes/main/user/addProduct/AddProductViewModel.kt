@@ -2,14 +2,20 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bulletapps.candypricer.config.Resource
+import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.data.response.SupplyResponse
+import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.model.Supply
 import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
+import com.bulletapps.candypricer.domain.usecase.product.CreateProductUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.toMenuItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -20,34 +26,35 @@ class AddProductViewModel @Inject constructor(
     private val getAllSuppliesUseCase: GetAllSuppliesUseCase,
     private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
     private val getUnitsUseCase: GetUnitsUseCase,
+    private val createProductUseCase: CreateProductUseCase
     ) : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
-    fun setup() = viewModelScope.launch {
-        getUnities()
+    suspend fun setup() {
+        getUnits()
         getSupplies()
     }
 
-    //TODO MOCK
-    private suspend fun getUnities() {
-        uiState.unities.value = listOf(
-            UnitModel("", "Und."),
-            UnitModel("", "Kg"),
-            UnitModel("", "g"),
-            UnitModel("", "mg"),
-            UnitModel("", "L"),
-            UnitModel("", "ml"),
-        )
+    private fun showToast(message: UiText?) {
+        message?.let{ uiState.textToast.value = it }
+    }
+
+    private suspend fun getUnits() {
+        val unitsResult = getUnitsUseCase()
+        when(unitsResult) {
+            is Resource.Error -> uiState.unities.value = unitsResult.data.orEmpty()
+            is Resource.Success -> showToast(uiState.textToast.value)
+        }
     }
 
     //TODO MOCK
     private suspend fun getSupplies() {
-        uiState.suppliesMenuList.value = mutableListOf(
-            Supply(id = 0, name = "Leite Condensado Caixa", price = "R$ 5,00", quantity = 1.0, unitType = "Unidade" ),
-            Supply(id = 1, name = "Creme de leite Caixa", price = "R$ 6,00", quantity = 1.0, unitType = "Unidade" ),
-            Supply(id = 2, name = "Chocolate em pó", price = "R$ 38,00", quantity = 500.0, unitType = "Gramas" ),
-        )
+        val suppliesResult = getAllSuppliesUseCase()
+        when(suppliesResult) {
+            is Resource.Error -> showToast(suppliesResult.message)
+            is Resource.Success -> uiState.suppliesList.value = suppliesResult.data.toMenuItem()
+        }
     }
 
     //todo fix id
@@ -64,7 +71,7 @@ class AddProductViewModel @Inject constructor(
         uiState.isDialogVisible.value = false
 
         val newItem = MenuItemModel(
-            id = "",
+            id = -1,
             name = uiState.selectedSupplyItem.value,
             qut = uiState.supplyQnt.value
         )
@@ -76,7 +83,7 @@ class AddProductViewModel @Inject constructor(
 
     private fun onItemSelected(index: Int) {
         uiState.isExpanded.value = false
-        uiState.selectedUnit.value = uiState.unities.value[index].label
+        uiState.selectedUnit.value = uiState.unities.value[index].name
     }
 
     private fun onItemMenuSelected(index: Int) {
@@ -148,21 +155,23 @@ class AddProductViewModel @Inject constructor(
         val laborPrice = MutableStateFlow("")
         val profitMargin = MutableStateFlow("")
         val variableExpenses = MutableStateFlow("")
-        val unities = MutableStateFlow<List<UnitModel>>(listOf())
+        val unities = MutableStateFlow<List<UnitResponse>>(listOf())
         val isExpanded = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow("")
         val suppliesList = MutableStateFlow(mutableListOf<MenuItemModel>())
-        val suppliesMenuList = MutableStateFlow(mutableListOf<Supply>())
+        val suppliesMenuList = MutableStateFlow(mutableListOf<SupplyResponse>())
         val isMenuSuppliesExpanded = MutableStateFlow(false)
         val selectedSupplyItem = MutableStateFlow("")
         val supplyQnt = MutableStateFlow("")
         val isDialogVisible = MutableStateFlow(false)
+        val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
+
     }
 
     data class MenuItemModel(
-        val id: String,
+        val id: Int,
         val name: String,
-        val qut: String
+        val qut: Int
     )
 }
 

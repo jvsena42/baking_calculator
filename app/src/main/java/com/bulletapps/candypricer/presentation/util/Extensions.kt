@@ -3,6 +3,9 @@ package com.bulletapps.candypricer.presentation.util
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.bulletapps.candypricer.data.response.SupplyResponse
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel
+import com.bulletapps.candypricer.presentation.ui.widgets.MenuItem
 
 const val ZERO = 0
 const val ZERO_DOUBLE = 0.0
@@ -32,3 +35,5 @@ fun Context.openWhatsapp(phone: String, message: String = "Oi!") {
         }
     }
 }
+
+fun List<SupplyResponse>?.toMenuItem() = this?.map { AddProductViewModel.MenuItemModel(id = it.id, name = it.name, qut = it.quantity) }.orEmpty().toMutableList()
