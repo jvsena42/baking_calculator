@@ -27,7 +27,10 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.ScreenActions.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
-import com.bulletapps.candypricer.presentation.ui.widgets.*
+import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsHorizontal
+import com.bulletapps.candypricer.presentation.ui.widgets.DropdownMenuOutlined
+import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 
 @Composable
 fun ScreenAddProduct(
@@ -60,7 +63,7 @@ private fun Screen(
     onAction: (ScreenActions) -> Unit,
 ) {
 
-    val suppliesList by uiState.suppliesList.collectAsState()
+    val suppliesList by uiState.selectedSupplies.collectAsState()
 
     CandyPricerTheme {
 
@@ -87,6 +90,8 @@ private fun Screen(
 
                     MakeFieldName(onAction, uiState)
 
+                    MakeFieldQuantity(onAction, uiState)
+
                     MakeDropdownUnit(onAction, uiState)
 
                     MakeFieldLaborPrice(onAction, uiState)
@@ -112,7 +117,7 @@ private fun Screen(
                         firstLabel = R.string.name_label,
                         secondLabel = R.string.quantity_label,
                         firsName = itemSupply.name,
-                        secondName = itemSupply.qut,
+                        secondName = itemSupply.qut.toString(),
                         onClick = {}
                     )
                 }
@@ -135,6 +140,21 @@ private fun Screen(
             }
         }
     }
+}
+
+@Composable
+private fun MakeFieldQuantity(onAction: (ScreenActions) -> Unit, uiState: UIState) {
+    val quantity by uiState.quantity.collectAsState()
+
+    OutlinedTextField(
+        value = quantity,
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        onValueChange = { onAction(OnTextChanged(FieldsTexts.Quantity(it))) },
+        placeholder = { Text(stringResource(R.string.five_hundred)) },
+        label = { Text(stringResource(R.string.quantity)) },
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+    )
 }
 
 @Composable
@@ -197,8 +217,8 @@ private fun MakeDropdownUnit(onAction: (ScreenActions) -> Unit, uiState: UIState
     DropdownMenuOutlined(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
         expanded = isExpanded,
-        items = unities.map { it.label },
-        selectedItem = selectedUnit,
+        items = unities.map { it.name },
+        selectedItem = selectedUnit.name,
         label = stringResource(R.string.select_a_unit),
         onClick = { onAction(OnChangeExpanded) },
         onItemSelected = { index -> onAction(OnItemSelected(index)) }
@@ -244,7 +264,7 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
                         expanded = isMenuSuppliesExpanded,
                         items = suppliesMenuList.map { it.name },
-                        selectedItem = selectedSupplyItem,
+                        selectedItem = selectedSupplyItem.name,
                         label = stringResource(R.string.select_a_supply),
                         onClick = { onAction(OnChangeExpandedMenu) },
                         onItemSelected = { index ->
@@ -257,15 +277,9 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
                     )
 
                     OutlinedTextField(
-                        value = supplyQnt,
+                        value = supplyQnt.toString(),
                         singleLine = true,
-                        onValueChange = {
-                            onAction(
-                                OnTextChanged(
-                                    FieldsTexts.SupplyQnt(it)
-                                )
-                            )
-                        },
+                        onValueChange = { onAction(OnTextChanged(FieldsTexts.SupplyQnt(it))) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         placeholder = { Text(stringResource(R.string.fifty_grams)) },
                         label = { Text(stringResource(R.string.quantity)) },

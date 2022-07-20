@@ -2,79 +2,159 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bulletapps.candypricer.domain.model.Supply
-import com.bulletapps.candypricer.domain.model.UnitModel
+import com.bulletapps.candypricer.config.Resource
+import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.data.parameters.CreateProductParameters
+import com.bulletapps.candypricer.data.response.SupplyResponse
+import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyListUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
+import com.bulletapps.candypricer.domain.usecase.product.CreateProductUseCase
+import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
+import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
+class AddProductViewModel @Inject constructor(
+    private val getAllSuppliesUseCase: GetAllSuppliesUseCase,
+    private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
+    private val validateEmptyListUseCase: ValidateEmptyListUseCase,
+    private val getUnitsUseCase: GetUnitsUseCase,
+    private val createProductUseCase: CreateProductUseCase
+    ) : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
+    private val emptySupply = SupplyResponse(id = -1, name = "", quantity = 0, value = 0.0, null)
 
-    fun setup() = viewModelScope.launch {
-        getUnities()
+    suspend fun setup() {
+        getUnits()
         getSupplies()
     }
 
-    //TODO MOCK
-    private suspend fun getUnities() {
-        uiState.unities.value = listOf(
-            UnitModel("", "Und."),
-            UnitModel("", "Kg"),
-            UnitModel("", "g"),
-            UnitModel("", "mg"),
-            UnitModel("", "L"),
-            UnitModel("", "ml"),
-        )
+    private fun showToast(message: UiText?) {
+        message?.let{ uiState.textToast.value = it }
     }
 
-    //TODO MOCK
+    private suspend fun getUnits() {
+        val unitsResult = getUnitsUseCase()
+        when(unitsResult) {
+            is Resource.Error -> uiState.unities.value = unitsResult.data.orEmpty()
+            is Resource.Success -> showToast(uiState.textToast.value)
+        }
+    }
+
     private suspend fun getSupplies() {
-        uiState.suppliesMenuList.value = mutableListOf(
-            Supply(id = 0, name = "Leite Condensado Caixa", price = "R$ 5,00", quantity = 1.0, unitType = "Unidade" ),
-            Supply(id = 1, name = "Creme de leite Caixa", price = "R$ 6,00", quantity = 1.0, unitType = "Unidade" ),
-            Supply(id = 2, name = "Chocolate em pó", price = "R$ 38,00", quantity = 500.0, unitType = "Gramas" ),
-        )
+        val suppliesResult = getAllSuppliesUseCase()
+        when(suppliesResult) {
+            is Resource.Error -> showToast(suppliesResult.message)
+            is Resource.Success -> uiState.suppliesMenuList.value = suppliesResult.data.orEmpty().toMutableList()
+        }
     }
 
-    //todo fix id
     private fun onClickConfirm() {
+        viewModelScope.launch {
+            uiState.isLoading.value = true
 
+            val nameResult = validateEmptyTextUseCase(text = uiState.name.value)
+            val qntResult = validateEmptyTextUseCase(text = uiState.quantity.value)
+            val unitResult = validateEmptyTextUseCase(text = uiState.selectedUnit.value.name)
+            val laborPriceResult = validateEmptyTextUseCase(text = uiState.laborPrice.value)
+            val variableExpensesResult = validateEmptyTextUseCase(text = uiState.variableExpenses.value)
+            val profitMarginResult = validateEmptyTextUseCase(text = uiState.profitMargin.value)
+            val supplyResult = validateEmptyListUseCase(list = uiState.selectedSupplies.value)
+
+            when(nameResult) {
+                is Resource.Error -> uiState.nameError.value = nameResult.message
+                is Resource.Success -> uiState.nameError.value = null
+            }
+            when(qntResult) {
+                is Resource.Error -> uiState.qntError.value = qntResult.message
+                is Resource.Success -> uiState.qntError.value = null
+            }
+            when(unitResult) {
+                is Resource.Error -> uiState.unitError.value = unitResult.message
+                is Resource.Success -> uiState.unitError.value = null
+            }
+            when(laborPriceResult) {
+                is Resource.Error -> uiState.laborError.value = laborPriceResult.message
+                is Resource.Success -> uiState.laborError.value = null
+            }
+            when(variableExpensesResult) {
+                is Resource.Error -> uiState.variableExpensesError.value = variableExpensesResult.message
+                is Resource.Success -> uiState.variableExpensesError.value = null
+            }
+            when(profitMarginResult) {
+                is Resource.Error -> uiState.profitMarginError.value = profitMarginResult.message
+                is Resource.Success -> uiState.profitMarginError.value = null
+            }
+            when(supplyResult) {
+                is Resource.Error -> showToast(supplyResult.message)
+                is Resource.Success -> {}
+            }
+
+            if(
+                nameResult is Resource.Success
+                && unitResult is Resource.Success
+                && qntResult is Resource.Success
+                && laborPriceResult is Resource.Success
+                && variableExpensesResult is Resource.Success
+                && profitMarginResult is Resource.Success
+                && supplyResult is Resource.Success
+            ) {
+                createProductUseCase(
+                    CreateProductParameters(
+                        name = uiState.name.value,
+                        quantity = uiState.quantity.value.toInt(),
+                        unitId = uiState.selectedUnit.value.id.orZero(),
+                        suppliesId = uiState.selectedSupplies.value.map { it.id },
+                        profitMargin = uiState.profitMargin.value.toDouble(),
+                        laborValue = uiState.laborPrice.value.toDouble(),
+                        variableExpenses = uiState.variableExpenses.value.toDouble(),
+                    )
+                ).also { result ->
+                    when (result) {
+                        is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                        is Resource.Error -> showToast(result.message)
+                    }
+                }
+            }
+        }
     }
 
     private fun clearMenuSelection() {
-        uiState.selectedSupplyItem.value = ""
-        uiState.supplyQnt.value = ""
+        uiState.selectedSupplyItem.value = emptySupply
+        uiState.supplyQnt.value = 0
     }
 
     private fun onClickConfirmMenu() {
         uiState.isDialogVisible.value = false
 
         val newItem = MenuItemModel(
-            id = "",
-            name = uiState.selectedSupplyItem.value,
+            id = uiState.selectedSupplyItem.value.id,
+            name = uiState.selectedSupplyItem.value.name,
             qut = uiState.supplyQnt.value
         )
-        val currentList = uiState.suppliesList.value.apply { add(newItem) }
-        uiState.suppliesList.value = currentList
-
+        val currentList = uiState.selectedSupplies.value.apply { add(newItem) }
+        uiState.selectedSupplies.value = currentList
         clearMenuSelection()
     }
 
     private fun onItemSelected(index: Int) {
         uiState.isExpanded.value = false
-        uiState.selectedUnit.value = uiState.unities.value[index].label
+        uiState.selectedUnit.value = uiState.unities.value[index]
     }
 
     private fun onItemMenuSelected(index: Int) {
         uiState.isMenuSuppliesExpanded.value = false
-        uiState.selectedSupplyItem.value = uiState.suppliesMenuList.value[index].name
+        uiState.selectedSupplyItem.value = uiState.suppliesMenuList.value[index]
     }
 
     private fun onChangeExpanded() {
@@ -96,11 +176,13 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
         is FieldsTexts.LaborPrice -> uiState.laborPrice.value = fieldsTexts.text
         is FieldsTexts.ProfitMargin -> uiState.profitMargin.value = fieldsTexts.text
         is FieldsTexts.VariableExpenses -> uiState.variableExpenses.value = fieldsTexts.text
-        is FieldsTexts.SupplyQnt -> uiState.supplyQnt.value = fieldsTexts.text
+        is FieldsTexts.SupplyQnt -> uiState.supplyQnt.value = fieldsTexts.text.toInt()
+        is FieldsTexts.Quantity -> uiState.quantity.value = fieldsTexts.text
     }
 
     sealed class FieldsTexts {
         data class Name(val text: String) : FieldsTexts()
+        data class Quantity(val text: String) : FieldsTexts()
         data class LaborPrice(val text: String) : FieldsTexts()
         data class ProfitMargin(val text: String) : FieldsTexts()
         data class VariableExpenses(val text: String) : FieldsTexts()
@@ -138,24 +220,33 @@ class AddProductViewModel @Inject constructor() : ViewModel(), EventFlow<ScreenE
 
     class UIState {
         val name = MutableStateFlow("")
+        val quantity = MutableStateFlow("")
         val laborPrice = MutableStateFlow("")
         val profitMargin = MutableStateFlow("")
         val variableExpenses = MutableStateFlow("")
-        val unities = MutableStateFlow<List<UnitModel>>(listOf())
+        val unities = MutableStateFlow<List<UnitResponse>>(listOf())
         val isExpanded = MutableStateFlow(false)
-        val selectedUnit = MutableStateFlow("")
-        val suppliesList = MutableStateFlow(mutableListOf<MenuItemModel>())
-        val suppliesMenuList = MutableStateFlow(mutableListOf<Supply>())
+        val selectedUnit = MutableStateFlow(UnitResponse(0, ""))
+        val selectedSupplies = MutableStateFlow(mutableListOf<MenuItemModel>())
+        val suppliesMenuList = MutableStateFlow(mutableListOf<SupplyResponse>())
         val isMenuSuppliesExpanded = MutableStateFlow(false)
-        val selectedSupplyItem = MutableStateFlow("")
-        val supplyQnt = MutableStateFlow("")
+        val selectedSupplyItem = MutableStateFlow(SupplyResponse(id = -1, name = "", quantity = 0, value = 0.0, null))
+        val supplyQnt = MutableStateFlow(0)
         val isDialogVisible = MutableStateFlow(false)
+        val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
+        val isLoading = MutableStateFlow(false)
+        val nameError = MutableStateFlow<UiText?>(null)
+        val qntError = MutableStateFlow<UiText?>(null)
+        val unitError = MutableStateFlow<UiText?>(null)
+        val laborError = MutableStateFlow<UiText?>(null)
+        val variableExpensesError = MutableStateFlow<UiText?>(null)
+        val profitMarginError = MutableStateFlow<UiText?>(null)
     }
 
     data class MenuItemModel(
-        val id: String,
+        val id: Int,
         val name: String,
-        val qut: String
+        val qut: Int
     )
 }
 
