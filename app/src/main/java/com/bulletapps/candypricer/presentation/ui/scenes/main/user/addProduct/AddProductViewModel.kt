@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.data.parameters.CreateProductParameters
 import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyListUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.product.CreateProductUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
@@ -13,8 +15,10 @@ import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +26,7 @@ import javax.inject.Inject
 class AddProductViewModel @Inject constructor(
     private val getAllSuppliesUseCase: GetAllSuppliesUseCase,
     private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
+    private val validateEmptyListUseCase: ValidateEmptyListUseCase,
     private val getUnitsUseCase: GetUnitsUseCase,
     private val createProductUseCase: CreateProductUseCase
     ) : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
@@ -64,6 +69,7 @@ class AddProductViewModel @Inject constructor(
             val laborPriceResult = validateEmptyTextUseCase(text = uiState.laborPrice.value)
             val variableExpensesResult = validateEmptyTextUseCase(text = uiState.variableExpenses.value)
             val profitMarginResult = validateEmptyTextUseCase(text = uiState.profitMargin.value)
+            val supplyResult = validateEmptyListUseCase(list = uiState.selectedSupplies.value)
 
             when(nameResult) {
                 is Resource.Error -> uiState.nameError.value = nameResult.message
@@ -89,8 +95,37 @@ class AddProductViewModel @Inject constructor(
                 is Resource.Error -> uiState.profitMarginError.value = profitMarginResult.message
                 is Resource.Success -> uiState.profitMarginError.value = null
             }
+            when(supplyResult) {
+                is Resource.Error -> showToast(supplyResult.message)
+                is Resource.Success -> {}
+            }
 
-
+            if(
+                nameResult is Resource.Success
+                && unitResult is Resource.Success
+                && qntResult is Resource.Success
+                && laborPriceResult is Resource.Success
+                && variableExpensesResult is Resource.Success
+                && profitMarginResult is Resource.Success
+                && supplyResult is Resource.Success
+            ) {
+                createProductUseCase(
+                    CreateProductParameters(
+                        name = uiState.name.value,
+                        quantity = uiState.quantity.value.toInt(),
+                        unitId = uiState.selectedUnit.value.id.orZero(),
+                        suppliesId = uiState.selectedSupplies.value.map { it.id },
+                        profitMargin = uiState.profitMargin.value.toDouble(),
+                        laborValue = uiState.laborPrice.value.toDouble(),
+                        variableExpenses = uiState.variableExpenses.value.toDouble(),
+                    )
+                ).also { result ->
+                    when (result) {
+                        is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                        is Resource.Error -> showToast(result.message)
+                    }
+                }
+            }
         }
     }
 
@@ -107,9 +142,8 @@ class AddProductViewModel @Inject constructor(
             name = uiState.selectedSupplyItem.value.name,
             qut = uiState.supplyQnt.value
         )
-        val currentList = uiState.suppliesList.value.apply { add(newItem) }
-        uiState.suppliesList.value = currentList
-
+        val currentList = uiState.selectedSupplies.value.apply { add(newItem) }
+        uiState.selectedSupplies.value = currentList
         clearMenuSelection()
     }
 
@@ -193,7 +227,7 @@ class AddProductViewModel @Inject constructor(
         val unities = MutableStateFlow<List<UnitResponse>>(listOf())
         val isExpanded = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow(UnitResponse(0, ""))
-        val suppliesList = MutableStateFlow(mutableListOf<MenuItemModel>())
+        val selectedSupplies = MutableStateFlow(mutableListOf<MenuItemModel>())
         val suppliesMenuList = MutableStateFlow(mutableListOf<SupplyResponse>())
         val isMenuSuppliesExpanded = MutableStateFlow(false)
         val selectedSupplyItem = MutableStateFlow(SupplyResponse(id = -1, name = "", quantity = 0, value = 0.0, null))

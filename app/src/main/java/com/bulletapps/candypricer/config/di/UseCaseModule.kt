@@ -71,4 +71,10 @@ class UseCaseModule {
     fun providesValidateEmptyTextUseCase() : ValidateEmptyTextUseCase {
         return ValidateEmptyTextUseCaseImpl()
     }
+
+    @Singleton
+    @Provides
+    fun providesValidateEmptyList() : ValidateEmptyListUseCase {
+        return ValidateEmptyListUseCase()
+    }
 }

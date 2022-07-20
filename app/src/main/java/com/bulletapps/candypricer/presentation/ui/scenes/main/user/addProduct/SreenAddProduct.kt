@@ -63,7 +63,7 @@ private fun Screen(
     onAction: (ScreenActions) -> Unit,
 ) {
 
-    val suppliesList by uiState.suppliesList.collectAsState()
+    val suppliesList by uiState.selectedSupplies.collectAsState()
 
     CandyPricerTheme {
 
