@@ -88,6 +88,7 @@ fun Screen(
     }
 }
 
+@Composable
 private fun MakeList(uiState: UIState) {
     val list by uiState.suppliesList.collectAsState()
     SuppliesList(list)

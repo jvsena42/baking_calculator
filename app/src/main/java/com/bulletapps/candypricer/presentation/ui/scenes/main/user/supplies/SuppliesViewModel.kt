@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SuppliesViewModel @Inject constructor(
     private val getAllSuppliesUseCase: GetAllSuppliesUseCase
-) : ViewModel(), EventFlow<SuppliesViewModel.ScreenEvent> by EventFlowImpl()  {
+) : ViewModel(), EventFlow<SuppliesViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
