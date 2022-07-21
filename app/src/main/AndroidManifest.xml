@@ -8,12 +8,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CandyPricer">
+        android:theme="@style/Theme.App.Starting">
         <activity
             android:name=".presentation.ui.scenes.main.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|stateVisible"
-            android:theme="@style/Theme.CandyPricer">
+            android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
