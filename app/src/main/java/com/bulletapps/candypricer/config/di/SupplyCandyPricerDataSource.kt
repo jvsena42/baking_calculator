@@ -36,19 +36,7 @@ class SupplyCandyPricerDataSource {
 
     @Singleton
     @Provides
-    fun providePreferencesDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.create(
-            corruptionHandler = ReplaceFileCorruptionHandler(
-                produceNewData = { emptyPreferences() }
-            ),
-            scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
-            produceFile = { appContext.preferencesDataStoreFile(USER_PREFERENCES) }
-        )
-    }
-
-    @Singleton
-    @Provides
-    fun providesCandyPricerRemoteDataSource(@ApplicationContext appContext: Context): PreferencesDataSource {
+    fun providesCandyPricerPreferencesDataSource(@ApplicationContext appContext: Context): PreferencesDataSource {
         return PreferencesDataSource(appContext.getSharedPreferences(USER_PREFERENCES, Context.MODE_PRIVATE))
     }
 }

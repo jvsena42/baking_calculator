@@ -2,6 +2,7 @@ package com.bulletapps.candypricer.config.di
 
 import com.bulletapps.candypricer.BuildConfig
 import com.bulletapps.candypricer.data.api.CandyPricerApi
+import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
 import com.bulletapps.candypricer.data.service.OkHttpInterceptor
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -19,9 +20,9 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(prefs: PreferencesDataSource): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(OkHttpInterceptor())
+            .addInterceptor(OkHttpInterceptor(prefs))
             .build()
     }
 
