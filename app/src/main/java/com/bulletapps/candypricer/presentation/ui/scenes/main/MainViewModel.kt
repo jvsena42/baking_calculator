@@ -7,11 +7,15 @@ import com.bulletapps.candypricer.domain.model.MenuModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.Navigation> by EventFlowImpl()  {
+
+    val isLoading = MutableStateFlow(true)
 
     val menuItems: MutableStateFlow<List<MenuModel>> = MutableStateFlow(
         listOf(
@@ -21,6 +25,15 @@ class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.
             MenuModel(R.string.settings, R.drawable.ic_build, Navigation.Settings),
         ),
     )
+
+    init {
+        setIsLoading()
+    }
+
+    private fun setIsLoading() = viewModelScope.launch {
+        delay(3000L)
+        isLoading.value = false
+    }
 
     fun navigate(navigation: Navigation) {
         viewModelScope.sendEvent(navigation)

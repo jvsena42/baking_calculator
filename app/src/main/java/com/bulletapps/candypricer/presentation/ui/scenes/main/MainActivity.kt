@@ -28,7 +28,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                sharedViewModel.isLoading.value
+            }
+        }
         setContent {
             setNavigation(
                 startDestination = MainViewModel.Navigation.Login.router,

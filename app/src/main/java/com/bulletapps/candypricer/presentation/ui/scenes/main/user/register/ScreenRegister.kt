@@ -22,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel.*
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel.ScreenActions.OnClickConfirm
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel.ScreenActions.OnTextChanged
@@ -108,7 +107,8 @@ private fun Screen(
 @Composable
 private fun DisplayToast(uiState: UIState) {
     val toastMessage by uiState.textToast.collectAsState()
-    Toast(toastMessage.asString())
+    val message = toastMessage.asString()
+    if (message.isNotEmpty()) Toast(message)
 }
 
 @Composable

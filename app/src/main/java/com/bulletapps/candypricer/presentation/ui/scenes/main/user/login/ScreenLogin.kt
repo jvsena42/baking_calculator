@@ -96,7 +96,8 @@ private fun Screen(
 @Composable
 private fun DisplayToast(uiState: UIState) {
     val toastMessage by uiState.textToast.collectAsState()
-    Toast(toastMessage.asString())
+    val message = toastMessage.asString()
+    if (message.isNotEmpty()) Toast(message)
 }
 
 @Composable
