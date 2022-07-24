@@ -11,7 +11,10 @@ interface CandyPricerApi {
     @POST("/user")
     suspend fun createUser(
         @Body parameters: CreateUserParameters
-    ): UserResponse
+    ): LoginResponse
+
+    @GET("/user")
+    suspend fun getUser(): UserResponse //TODO IMPLEMENT
 
     @POST("/login")
     suspend fun login(
