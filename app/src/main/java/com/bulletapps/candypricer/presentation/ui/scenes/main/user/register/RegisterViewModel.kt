@@ -4,14 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
 import com.bulletapps.candypricer.data.parameters.CreateUserParameters
+import com.bulletapps.candypricer.data.response.LoginResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidatePasswordConfirmationUseCase
 import com.bulletapps.candypricer.domain.usecase.user.CreateUserUseCase
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.PreferencesKeys.ACCESS_TOKEN
 import com.bulletapps.candypricer.presentation.util.visualTransformation.MaskPatterns.BR_PHONE_LENGTH
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +28,8 @@ class RegisterViewModel @Inject constructor(
     private val submitPasswordUseCase: SubmitPasswordUseCase,
     private val validatePswConfUseCase: ValidatePasswordConfirmationUseCase,
     private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
-    private val createUserUseCase: CreateUserUseCase
+    private val createUserUseCase: CreateUserUseCase,
+    private val preferencesDataSource: PreferencesDataSource
 ) : ViewModel(), EventFlow<RegisterViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -83,11 +88,16 @@ class RegisterViewModel @Inject constructor(
                 )
             ).also { result ->
                 when (result) {
-                    is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                    is Resource.Success -> handleSuccess(result.data!!)
                     is Resource.Error -> showToast(result.message)
                 }
             }
         }
+    }
+
+    private fun handleSuccess(loginResponse: LoginResponse) {
+        preferencesDataSource.setPref(ACCESS_TOKEN, loginResponse.accessToken)
+        viewModelScope.sendEvent(ScreenEvent.MainScreen)
     }
 
     private fun handlePhoneChange(fieldsTexts: FieldsTexts.Phone): String {
@@ -135,7 +145,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     sealed class ScreenEvent {
-        object GoBack : ScreenEvent()
+        object MainScreen : ScreenEvent()
     }
 
     sealed class ScreenActions {
