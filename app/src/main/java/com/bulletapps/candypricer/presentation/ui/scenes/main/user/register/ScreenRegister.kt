@@ -51,7 +51,7 @@ private fun EventConsumer(
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                ScreenEvent.GoBack -> activity.onBackPressed()
+                ScreenEvent.MainScreen -> sharedViewModel.navigate(MainViewModel.Navigation.MainMenu)
             }
         }
     }

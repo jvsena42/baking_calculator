@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface CandyPricerDataSource {
 
-    suspend fun createUser(parameters: CreateUserParameters): UserResponse
+    suspend fun createUser(parameters: CreateUserParameters): LoginResponse
 
     suspend fun login(parameters: LoginParameters): LoginResponse
 

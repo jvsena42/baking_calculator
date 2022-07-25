@@ -6,7 +6,7 @@ import com.bulletapps.candypricer.data.response.*
 
 interface CandyPricerRepository {
 
-    suspend fun createUser(parameters: CreateUserParameters): Resource<UserResponse>
+    suspend fun createUser(parameters: CreateUserParameters): Resource<LoginResponse>
 
     suspend fun login(parameters: LoginParameters): Resource<LoginResponse>
 

@@ -1,5 +1,6 @@
 package com.bulletapps.candypricer.presentation.ui.widgets
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,8 +21,8 @@ fun TextLabelBrown(text: String, textAlign: TextAlign? = null) {
 }
 
 @Composable
-fun TextWithLabel(text: String, label: String, modifier: Modifier = Modifier) {
-    Row(modifier = modifier) {
+fun TextWithLabel(text: String, label: String, modifier: Modifier = Modifier, arrangement: Arrangement.Horizontal = Arrangement.Start) {
+    Row(modifier = modifier, arrangement) {
         TextLabel("$text ")
         Text(label)
     }
