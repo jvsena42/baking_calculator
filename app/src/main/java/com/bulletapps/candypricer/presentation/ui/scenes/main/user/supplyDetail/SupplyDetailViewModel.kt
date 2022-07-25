@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.response.SupplyResponse
+import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
@@ -14,17 +15,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SupplyDetailViewModel @Inject constructor(
-    private val getAllSuppliesUseCase: GetAllSuppliesUseCase
 ) : ViewModel(), EventFlow<SupplyDetailViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
     suspend fun setup() {
-        val suppliesResult = getAllSuppliesUseCase()
-        when(suppliesResult) {
-            is Resource.Error -> showToast(suppliesResult.message)
-            is Resource.Success -> uiState.suppliesList.value = suppliesResult.data!!
-        }
+        uiState.supply.value = SupplyResponse(
+            0,
+            "Leite condensado",
+            1,
+            5.89,
+            UnitResponse(0,"und")
+        )
     }
 
     fun onAction(action: ScreenActions) = when(action) {
@@ -45,7 +47,7 @@ class SupplyDetailViewModel @Inject constructor(
     }
 
     class UIState {
-        val suppliesList = MutableStateFlow<List<SupplyResponse>>(emptyList())
+        val supply = MutableStateFlow(SupplyResponse(0,"",0,0.0, UnitResponse(0,"")))
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
 }

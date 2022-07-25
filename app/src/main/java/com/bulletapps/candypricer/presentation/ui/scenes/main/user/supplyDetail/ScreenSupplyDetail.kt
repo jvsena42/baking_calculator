@@ -95,6 +95,8 @@ fun Screen(
 
 @Composable
 private fun MakeCard(uiState: UIState) {
+    val supply by uiState.supply.collectAsState()
+
     Card(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
     ) {
@@ -102,13 +104,13 @@ private fun MakeCard(uiState: UIState) {
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TextWithLabel(stringResource(R.string.name_label), "Leite condensado", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+            TextWithLabel(stringResource(R.string.name_label), supply.name, modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
             Spacer(Modifier.height(8.dp))
-            TextWithLabel(stringResource(R.string.quantity_label), "1", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+            TextWithLabel(stringResource(R.string.quantity_label), supply.quantity.toString(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
             Spacer(Modifier.height(8.dp))
-            TextWithLabel(stringResource(R.string.measure_type_label), "und", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+            TextWithLabel(stringResource(R.string.measure_type_label), supply.unit!!.name, modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
             Spacer(Modifier.height(8.dp))
-            TextWithLabel(stringResource(R.string.cost_label), "3,00", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+            TextWithLabel(stringResource(R.string.cost_label), supply.value.toString(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
         }
     }
 }
