@@ -22,6 +22,8 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplyDetail.SupplyDetailViewModel.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
+import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.SuppliesList
 import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
 
@@ -81,6 +83,12 @@ fun Screen(
             Spacer(Modifier.height(32.dp))
 
             MakeCard(uiState)
+
+            Spacer(Modifier.weight(1f))
+
+            OutlinedButtonCustom(text = stringResource(R.string.delete), onClick = {})
+            NormalButton(text = stringResource(R.string.edit), onClick = {})
+            Spacer(Modifier.height(32.dp))
         }
     }
 }

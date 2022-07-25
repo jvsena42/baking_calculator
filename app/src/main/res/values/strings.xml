@@ -13,6 +13,8 @@
     <string name="measure_type_label">Medida: </string>
     <string name="cost_label">Custo: </string>
     <string name="back">Voltar</string>
+    <string name="delete">Excluir</string>
+    <string name="edit">Editar</string>
     <string name="add_supply">Adicionar Insumo</string>
     <string name="add_a_supply">Adicione um insumo</string>
     <string name="add_product">Adicionar Produto</string>
