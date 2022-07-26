@@ -28,7 +28,7 @@ import com.bulletapps.candypricer.presentation.ui.widgets.SuppliesList
 import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
 
 @Composable
-fun ScreenSupplies(
+fun ScreenSupplyDetail(
     viewModel: SupplyDetailViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
