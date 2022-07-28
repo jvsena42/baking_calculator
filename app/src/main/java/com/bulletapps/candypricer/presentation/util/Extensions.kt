@@ -40,3 +40,9 @@ fun Context.openWhatsapp(phone: String, message: String = "Oi!") {
 fun Double?.toCurrency(): String {
     return NumberFormat.getCurrencyInstance(Locale(LANGUAGE, COUNTRY)).format(this ?: ZERO_DOUBLE)
 }
+
+fun String?.formatDouble(): Double {
+    val value = if (this.isNullOrEmpty()) "0.0" else this
+    value.replace(",",".")
+    return value.toDouble()
+}
