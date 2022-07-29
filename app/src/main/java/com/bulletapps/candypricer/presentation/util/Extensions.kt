@@ -2,14 +2,15 @@ package com.bulletapps.candypricer.presentation.util
 
 import android.content.Context
 import android.content.Intent
+import android.icu.text.NumberFormat
 import android.net.Uri
-import com.bulletapps.candypricer.data.response.SupplyResponse
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel
-import com.bulletapps.candypricer.presentation.ui.widgets.MenuItem
+import java.util.*
 
 const val ZERO = 0
 const val ZERO_DOUBLE = 0.0
 const val ZERO_FLOAT = 0f
+const val COUNTRY = "BR"
+const val LANGUAGE = "pt"
 
 fun Int?.orZero() = this ?: ZERO
 fun Double?.orZero() = this ?: ZERO_DOUBLE
@@ -36,4 +37,16 @@ fun Context.openWhatsapp(phone: String, message: String = "Oi!") {
     }
 }
 
-fun List<SupplyResponse>?.toMenuItem() = this?.map { AddProductViewModel.MenuItemModel(id = it.id, name = it.name, qut = it.quantity) }.orEmpty().toMutableList()
+fun Double?.toCurrency(): String {
+    return NumberFormat.getCurrencyInstance(Locale(LANGUAGE, COUNTRY)).format(this ?: ZERO_DOUBLE)
+}
+
+fun String?.formatDouble(): Double {
+    val value = if (this.isNullOrEmpty()) "0.0" else this
+    return value.replace(",",".").toDouble()
+}
+
+fun String?.filterNumbers(): String {
+    val string = this.orEmpty()
+    return string.replace("[^0-9]".toRegex(), "")
+}
