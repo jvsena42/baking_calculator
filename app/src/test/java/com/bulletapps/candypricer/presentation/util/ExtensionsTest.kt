@@ -19,10 +19,20 @@ class ExtensionsTest {
 //    }
 
     @Test
-    fun `formatDouble should display correct result`() {
+    fun `formatDouble() should display correct result`() {
         val input = "598,9"
         val converted = input.formatDouble()
         val expectedResult = 598.9
+
+        assertEquals(expectedResult, converted)
+    }
+
+
+    @Test
+    fun `given nul input formatDouble() should display correct result`() {
+        val input: String? = null
+        val converted = input.formatDouble()
+        val expectedResult = 0.0
 
         assertEquals(expectedResult, converted)
     }
