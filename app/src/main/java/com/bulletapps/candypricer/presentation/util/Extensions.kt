@@ -45,3 +45,8 @@ fun String?.formatDouble(): Double {
     val value = if (this.isNullOrEmpty()) "0.0" else this
     return value.replace(",",".").toDouble()
 }
+
+fun String?.filterNumbers(): String {
+    val string = this.orEmpty()
+    return string.replace("[^0-9]".toRegex(), "")
+}
