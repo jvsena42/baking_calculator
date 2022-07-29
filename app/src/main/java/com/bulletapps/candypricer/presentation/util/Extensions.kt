@@ -43,6 +43,5 @@ fun Double?.toCurrency(): String {
 
 fun String?.formatDouble(): Double {
     val value = if (this.isNullOrEmpty()) "0.0" else this
-    value.replace(",",".")
-    return value.toDouble()
+    return value.replace(",",".").toDouble()
 }
