@@ -9,6 +9,8 @@ import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.ZERO
+import com.bulletapps.candypricer.presentation.util.ZERO_DOUBLE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -23,7 +25,7 @@ class SupplyDetailViewModel @Inject constructor(
         uiState.supply.value = SupplyResponse(
             0,
             "Leite condensado",
-            1,
+            1.0,
             5.89,
             UnitResponse(0,"und")
         )
@@ -47,7 +49,8 @@ class SupplyDetailViewModel @Inject constructor(
     }
 
     class UIState {
-        val supply = MutableStateFlow(SupplyResponse(0,"",0,0.0, UnitResponse(0,"")))
+        val supply = MutableStateFlow(SupplyResponse(0,"", ZERO_DOUBLE, ZERO_DOUBLE, UnitResponse(
+            ZERO,"")))
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
 }

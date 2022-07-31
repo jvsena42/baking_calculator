@@ -15,6 +15,7 @@ import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.ZERO_DOUBLE
 import com.bulletapps.candypricer.presentation.util.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,7 @@ import javax.inject.Inject
 class ProductDetailViewModel @Inject constructor( ) : ViewModel(), EventFlow<ProductDetailViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
-    private val emptySupply = SupplyResponse(id = -1, name = "", quantity = 0, value = 0.0, null)
+    private val emptySupply = SupplyResponse(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE, null)
 
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnClickDelete -> {}

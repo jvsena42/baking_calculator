@@ -8,7 +8,7 @@ data class CreateProductParameters(
     @SerializedName("unit_id")
     var unitId: Int,
     @SerializedName("quantity")
-    var quantity: Int,
+    var quantity: Double,
     @SerializedName("supplies")
     var suppliesId: List<Int>,
     @SerializedName("profit_margin")

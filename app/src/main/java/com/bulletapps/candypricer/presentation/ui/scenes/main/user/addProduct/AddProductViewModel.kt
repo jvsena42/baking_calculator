@@ -13,9 +13,7 @@ import com.bulletapps.candypricer.domain.usecase.product.CreateProductUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
-import com.bulletapps.candypricer.presentation.util.EventFlow
-import com.bulletapps.candypricer.presentation.util.EventFlowImpl
-import com.bulletapps.candypricer.presentation.util.orZero
+import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -32,7 +30,7 @@ class AddProductViewModel @Inject constructor(
     ) : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
-    private val emptySupply = SupplyResponse(id = -1, name = "", quantity = 0, value = 0.0, null)
+    private val emptySupply = SupplyResponse(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE, null)
 
     suspend fun setup() {
         getUnits()
@@ -112,7 +110,7 @@ class AddProductViewModel @Inject constructor(
                 createProductUseCase(
                     CreateProductParameters(
                         name = uiState.name.value,
-                        quantity = uiState.quantity.value.toInt(),
+                        quantity = uiState.quantity.value.formatDouble(),
                         unitId = uiState.selectedUnit.value.id.orZero(),
                         suppliesId = uiState.selectedSupplies.value.map { it.id },
                         profitMargin = uiState.profitMargin.value.toDouble(),
@@ -230,7 +228,7 @@ class AddProductViewModel @Inject constructor(
         val selectedSupplies = MutableStateFlow(mutableListOf<MenuItemModel>())
         val suppliesMenuList = MutableStateFlow(mutableListOf<SupplyResponse>())
         val isMenuSuppliesExpanded = MutableStateFlow(false)
-        val selectedSupplyItem = MutableStateFlow(SupplyResponse(id = -1, name = "", quantity = 0, value = 0.0, null))
+        val selectedSupplyItem = MutableStateFlow(SupplyResponse(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE, null))
         val supplyQnt = MutableStateFlow(0)
         val isDialogVisible = MutableStateFlow(false)
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))

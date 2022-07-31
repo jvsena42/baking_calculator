@@ -47,7 +47,7 @@ private fun Preview() {
             id = 0,
             name = "Leite Condensado Caixa",
             value = 5.0,
-            quantity = 1,
+            quantity = 1.0,
             unit = UnitResponse(0,"und")
         )
     ) {

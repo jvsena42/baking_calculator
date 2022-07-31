@@ -6,13 +6,12 @@ import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
 import com.bulletapps.candypricer.data.response.UnitResponse
-import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.CreateSupplyUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.formatDouble
 import com.bulletapps.candypricer.presentation.util.orZero
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -85,7 +84,7 @@ class AddSupplyViewModel @Inject constructor(
                 createSupplyUseCase(
                     CreateSupplyParameters(
                         name = uiState.name.value,
-                        quantity = uiState.quantity.value.toInt(),
+                        quantity = uiState.quantity.value.formatDouble(),
                         price = uiState.price.value.toDouble(),
                         unitId = uiState.selectedUnit.value?.id.orZero(),
                     )

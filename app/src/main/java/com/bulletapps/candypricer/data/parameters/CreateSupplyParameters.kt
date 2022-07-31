@@ -6,7 +6,7 @@ data class CreateSupplyParameters(
     @SerializedName("name")
     var name: String,
     @SerializedName("quantity")
-    var quantity: Int, // TODO should be Double
+    var quantity: Double,
     @SerializedName("value")
     var price: Double,
     @SerializedName("unit_id")
