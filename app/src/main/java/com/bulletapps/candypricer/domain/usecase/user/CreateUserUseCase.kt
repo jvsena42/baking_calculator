@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class CreateUserUseCase @Inject constructor(private val repository: CandyPricerRepository) {
     suspend operator fun invoke(parameters: CreateUserParameters): Resource<LoginResponse> {
-        val cleanPhone = parameters.copy(email = parameters.phone.filterNumbers())
+        val cleanPhone = parameters.copy(phone = parameters.phone.filterNumbers())
         return repository.createUser(cleanPhone)
     }
 }
