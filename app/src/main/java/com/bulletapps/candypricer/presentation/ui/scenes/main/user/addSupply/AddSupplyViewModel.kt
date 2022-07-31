@@ -85,7 +85,7 @@ class AddSupplyViewModel @Inject constructor(
                     CreateSupplyParameters(
                         name = uiState.name.value,
                         quantity = uiState.quantity.value.formatDouble(),
-                        price = uiState.price.value.toDouble(),
+                        price = uiState.price.value.formatDouble(),
                         unitId = uiState.selectedUnit.value?.id.orZero(),
                     )
                 ).also { result ->
