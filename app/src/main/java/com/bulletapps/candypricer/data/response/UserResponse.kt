@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.data.response
 
 import com.google.gson.annotations.SerializedName
+import java.util.Date
 
 data class UserResponse(
     @SerializedName("id")
@@ -9,11 +10,11 @@ data class UserResponse(
     val name: String,
     @SerializedName("phone")
     val phone: String,
-    @SerializedName("address")
+    @SerializedName("email")
     val email: String,
     @SerializedName("is_admin")
     val isAdmin: Boolean,
-    @SerializedName("is_premium")
-    val isPremium: Boolean
+    @SerializedName("expiration_date")
+    val expirationDate: Date,
 )
 

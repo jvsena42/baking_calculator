@@ -14,7 +14,7 @@ interface CandyPricerApi {
     ): LoginResponse
 
     @GET("/user")
-    suspend fun getUser(): UserResponse //TODO IMPLEMENT
+    suspend fun getUser(): UserResponse
 
     @POST("/login")
     suspend fun login(

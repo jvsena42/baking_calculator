@@ -8,6 +8,8 @@ interface CandyPricerRepository {
 
     suspend fun createUser(parameters: CreateUserParameters): Resource<LoginResponse>
 
+    suspend fun getUser(): Resource<UserResponse>
+
     suspend fun login(parameters: LoginParameters): Resource<LoginResponse>
 
     suspend fun createProduct(parameters: CreateProductParameters): Resource<ProductResponse>
