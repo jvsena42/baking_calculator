@@ -9,7 +9,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 
-
 suspend fun <T> safeRequest(
     dispatcher: CoroutineDispatcher,
     block: suspend CoroutineScope.() -> (T)
@@ -22,8 +21,7 @@ suspend fun <T> safeRequest(
 }
 
 private fun <T> getErrorMessage(e: Exception): Resource.Error<T> {
-    var errorModel =
-        ErrorModel(userMessage = "Ocorreu um erro inesperado, tente novamente mais tarde")
+    var errorModel = ErrorModel(userMessage = "Ocorreu um erro inesperado, tente novamente mais tarde")
     try {
         errorModel = Gson().fromJson(e.message, ErrorModel::class.java)
     } catch (e2: Exception) {
