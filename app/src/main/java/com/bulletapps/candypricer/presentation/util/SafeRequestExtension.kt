@@ -1,11 +1,13 @@
 package com.bulletapps.candypricer.presentation.util
 
+import android.util.Log
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.domain.model.ErrorModel
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
-
 
 suspend fun <T> safeRequest(
     dispatcher: CoroutineDispatcher,
@@ -14,6 +16,17 @@ suspend fun <T> safeRequest(
     try {
         Resource.Success(block())
     } catch (e: Exception) {
-        Resource.Error(UiText.DynamicString(e.message.orEmpty()))
+        getErrorMessage(e)
     }
+}
+
+private fun <T> getErrorMessage(e: Exception): Resource.Error<T> {
+    var errorModel = ErrorModel(userMessage = "Ocorreu um erro inesperado, tente novamente mais tarde")
+    try {
+        errorModel = Gson().fromJson(e.message, ErrorModel::class.java)
+    } catch (e2: Exception) {
+        errorModel.devMessage = e.message
+    }
+    Log.d("REQUEST_ERROR", "safeRequest: ${errorModel.devMessage}")
+    return Resource.Error(UiText.DynamicString(errorModel.userMessage.orEmpty()))
 }

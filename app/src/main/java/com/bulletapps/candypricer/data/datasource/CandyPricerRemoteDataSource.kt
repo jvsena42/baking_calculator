@@ -6,7 +6,10 @@ import com.bulletapps.candypricer.data.response.*
 import javax.inject.Inject
 
 class CandyPricerRemoteDataSource @Inject constructor(private val api: CandyPricerApi) : CandyPricerDataSource {
+
     override suspend fun createUser(parameters: CreateUserParameters) = api.createUser(parameters)
+
+    override suspend fun getUser() = api.getUser()
 
     override suspend fun login(parameters: LoginParameters): LoginResponse = api.login(parameters)
 
