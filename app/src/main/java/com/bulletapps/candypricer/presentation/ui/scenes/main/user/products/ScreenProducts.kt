@@ -19,11 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.data.response.ProductResponse
+import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsVertical
+import com.bulletapps.candypricer.presentation.util.toCurrency
 
 @Composable
 fun ScreenProducs(
@@ -108,7 +110,7 @@ private fun ProductsList(list: List<ProductResponse>) {
                     firstLabel = R.string.name_label,
                     firsName = item.name,
                     secondLabel = R.string.cost_label,
-                    secondName = item.price.toString(),
+                    secondName = item.price.toCurrency(),
                     onClick = {}
                 )
             }
@@ -119,5 +121,18 @@ private fun ProductsList(list: List<ProductResponse>) {
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    Screen( onAction = {}, uiState = UIState() )
+    Screen(onAction = {}, uiState = UIState().apply {
+        productsList.value = listOf(
+            ProductResponse(
+                name = "Brigadeiro",
+                unit = UnitResponse(0, "und"),
+                profitMargin = 100.0,
+                quantity = 20.0,
+                laborValue = 15.0,
+                variableExpenses = 13.0,
+                price = 3.00,
+                suppliesId = listOf()
+            )
+        )
+    })
 }
