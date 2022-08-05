@@ -16,6 +16,7 @@
     <string name="back">Voltar</string>
     <string name="delete">Excluir</string>
     <string name="edit">Editar</string>
+    <string name="reload">Recarregar</string>
     <string name="add_supply">Adicionar Insumo</string>
     <string name="add_a_supply">Adicione um insumo</string>
     <string name="add_product">Adicionar Produto</string>
@@ -49,7 +50,9 @@
     <string name="mandatory_field">Campo obrigatório</string>
     <string name="select_supply">Selecione pelo menos um insumo</string>
     <string name="your_account_has_expiring">Ops!\nSua conta expirou 🙁</string>
+    <string name="unexpected_error">Ops!\nOcorreu um erro inesperado 🙁</string>
     <string name="send_a_message_to">Envie uma mensagem para</string>
+    <string name="verify_your_connection">Verifique sua conexão e tente novamente 😉</string>
     <string name="whatsapp_number"><u>86 9 86 8113-3033</u></string>
     <string name="and_renew_your_account">e Renove sua conta</string>
     <string name="error_invalid_email">Digite um email válido</string>
