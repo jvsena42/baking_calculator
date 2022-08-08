@@ -16,6 +16,8 @@ fun Int?.orZero() = this ?: ZERO
 fun Double?.orZero() = this ?: ZERO_DOUBLE
 fun Float?.orZero() = this ?: ZERO_FLOAT
 
+fun Boolean?.orFalse() = this ?: false
+
 fun Context.openWhatsapp(phone: String, message: String = "Oi!") {
     try {
         val sendIntent = Intent().apply {
