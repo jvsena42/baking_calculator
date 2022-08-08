@@ -34,7 +34,10 @@ fun ScreenMenu(
     viewModel: MenuViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    LaunchedEffect(key1 = Unit) { viewModel.setup() }
+    LaunchedEffect(key1 = Unit) {
+        viewModel.setup()
+        sharedViewModel.setupMenu()
+    }
     Screen(sharedViewModel.menuItems, sharedViewModel)
     EventConsumer(viewModel, sharedViewModel)
 }

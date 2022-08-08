@@ -29,24 +29,26 @@ class MainViewModel @Inject constructor(
         MenuModel(R.string.settings, R.drawable.ic_build, Navigation.Settings),
     )
 
-    private val menuAdmin = menuClient.apply {
+    private val menuAdmin = mutableListOf<MenuModel>().apply {
+        addAll(menuClient)
         add(MenuModel(R.string.clients, R.drawable.ic_clients, Navigation.Clients))
     }
 
     val menuItems: MutableStateFlow<List<MenuModel>> = MutableStateFlow(emptyList())
 
     init {
-        viewModelScope.launch { setupMenu() }
         setIsLoading()
     }
 
-    private suspend fun setupMenu() {
+    suspend fun setupMenu() {
         val result = getUserUseCase()
 
         if (result is Resource.Success) {
             val isAdmin = result.data?.isAdmin.orFalse()
             val items = if(isAdmin) menuAdmin else menuClient
             menuItems.value = items
+        } else {
+            menuItems.value = menuClient
         }
     }
 
