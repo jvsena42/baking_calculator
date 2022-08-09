@@ -2,8 +2,10 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplyDetail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -11,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,8 +25,8 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplyDetail.
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
-import com.bulletapps.candypricer.presentation.ui.widgets.SuppliesList
 import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
+import com.bulletapps.candypricer.presentation.util.toCurrency
 
 @Composable
 fun ScreenSupplyDetail(
@@ -33,7 +34,7 @@ fun ScreenSupplyDetail(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    LaunchedEffect(key1 = Unit) { viewModel.setup() }
+    LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.selectedSupply.value) }
     Screen(
         viewModel.uiState,
         viewModel::onAction
@@ -110,7 +111,7 @@ private fun MakeCard(uiState: UIState) {
             Spacer(Modifier.height(8.dp))
             TextWithLabel(stringResource(R.string.measure_type_label), supply.unit!!.name, modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
             Spacer(Modifier.height(8.dp))
-            TextWithLabel(stringResource(R.string.cost_label), supply.value.toString(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+            TextWithLabel(stringResource(R.string.cost_label), supply.value.toCurrency(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
         }
     }
 }

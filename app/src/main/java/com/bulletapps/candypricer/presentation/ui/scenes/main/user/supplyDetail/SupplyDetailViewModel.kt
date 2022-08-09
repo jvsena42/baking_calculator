@@ -21,14 +21,8 @@ class SupplyDetailViewModel @Inject constructor(
 
     val uiState = UIState()
 
-    suspend fun setup() {
-        uiState.supply.value = SupplyResponse(
-            0,
-            "Leite condensado",
-            1.0,
-            5.89,
-            UnitResponse(0,"und")
-        )
+    suspend fun setup(supply: SupplyResponse?) {
+        supply?.let{ uiState.supply.value = it }
     }
 
     fun onAction(action: ScreenActions) = when(action) {
