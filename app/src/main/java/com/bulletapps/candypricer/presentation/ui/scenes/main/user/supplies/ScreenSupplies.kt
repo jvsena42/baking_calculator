@@ -1,12 +1,15 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies
 
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -19,7 +22,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.SuppliesViewModel.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
-import com.bulletapps.candypricer.presentation.ui.widgets.SuppliesList
+import com.bulletapps.candypricer.presentation.ui.widgets.CardSupply
 
 @Composable
 fun ScreenSupplies(
@@ -87,15 +90,24 @@ fun Screen(
                 }
             }
         ) {
-            MakeList(uiState)
+            MakeList(uiState, onAction)
         }
     }
 }
 
 @Composable
-private fun MakeList(uiState: UIState) {
+private fun MakeList(uiState: UIState, onAction: (ScreenActions) -> Unit) {
     val list by uiState.suppliesList.collectAsState()
-    SuppliesList(list)
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        content = {
+            items(list.size) { index ->
+                val item = list[index]
+                CardSupply(item, onClick = { onAction(ScreenActions.OnClickSupply(item)) })
+            }
+        }
+    )
 }
 
 @Preview(showBackground = true)
