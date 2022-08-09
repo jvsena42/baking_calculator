@@ -28,7 +28,8 @@ class SuppliesViewModel @Inject constructor(
     }
 
     fun onAction(action: ScreenActions) = when(action) {
-        ScreenActions.OnClickAdd -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddSupply)
+        is ScreenActions.OnClickAdd -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddSupply)
+        is ScreenActions.OnClickSupply -> viewModelScope.sendEvent(ScreenEvent.NavigateSupplyDetail(action.supply))
     }
 
     private fun showToast(message: UiText?) {
@@ -37,11 +38,13 @@ class SuppliesViewModel @Inject constructor(
 
     sealed class ScreenActions {
         object OnClickAdd : ScreenActions()
+        data class  OnClickSupply(val supply: SupplyResponse) : ScreenActions()
     }
 
 
     sealed class ScreenEvent {
         object NavigateToAddSupply : ScreenEvent()
+        data class NavigateSupplyDetail(val supply: SupplyResponse) : ScreenEvent()
     }
 
     class UIState {

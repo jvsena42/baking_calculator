@@ -45,6 +45,10 @@ private fun EventConsumer(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is ScreenEvent.NavigateToAddSupply -> sharedViewModel.navigate(MainViewModel.Navigation.AddSupply)
+                is ScreenEvent.NavigateSupplyDetail -> {
+                    sharedViewModel.selectedSupply.value = event.supply
+                    sharedViewModel.navigate(MainViewModel.Navigation.SupplyDetail)
+                }
             }
         }
     }
