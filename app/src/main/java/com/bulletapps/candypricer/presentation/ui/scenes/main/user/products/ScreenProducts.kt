@@ -32,16 +32,13 @@ fun ScreenProducs(
     viewModel: ProductsViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    val activity = LocalContext.current as MainActivity
     LaunchedEffect(key1 = Unit) { viewModel.setup() }
     Screen(viewModel.uiState, viewModel::onAction)
-    EventConsumer(activity, viewModel, sharedViewModel
-    )
+    EventConsumer(viewModel, sharedViewModel)
 }
 
 @Composable
 private fun EventConsumer(
-    activity: MainActivity,
     viewModel: ProductsViewModel,
     sharedViewModel: MainViewModel
 ) {
@@ -49,6 +46,10 @@ private fun EventConsumer(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is ScreenEvent.NavigateToAddProduct -> sharedViewModel.navigate(MainViewModel.Navigation.AddProduct)
+                is ScreenEvent.NavigateToProductDetail -> {
+                    sharedViewModel.selectedProduct.value = event.product
+                    sharedViewModel.navigate(MainViewModel.Navigation.ProductDetail)
+                }
             }
         }
     }
@@ -87,19 +88,14 @@ fun Screen(
                 }
             }
         ) {
-            MakeList(uiState)
+            MakeList(uiState, onAction)
         }
     }
 }
 
 @Composable
-private fun MakeList(uiState: UIState) {
+private fun MakeList(uiState: UIState, onAction: (ScreenActions) -> Unit,) {
     val list by uiState.productsList.collectAsState()
-    ProductsList(list)
-}
-
-@Composable
-private fun ProductsList(list: List<ProductResponse>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -111,7 +107,7 @@ private fun ProductsList(list: List<ProductResponse>) {
                     firsName = item.name,
                     secondLabel = R.string.cost_label,
                     secondName = item.price.toCurrency(),
-                    onClick = {}
+                    onClick = { onAction(ScreenActions.OnClickProduct(item)) }
                 )
             }
         }
