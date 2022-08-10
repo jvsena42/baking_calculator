@@ -29,7 +29,8 @@ class ProductsViewModel @Inject constructor(
     }
 
     fun onAction(action: ScreenActions) = when(action) {
-        ScreenActions.OnClickAdd -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddProduct)
+        is ScreenActions.OnClickAdd -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddProduct)
+        is ScreenActions.OnClickProduct -> viewModelScope.sendEvent(ScreenEvent.NavigateToProductDetail(action.product))
     }
 
     private fun showToast(message: UiText?) {
@@ -38,10 +39,12 @@ class ProductsViewModel @Inject constructor(
 
     sealed class ScreenActions {
         object OnClickAdd : ScreenActions()
+        data class OnClickProduct(val product: ProductResponse) : ScreenActions()
     }
 
     sealed class ScreenEvent {
         object NavigateToAddProduct : ScreenEvent()
+        data class NavigateToProductDetail(val product: ProductResponse) : ScreenEvent()
     }
 
     class UIState {
