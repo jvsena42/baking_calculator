@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.config.Resource
+import com.bulletapps.candypricer.data.response.ProductResponse
 import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.domain.model.MenuModel
 import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
@@ -24,6 +25,7 @@ class MainViewModel @Inject constructor(
 
     val isLoading = MutableStateFlow(true)
     val selectedSupply = MutableStateFlow<SupplyResponse?>(null)
+    val selectedProduct = MutableStateFlow<ProductResponse?>(null)
 
     private val menuClient = mutableListOf(
         MenuModel(R.string.my_products, R.drawable.ic_store, Navigation.Products),
