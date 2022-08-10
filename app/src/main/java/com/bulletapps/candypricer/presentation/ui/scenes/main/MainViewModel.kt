@@ -67,7 +67,8 @@ class MainViewModel @Inject constructor(
 
     sealed class Navigation(val router: String, val shouldPop: Boolean = false) {
         object MainMenu : Navigation("main_menu", true)
-        object Products : Navigation("products",)
+        object Products : Navigation("products")
+        object ProductDetail : Navigation("product_detail")
         object AddProduct : Navigation("add_product")
         object Supplies : Navigation("supplies")
         object SupplyDetail : Navigation("supply_detail")
