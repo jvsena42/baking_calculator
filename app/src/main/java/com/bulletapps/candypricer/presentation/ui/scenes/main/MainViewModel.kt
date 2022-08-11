@@ -57,7 +57,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun setIsLoading() = viewModelScope.launch {
-        delay(3000L)
+        delay(2000L)
         isLoading.value = false
     }
 
