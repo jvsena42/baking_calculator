@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Precificando</string>
     <string name="pricing_with_tricia">Precificando\ncom Tricia</string>
     <string name="do_sign_in">Faça seu cadastro</string>
@@ -16,6 +16,9 @@
     <string name="back">Voltar</string>
     <string name="delete">Excluir</string>
     <string name="edit">Editar</string>
+    <string name="i_want_update_my_plan">Quero atualizar meu plano</string>
+    <string name="get_the_news_first">Receba as novidades em primeira mão</string>
+    <string name="clicking_here">Clicando aqui</string>
     <string name="reload">Recarregar</string>
     <string name="add_supply">Adicionar Insumo</string>
     <string name="add_a_supply">Adicione um insumo</string>

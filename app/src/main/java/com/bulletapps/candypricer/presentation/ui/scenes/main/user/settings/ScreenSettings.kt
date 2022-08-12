@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -26,9 +27,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.Sett
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.GoBack
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.Login
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
-import com.bulletapps.candypricer.presentation.ui.widgets.LogoCircle
-import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
-import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
+import com.bulletapps.candypricer.presentation.ui.widgets.*
 
 @Composable
 fun ScreenSettings(
@@ -110,13 +109,33 @@ private fun Screen(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TextWithLabel(stringResource(R.string.email), "100", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+                    TextWithLabel(stringResource(R.string.email), "", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
                     Spacer(Modifier.height(16.dp))
-                    TextWithLabel(stringResource(R.string.whatsapp), "100", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+                    TextWithLabel(stringResource(R.string.whatsapp), "", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
                     Spacer(Modifier.height(16.dp))
-                    TextWithLabel(stringResource(R.string.valid_at), "100", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+                    TextWithLabel(stringResource(R.string.valid_at), "", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
                 }
             }
+
+            Spacer(Modifier.height(16.dp))
+
+            NormalButton(
+                text = stringResource(R.string.i_want_update_my_plan),
+                onClick = { }
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            Text(
+                stringResource(R.string.get_the_news_first),
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(Modifier.height(4.dp))
+
+            TextButtonCustom(stringResource(R.string.clicking_here), onClick =  {})
 
             Spacer(Modifier.weight(1f))
 
