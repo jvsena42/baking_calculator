@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenActions
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenActions.OnClickLogout
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.GoBack
@@ -35,7 +36,7 @@ fun ScreenSettings(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    Screen(viewModel::onAction)
+    Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(activity, viewModel, sharedViewModel)
 }
 
@@ -57,6 +58,7 @@ private fun EventConsumer(
 
 @Composable
 private fun Screen(
+    uiState: SettingsViewModel.UIState,
     onAction: (ScreenActions) -> Unit,
 ) {
     CandyPricerTheme {
@@ -135,7 +137,7 @@ private fun Screen(
 
             Spacer(Modifier.height(4.dp))
 
-            TextButtonCustom(stringResource(R.string.clicking_here), onClick =  {})
+            TextButtonCustom(stringResource(R.string.clicking_here), onClick = {})
 
             Spacer(Modifier.weight(1f))
 
@@ -153,6 +155,7 @@ private fun Screen(
 @Composable
 fun Preview() {
     Screen(
+        uiState = SettingsViewModel.UIState(),
         onAction = {}
     )
 }
