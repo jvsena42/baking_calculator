@@ -1,7 +1,6 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
@@ -24,7 +23,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.*
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenActions.OnClickLogout
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.GoBack
@@ -51,8 +49,9 @@ private fun EventConsumer(
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                GoBack -> activity.onBackPressed()
-                Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
+                is GoBack -> activity.onBackPressed()
+                is Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
+                is ScreenEvent.NavigateLink -> TODO()
             }
         }
     }
@@ -101,13 +100,13 @@ private fun Screen(
 
             Spacer(Modifier.height(8.dp))
 
-            CardInformations()
+            CardInfo(uiState)
 
             Spacer(Modifier.height(16.dp))
 
             NormalButton(
                 text = stringResource(R.string.i_want_update_my_plan),
-                onClick = { }
+                onClick = { onAction(ScreenActions.OnClickUpdate) }
             )
 
             Spacer(Modifier.height(16.dp))
@@ -136,7 +135,7 @@ private fun Screen(
 }
 
 @Composable
-private fun CardInformations(uiState: UIState) {
+private fun CardInfo(uiState: UIState) {
     val email  by uiState.name.collectAsState()
     val phone  by uiState.phone.collectAsState()
     val expirationDate  by uiState.expirationDate.collectAsState()

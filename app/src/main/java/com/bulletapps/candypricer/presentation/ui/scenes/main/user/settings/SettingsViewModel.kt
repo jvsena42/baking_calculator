@@ -36,10 +36,15 @@ class SettingsViewModel @Inject constructor(
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnClickLogout -> onClickLogout()
         is ScreenActions.OnClickUpdate -> onClickUpdate()
+        is ScreenActions.OnClickLink -> onClickLink()
     }
 
     private fun onClickUpdate() = viewModelScope.launch {
-        //TODO IMPLEMENT
+        sendEvent(ScreenEvent.NavigateLink("url")) //TODO implement
+    }
+
+    private fun onClickLink() = viewModelScope.launch {
+        sendEvent(ScreenEvent.NavigateLink("url")) //TODO implement
     }
 
     private fun onClickLogout() = viewModelScope.launch {
@@ -50,11 +55,13 @@ class SettingsViewModel @Inject constructor(
     sealed class ScreenEvent {
         object GoBack : ScreenEvent()
         object Login : ScreenEvent()
+        data class NavigateLink(val url: String) : ScreenEvent()
     }
 
     sealed class ScreenActions {
         object OnClickLogout : ScreenActions()
         object OnClickUpdate : ScreenActions()
+        object OnClickLink : ScreenActions()
     }
 
     class UIState {
