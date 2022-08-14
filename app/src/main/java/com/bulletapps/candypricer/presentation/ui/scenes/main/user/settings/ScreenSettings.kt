@@ -119,9 +119,10 @@ private fun Screen(
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(Modifier.height(4.dp))
-
-            TextButtonCustom(stringResource(R.string.clicking_here), onClick = {})
+            TextButtonCustom(
+                stringResource(R.string.clicking_here),
+                onClick = { onAction(ScreenActions.OnClickLink) }
+            )
 
             Spacer(Modifier.weight(1f))
 
