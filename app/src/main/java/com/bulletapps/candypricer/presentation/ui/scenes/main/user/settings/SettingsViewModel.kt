@@ -2,6 +2,7 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bulletapps.candypricer.BuildConfig
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
 import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
@@ -40,11 +41,11 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun onClickUpdate() = viewModelScope.launch {
-        sendEvent(ScreenEvent.NavigateLink("url")) //TODO implement
+        sendEvent(ScreenEvent.NavigateLink(BuildConfig.BUY_A_PLAN_URL))
     }
 
     private fun onClickLink() = viewModelScope.launch {
-        sendEvent(ScreenEvent.NavigateLink("url")) //TODO implement
+        sendEvent(ScreenEvent.NavigateLink(BuildConfig.LINKTREE_URL))
     }
 
     private fun onClickLogout() = viewModelScope.launch {
