@@ -29,6 +29,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.Sett
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.Login
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.*
+import com.bulletapps.candypricer.presentation.util.navigateUrl
 
 @Composable
 fun ScreenSettings(
@@ -51,7 +52,7 @@ private fun EventConsumer(
             when (event) {
                 is GoBack -> activity.onBackPressed()
                 is Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
-                is ScreenEvent.NavigateLink -> TODO()
+                is ScreenEvent.NavigateLink -> activity.navigateUrl(event.url)
             }
         }
     }

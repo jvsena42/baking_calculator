@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.icu.text.NumberFormat
 import android.net.Uri
+import androidx.core.content.ContextCompat
 import java.util.*
+
 
 const val ZERO = 0
 const val ZERO_DOUBLE = 0.0
@@ -51,4 +53,10 @@ fun String?.formatDouble(): Double {
 fun String?.filterNumbers(): String {
     val string = this.orEmpty()
     return string.replace("[^0-9]".toRegex(), "")
+}
+
+fun Context.navigateUrl(url: String) {
+    val i = Intent(Intent.ACTION_VIEW)
+    i.data = Uri.parse(url)
+    startActivity(i)
 }
