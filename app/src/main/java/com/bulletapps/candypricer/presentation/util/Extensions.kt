@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.icu.text.NumberFormat
 import android.net.Uri
+import android.telephony.PhoneNumberUtils
 import androidx.core.content.ContextCompat
 import java.util.*
 
@@ -59,4 +60,8 @@ fun Context.navigateUrl(url: String) {
     val i = Intent(Intent.ACTION_VIEW)
     i.data = Uri.parse(url)
     startActivity(i)
+}
+
+fun String?.formatPhone(): String {
+    return if (this.isNullOrEmpty()) "" else PhoneNumberUtils.formatNumber(this, Locale.getDefault().country)
 }

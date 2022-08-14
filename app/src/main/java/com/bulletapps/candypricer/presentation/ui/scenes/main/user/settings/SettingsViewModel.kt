@@ -1,5 +1,6 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings
 
+import android.telephony.PhoneNumberUtils
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.BuildConfig
@@ -9,9 +10,11 @@ import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.MenuViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.formatPhone
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +32,7 @@ class SettingsViewModel @Inject constructor(
             val user = result.data
             uiState.name.value = user?.name.orEmpty()
             uiState.email.value = user?.email.orEmpty()
-            uiState.phone.value = user?.phone.orEmpty() //TODO format
+            uiState.phone.value =  user?.phone.formatPhone()
             uiState.expirationDate.value = user?.expirationDate.orEmpty() //TODO format
         }
     }
