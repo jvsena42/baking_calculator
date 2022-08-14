@@ -9,6 +9,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,7 +25,7 @@ import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenActions
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.*
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenActions.OnClickLogout
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.GoBack
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.Login
@@ -58,7 +60,7 @@ private fun EventConsumer(
 
 @Composable
 private fun Screen(
-    uiState: SettingsViewModel.UIState,
+    uiState: UIState,
     onAction: (ScreenActions) -> Unit,
 ) {
     CandyPricerTheme {
@@ -86,12 +88,7 @@ private fun Screen(
 
             Spacer(Modifier.height(16.dp))
 
-            Text(
-                stringResource(R.string.hello_user),
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Greeting(uiState)
 
             Spacer(Modifier.height(16.dp))
 
@@ -104,20 +101,7 @@ private fun Screen(
 
             Spacer(Modifier.height(8.dp))
 
-            Card(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    TextWithLabel(stringResource(R.string.email), "", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
-                    Spacer(Modifier.height(16.dp))
-                    TextWithLabel(stringResource(R.string.whatsapp), "", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
-                    Spacer(Modifier.height(16.dp))
-                    TextWithLabel(stringResource(R.string.valid_at), "", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
-                }
-            }
+            CardInformations()
 
             Spacer(Modifier.height(16.dp))
 
@@ -151,11 +135,60 @@ private fun Screen(
     }
 }
 
+@Composable
+private fun CardInformations(uiState: UIState) {
+    val email  by uiState.name.collectAsState()
+    val phone  by uiState.phone.collectAsState()
+    val expirationDate  by uiState.expirationDate.collectAsState()
+
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            TextWithLabel(
+                stringResource(R.string.email),
+                email,
+                modifier = Modifier.fillMaxWidth(),
+                arrangement = Arrangement.SpaceBetween
+            )
+            Spacer(Modifier.height(16.dp))
+            TextWithLabel(
+                stringResource(R.string.whatsapp),
+                phone,
+                modifier = Modifier.fillMaxWidth(),
+                arrangement = Arrangement.SpaceBetween
+            )
+            Spacer(Modifier.height(16.dp))
+            TextWithLabel(
+                stringResource(R.string.valid_at),
+                expirationDate,
+                modifier = Modifier.fillMaxWidth(),
+                arrangement = Arrangement.SpaceBetween
+            )
+        }
+    }
+}
+
+@Composable
+private fun Greeting(uiState: UIState) {
+    val name by uiState.name.collectAsState()
+
+    Text(
+        stringResource(R.string.hello_user, name),
+        textAlign = TextAlign.Center,
+        fontSize = 24.sp,
+        fontWeight = FontWeight.Bold
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
     Screen(
-        uiState = SettingsViewModel.UIState(),
+        uiState = UIState(),
         onAction = {}
     )
 }
