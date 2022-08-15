@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package com.bulletapps.candypricer.presentation.ui.scenes.main.menu
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -35,10 +33,7 @@ fun ScreenMenu(
     viewModel: MenuViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    LaunchedEffect(key1 = Unit) {
-        viewModel.setup(sharedViewModel.menuItems.value)
-        sharedViewModel.setupMenu()
-    }
+    LaunchedEffect(key1 = sharedViewModel.menuItems) { viewModel.setup() }
     Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(viewModel, sharedViewModel)
 }
@@ -84,6 +79,7 @@ fun Screen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MenuGrid(
     uiState: MenuViewModel.UIState,

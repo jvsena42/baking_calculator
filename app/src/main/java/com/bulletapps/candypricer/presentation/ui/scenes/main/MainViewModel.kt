@@ -19,41 +19,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val getUserUseCase: GetUserUseCase,
-    ): ViewModel(), EventFlow<MainViewModel.Navigation> by EventFlowImpl()  {
+class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.Navigation> by EventFlowImpl()  {
 
     val isLoading = MutableStateFlow(true)
     val selectedSupply = MutableStateFlow<SupplyResponse?>(null)
     val selectedProduct = MutableStateFlow<ProductResponse?>(null)
 
-    private val menuClient = mutableListOf(
-        MenuModel(R.string.my_products, R.drawable.ic_store, Navigation.Products),
-        MenuModel(R.string.supplies, R.drawable.ic_shopping_cart, Navigation.Supplies),
-        MenuModel(R.string.settings, R.drawable.ic_build, Navigation.Settings),
-    )
-
-    private val menuAdmin = mutableListOf<MenuModel>().apply {
-        addAll(menuClient)
-        add(MenuModel(R.string.clients, R.drawable.ic_clients, Navigation.Clients))
-    }
 
     val menuItems: MutableStateFlow<List<MenuModel>> = MutableStateFlow(emptyList())
 
     init {
         setIsLoading()
-    }
-
-    suspend fun setupMenu() {
-        val result = getUserUseCase()
-
-        if (result is Resource.Success) {
-            val isAdmin = result.data?.isAdmin.orFalse()
-            val items = if(isAdmin) menuAdmin else menuClient
-            menuItems.value = items
-        } else {
-            menuItems.value = menuClient
-        }
     }
 
     private fun setIsLoading() = viewModelScope.launch {
