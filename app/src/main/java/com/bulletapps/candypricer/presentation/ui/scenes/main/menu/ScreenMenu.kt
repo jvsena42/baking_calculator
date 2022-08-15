@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package com.bulletapps.candypricer.presentation.ui.scenes.main.menu
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -16,6 +14,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -34,8 +33,8 @@ fun ScreenMenu(
     viewModel: MenuViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    LaunchedEffect(key1 = Unit) { viewModel.setup() }
-    Screen(sharedViewModel.menuItems, sharedViewModel)
+    LaunchedEffect(key1 = sharedViewModel.menuItems) { viewModel.setup() }
+    Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(viewModel, sharedViewModel)
 }
 
@@ -49,6 +48,7 @@ private fun EventConsumer(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is MenuViewModel.ScreenEvent.ExpiredScreen -> sharedViewModel.navigate(MainViewModel.Navigation.Expired)
+                is MenuViewModel.ScreenEvent.Navigate -> sharedViewModel.navigate(event.path)
             }
         }
     }
@@ -56,10 +56,9 @@ private fun EventConsumer(
 
 @Composable
 fun Screen(
-    menuState: MutableStateFlow<List<MenuModel>>,
-    sharedViewModel: MainViewModel
+    uiState: MenuViewModel.UIState,
+    onAction: (MenuViewModel.ScreenActions) -> Unit
 ) {
-    val items = menuState.collectAsState()
     CandyPricerTheme {
         Column (
             modifier = Modifier
@@ -75,13 +74,19 @@ fun Screen(
                     )
                 },
             )
-            MenuGrid(items.value, sharedViewModel)
+            MenuGrid(uiState, onAction)
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MenuGrid(menuItems: List<MenuModel>, sharedViewModel: MainViewModel) {
+fun MenuGrid(
+    uiState: MenuViewModel.UIState,
+    onAction: (MenuViewModel.ScreenActions) -> Unit
+) {
+    val menuItems by uiState.menuItems.collectAsState()
+
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
         modifier = Modifier
@@ -90,9 +95,10 @@ fun MenuGrid(menuItems: List<MenuModel>, sharedViewModel: MainViewModel) {
         content = {
             items(menuItems.size) { index ->
                 val item = menuItems[index]
-                MenuItem(item) {
-                    sharedViewModel.navigate(item.path)
-                }
+                MenuItem(
+                    item,
+                    onClick = { onAction(MenuViewModel.ScreenActions.OnClickItem(item.path)) }
+                )
             }
         }
     )

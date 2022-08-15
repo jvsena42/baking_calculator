@@ -168,7 +168,7 @@ private fun MakeFieldPhone(onAction: (ScreenActions) -> Unit, uiState: UIState) 
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Phone(it))) },
         visualTransformation = MaskVisualTransformation(BR_PHONE_MASK),
         placeholder = { Text(stringResource(R.string.phone_placeholder)) },
-        label = { Text(error?.asString() ?: stringResource(R.string.phone_whatsapp)) },
+        label = { Text(error?.asString() ?: stringResource(R.string.whatsapp)) },
         isError = isError,
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )

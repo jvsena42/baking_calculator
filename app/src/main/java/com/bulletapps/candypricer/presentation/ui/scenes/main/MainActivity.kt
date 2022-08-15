@@ -14,10 +14,12 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.Sc
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply.ScreenAddSupply
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ScreenExpired
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.ScreenLogin
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.productDetail.ScreenProductDetail
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ScreenProducs
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.ScreenRegister
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.ScreenSettings
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.ScreenSupplies
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplyDetail.ScreenSupplyDetail
 import com.bulletapps.candypricer.presentation.util.setNavigation
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -73,6 +75,12 @@ class MainActivity : ComponentActivity() {
         }
         composable(MainViewModel.Navigation.Expired.router) {
             ScreenExpired(sharedViewModel = sharedViewModel)
+        }
+        composable(MainViewModel.Navigation.SupplyDetail.router) {
+            ScreenSupplyDetail(sharedViewModel = sharedViewModel)
+        }
+        composable(MainViewModel.Navigation.ProductDetail.router) {
+            ScreenProductDetail(sharedViewModel = sharedViewModel)
         }
     }
 

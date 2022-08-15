@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Precificando</string>
     <string name="pricing_with_tricia">Precificando\ncom Tricia</string>
     <string name="do_sign_in">Faça seu cadastro</string>
@@ -16,6 +16,9 @@
     <string name="back">Voltar</string>
     <string name="delete">Excluir</string>
     <string name="edit">Editar</string>
+    <string name="i_want_update_my_plan">Quero atualizar meu plano</string>
+    <string name="get_the_news_first">Confira as novidades em primeira mão e receba dicas valiosas</string>
+    <string name="clicking_here">Clicando aqui</string>
     <string name="reload">Recarregar</string>
     <string name="add_supply">Adicionar Insumo</string>
     <string name="add_a_supply">Adicione um insumo</string>
@@ -23,7 +26,8 @@
     <string name="name">Nome</string>
     <string name="product">Produto</string>
     <string name="email">Email</string>
-    <string name="phone_whatsapp">Celular/Whatsapp</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="valid_at">Conta válida até</string>
     <string name="phone_placeholder">(00) 9 0000–0000</string>
     <string name="password">Senha</string>
     <string name="repeat_password">Confirme a senha</string>
@@ -52,6 +56,8 @@
     <string name="your_account_has_expiring">Ops!\nSua conta expirou 🙁</string>
     <string name="unexpected_error">Ops!\nOcorreu um erro inesperado 🙁</string>
     <string name="send_a_message_to">Envie uma mensagem para</string>
+    <string name="hello_user">Oi, $1s!</string>
+    <string name="your_data">Seus dados:</string>
     <string name="verify_your_connection">Verifique sua conexão e tente novamente 😉</string>
     <string name="whatsapp_number"><u>86 9 86 8113-3033</u></string>
     <string name="and_renew_your_account">e Renove sua conta</string>
