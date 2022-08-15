@@ -6,6 +6,7 @@ import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.domain.model.MenuModel
 import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
 import com.bulletapps.candypricer.domain.usecase.user.IsExpiredUserUseCase
+import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
@@ -39,12 +40,12 @@ class MenuViewModel @Inject constructor(
     }
 
     sealed class ScreenActions {
-        data class OnClickItem(val path: String) : ScreenActions()
+        data class OnClickItem(val path: MainViewModel.Navigation) : ScreenActions()
     }
 
     sealed class ScreenEvent {
         object ExpiredScreen : ScreenEvent()
-        data class Navigate(val path: String) : ScreenEvent()
+        data class Navigate(val path: MainViewModel.Navigation) : ScreenEvent()
     }
 
     class UIState {
