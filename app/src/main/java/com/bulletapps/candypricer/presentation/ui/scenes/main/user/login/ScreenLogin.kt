@@ -26,6 +26,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginVi
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoWithText
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.TextButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 
 @Composable
@@ -118,9 +119,10 @@ private fun MakeRegisterText(onAction: (ScreenActions) -> Unit) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(stringResource(R.string.dont_you_have_an_account))
-        TextButton(onClick = { onAction(ScreenActions.OnClickRegister) }) {
-            Text(stringResource(R.string.do_sign_in))
-        }
+        TextButtonCustom(
+            text = stringResource(R.string.do_sign_in),
+            onClick = { onAction(ScreenActions.OnClickRegister) }
+        )
     }
 }
 

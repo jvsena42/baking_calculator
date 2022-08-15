@@ -26,11 +26,15 @@ android {
         debug {
             minifyEnabled false
             buildConfigField "String", "BASE_URL", DEV_BASE_URL
+            buildConfigField "String", "LINKTREE_URL", LINKTREE_URL
+            buildConfigField "String", "BUY_A_PLAN_URL", BUY_A_PLAN_URL
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled false
             buildConfigField "String", "BASE_URL", PROD_BASE_URL
+            buildConfigField "String", "LINKTREE_URL", LINKTREE_URL
+            buildConfigField "String", "BUY_A_PLAN_URL", BUY_A_PLAN_URL
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
