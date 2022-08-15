@@ -85,8 +85,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun navEvent(navController: NavController, navScreen: MainViewModel.Navigation) {
-        navController.navigate(route = navScreen.router, popStack = navScreen.shouldPop) {
-
+        navController.navigate(route = navScreen.router) {
+            if (navScreen.shouldPop) {
+                popUpTo(navScreen.router)
+            }
         }
     }
 }
