@@ -87,6 +87,10 @@ class MainActivity : ComponentActivity() {
     private fun navEvent(navController: NavController, navScreen: MainViewModel.Navigation) {
         navController.navigate(route = navScreen.router) {
             launchSingleTop = true
+            val currentScreen = navController.currentBackStackEntry?.destination?.route.orEmpty()
+            if (navScreen.shouldPop && currentScreen.isNotEmpty()) {
+                popUpTo(currentScreen) { inclusive = true }
+            }
         }
     }
 }
