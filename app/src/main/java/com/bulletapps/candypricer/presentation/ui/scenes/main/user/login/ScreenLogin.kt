@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -137,7 +138,7 @@ private fun MakeFieldEmail(onAction: (ScreenActions) -> Unit, uiState: UIState) 
     OutlinedTextField(
         value = name,
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Email(it))) },
         label = { Text(error?.asString() ?: stringResource(R.string.email)) },
         isError = isError,

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -134,6 +135,7 @@ private fun MakeFieldName(onAction: (ScreenActions) -> Unit, uiState: UIState) {
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Name(it))) },
         label = { Text(error?.asString() ?: stringResource(R.string.name)) },
         isError = isError,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
 }
@@ -147,7 +149,7 @@ private fun MakeFieldEmail(onAction: (ScreenActions) -> Unit, uiState: UIState) 
     OutlinedTextField(
         value = email,
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Email(it))) },
         label = { Text(error?.asString() ?: stringResource(R.string.email)) },
         isError = isError,
@@ -164,7 +166,7 @@ private fun MakeFieldPhone(onAction: (ScreenActions) -> Unit, uiState: UIState) 
     OutlinedTextField(
         value = phone,
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Phone(it))) },
         visualTransformation = MaskVisualTransformation(BR_PHONE_MASK),
         placeholder = { Text(stringResource(R.string.phone_placeholder)) },
@@ -185,7 +187,7 @@ private fun MakeFieldPassword(onAction: (ScreenActions) -> Unit, uiState: UIStat
     OutlinedTextField(
         value = password,
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Next),
         visualTransformation = if (passwordVisible)  VisualTransformation.None else PasswordVisualTransformation(),
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Password(it))) },
         label = { Text(error?.asString() ?: stringResource(R.string.password)) },
