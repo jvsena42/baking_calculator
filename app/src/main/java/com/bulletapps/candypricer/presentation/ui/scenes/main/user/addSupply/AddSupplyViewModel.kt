@@ -5,14 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
+import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.CreateSupplyUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
-import com.bulletapps.candypricer.presentation.util.EventFlow
-import com.bulletapps.candypricer.presentation.util.EventFlowImpl
-import com.bulletapps.candypricer.presentation.util.formatDouble
-import com.bulletapps.candypricer.presentation.util.orZero
+import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -27,11 +25,18 @@ class AddSupplyViewModel @Inject constructor(
 
     val uiState = UIState()
 
-    suspend fun setup() {
+    suspend fun setup(supply: SupplyResponse?) {
         val unitsResult = getUnitsUseCase()
         when(unitsResult) {
             is Resource.Success -> uiState.unities.value = unitsResult.data.orEmpty()
             is Resource.Error -> showToast(uiState.textToast.value)
+        }
+
+        supply?.let { supply ->
+            uiState.name.value = supply.name
+            uiState.selectedUnit.value = supply.unit
+            uiState.quantity.value = supply.quantity.toString()
+            uiState.price.value = supply.value.toCurrency()
         }
     }
 

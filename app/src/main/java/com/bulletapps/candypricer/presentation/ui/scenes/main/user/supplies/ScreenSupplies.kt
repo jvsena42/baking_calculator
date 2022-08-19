@@ -30,7 +30,10 @@ fun ScreenSupplies(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    LaunchedEffect(key1 = Unit) { viewModel.setup() }
+    LaunchedEffect(key1 = Unit) {
+        sharedViewModel.selectedSupply.value = null
+        viewModel.setup()
+    }
     Screen(
         viewModel.uiState,
         viewModel::onAction

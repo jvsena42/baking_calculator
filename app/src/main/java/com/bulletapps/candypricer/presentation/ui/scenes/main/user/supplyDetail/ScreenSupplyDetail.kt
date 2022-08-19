@@ -87,8 +87,8 @@ fun Screen(
 
             Spacer(Modifier.weight(1f))
 
-            OutlinedButtonCustom(text = stringResource(R.string.delete), onClick = {})
-            NormalButton(text = stringResource(R.string.edit), onClick = {})
+            OutlinedButtonCustom(text = stringResource(R.string.delete), onClick = { onAction(ScreenActions.OnCLickDelete) })
+            NormalButton(text = stringResource(R.string.edit), onClick = { onAction(ScreenActions.OnCLickEdit) })
             Spacer(Modifier.height(32.dp))
         }
     }

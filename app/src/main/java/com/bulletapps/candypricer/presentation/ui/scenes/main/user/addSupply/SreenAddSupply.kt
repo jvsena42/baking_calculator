@@ -36,7 +36,7 @@ fun ScreenAddSupply(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    LaunchedEffect(key1 = Unit) { viewModel.setup() }
+    LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.selectedSupply.value) }
     Screen(
         viewModel.uiState,
         viewModel::onAction
