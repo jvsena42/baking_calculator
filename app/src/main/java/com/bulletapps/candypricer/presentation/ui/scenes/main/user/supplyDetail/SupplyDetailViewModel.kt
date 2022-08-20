@@ -26,7 +26,8 @@ class SupplyDetailViewModel @Inject constructor(
     }
 
     fun onAction(action: ScreenActions) = when(action) {
-        ScreenActions.OnClickAdd -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddSupply)
+        ScreenActions.OnCLickEdit -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddSupply)
+        ScreenActions.OnCLickDelete -> {}
     }
 
     private fun showToast(message: UiText?) {
@@ -34,7 +35,8 @@ class SupplyDetailViewModel @Inject constructor(
     }
 
     sealed class ScreenActions {
-        object OnClickAdd : ScreenActions()
+        object OnCLickEdit : ScreenActions()
+        object OnCLickDelete : ScreenActions()
     }
 
 

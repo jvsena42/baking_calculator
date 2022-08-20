@@ -2,6 +2,7 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
@@ -14,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +36,7 @@ fun ScreenAddSupply(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    LaunchedEffect(key1 = Unit) { viewModel.setup() }
+    LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.selectedSupply.value) }
     Screen(
         viewModel.uiState,
         viewModel::onAction
@@ -111,6 +113,7 @@ private fun MakeFieldName(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     OutlinedTextField(
         value = name,
         singleLine = true,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         onValueChange = { onAction(ScreenActions.OnTextChanged(FieldsTexts.Name(it))) },
         placeholder = { Text(stringResource(R.string.cocoa_powder)) },
         label = { Text(stringResource(R.string.name)) },
@@ -125,7 +128,7 @@ private fun MakeFieldQuantity(onAction: (ScreenActions) -> Unit, uiState: UIStat
     OutlinedTextField(
         value = quantity,
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
         onValueChange = { onAction(ScreenActions.OnTextChanged(FieldsTexts.Quantity(it))) },
         placeholder = { Text(stringResource(R.string.five_hundred)) },
         label = { Text(stringResource(R.string.quantity)) },
@@ -158,6 +161,7 @@ private fun MakeFieldPrice(onAction: (ScreenActions) -> Unit, uiState: UIState) 
         value = price,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardActions = KeyboardActions { onAction(ScreenActions.OnClickConfirm) },
         onValueChange = { onAction(ScreenActions.OnTextChanged(FieldsTexts.Price(it))) },
         placeholder = { Text(stringResource(R.string.thirty_reals)) },
         label = { Text(stringResource(R.string.price)) },
