@@ -37,6 +37,7 @@ class AddSupplyViewModel @Inject constructor(
             uiState.selectedUnit.value = supply.unit
             uiState.quantity.value = supply.quantity.toString()
             uiState.price.value = supply.value.toCurrency()
+            uiState.id.value = supply.id
         }
     }
 
@@ -86,19 +87,27 @@ class AddSupplyViewModel @Inject constructor(
                 && qntResult is Resource.Success
                 && priceResult is Resource.Success
             ) {
-                createSupplyUseCase(
-                    CreateSupplyParameters(
-                        name = uiState.name.value,
-                        quantity = uiState.quantity.value.formatDouble(),
-                        price = uiState.price.value.formatDouble(),
-                        unitId = uiState.selectedUnit.value?.id.orZero(),
-                    )
-                ).also { result ->
-                    when (result) {
-                        is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
-                        is Resource.Error -> showToast(result.message)
-                    }
-                }
+                if (uiState.id.value == 0) handleCreateSupply() else handleEditSupply()
+            }
+        }
+    }
+
+    private suspend fun handleEditSupply() {
+        // TODO IMPLEMENT
+    }
+
+    private suspend fun handleCreateSupply() {
+        createSupplyUseCase(
+            CreateSupplyParameters(
+                name = uiState.name.value,
+                quantity = uiState.quantity.value.formatDouble(),
+                price = uiState.price.value.formatDouble(),
+                unitId = uiState.selectedUnit.value?.id.orZero(),
+            )
+        ).also { result ->
+            when (result) {
+                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                is Resource.Error -> showToast(result.message)
             }
         }
     }
@@ -126,6 +135,7 @@ class AddSupplyViewModel @Inject constructor(
 
     class UIState {
         val name = MutableStateFlow("")
+        val id = MutableStateFlow(0)
         val quantity = MutableStateFlow("")
         val price = MutableStateFlow("")
         val unities = MutableStateFlow<List<UnitResponse>>(listOf())
