@@ -40,18 +40,20 @@ fun ScreenProductDetail(
     LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.selectedProduct.value) }
     val activity = LocalContext.current as MainActivity
     Screen(viewModel.uiState, viewModel::onAction)
-    EventConsumer(activity, viewModel)
+    EventConsumer(activity, viewModel, sharedViewModel)
 }
 
 @Composable
 private fun EventConsumer(
     activity: MainActivity,
-    viewModel: ProductDetailViewModel
+    viewModel: ProductDetailViewModel,
+    sharedViewModel: MainViewModel
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                GoBack -> activity.onBackPressed()
+                is GoBack -> activity.onBackPressed()
+                is ProductDetailViewModel.ScreenEvent.NavigateToAddProduct -> sharedViewModel.navigate(MainViewModel.Navigation.AddProduct)
             }
         }
     }
@@ -129,7 +131,7 @@ private fun Screen(
 
                     NormalButton(
                         text = stringResource(R.string.edit),
-                        onClick = { }
+                        onClick = { onAction(ScreenActions.OnClickEdit) }
                     )
                 }
             }
