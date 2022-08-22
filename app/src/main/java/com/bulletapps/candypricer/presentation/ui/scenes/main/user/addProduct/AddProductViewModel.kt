@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateProductParameters
+import com.bulletapps.candypricer.data.response.ProductResponse
 import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyListUseCase
@@ -32,9 +33,20 @@ class AddProductViewModel @Inject constructor(
     val uiState = UIState()
     private val emptySupply = SupplyResponse(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE, null)
 
-    suspend fun setup() {
+    suspend fun setup(product: ProductResponse?) {
         getUnits()
         getSupplies()
+
+        product?.let {
+            uiState.name.value = it.name
+            uiState.selectedUnit.value = it.unit!!
+            uiState.quantity.value = it.quantity.toString()
+            uiState.profitMargin.value = it.profitMargin.orZero().toString()
+            uiState.laborPrice.value = it.laborValue.orZero().toString()
+            uiState.variableExpenses.value = it.variableExpenses.orZero().toString()
+            uiState.price.value = it.price.orZero().toCurrency() //TODO implement
+            //TODO add supplies
+        }
     }
 
     private fun showToast(message: UiText?) {
@@ -217,11 +229,13 @@ class AddProductViewModel @Inject constructor(
     }
 
     class UIState {
+        val id = MutableStateFlow("")
         val name = MutableStateFlow("")
         val quantity = MutableStateFlow("")
         val laborPrice = MutableStateFlow("")
         val profitMargin = MutableStateFlow("")
         val variableExpenses = MutableStateFlow("")
+        val price = MutableStateFlow("")
         val unities = MutableStateFlow<List<UnitResponse>>(listOf())
         val isExpanded = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow(UnitResponse(0, ""))
