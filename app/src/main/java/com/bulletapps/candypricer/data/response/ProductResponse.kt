@@ -3,6 +3,7 @@ package com.bulletapps.candypricer.data.response
 import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(
+    @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("unit") val unit: UnitResponse?,
     @SerializedName("quantity") val quantity: Double,

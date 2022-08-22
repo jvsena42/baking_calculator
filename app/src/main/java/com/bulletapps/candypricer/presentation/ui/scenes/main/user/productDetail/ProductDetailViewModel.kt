@@ -27,7 +27,6 @@ import javax.inject.Inject
 class ProductDetailViewModel @Inject constructor( ) : ViewModel(), EventFlow<ProductDetailViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
-    private val emptySupply = SupplyResponse(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE, null)
 
     suspend fun setup(product: ProductResponse?) {
         product?.let { uiState.product.value = it }
@@ -35,16 +34,17 @@ class ProductDetailViewModel @Inject constructor( ) : ViewModel(), EventFlow<Pro
 
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnClickDelete -> {}
-        is ScreenActions.OnClickEdit -> {}
-    }
-
-    sealed class ScreenEvent {
-        object GoBack : ScreenEvent()
+        is ScreenActions.OnClickEdit -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddProduct)
     }
 
     sealed class ScreenActions {
         object OnClickDelete : ScreenActions()
         object OnClickEdit : ScreenActions()
+    }
+
+    sealed class ScreenEvent {
+        object GoBack : ScreenEvent()
+        object NavigateToAddProduct : ScreenEvent()
     }
 
     class UIState {
