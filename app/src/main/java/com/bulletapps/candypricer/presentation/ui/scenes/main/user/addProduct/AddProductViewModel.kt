@@ -38,6 +38,7 @@ class AddProductViewModel @Inject constructor(
         getSupplies()
 
         product?.let {
+            uiState.id.value = it.id
             uiState.name.value = it.name
             uiState.selectedUnit.value = it.unit!!
             uiState.quantity.value = it.quantity.toString()
@@ -119,22 +120,30 @@ class AddProductViewModel @Inject constructor(
                 && profitMarginResult is Resource.Success
                 && supplyResult is Resource.Success
             ) {
-                createProductUseCase(
-                    CreateProductParameters(
-                        name = uiState.name.value,
-                        quantity = uiState.quantity.value.formatDouble(),
-                        unitId = uiState.selectedUnit.value.id.orZero(),
-                        suppliesId = uiState.selectedSupplies.value.map { it.id },
-                        profitMargin = uiState.profitMargin.value.toDouble(),
-                        laborValue = uiState.laborPrice.value.toDouble(),
-                        variableExpenses = uiState.variableExpenses.value.toDouble(),
-                    )
-                ).also { result ->
-                    when (result) {
-                        is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
-                        is Resource.Error -> showToast(result.message)
-                    }
-                }
+                if (uiState.id.value == 0) handleCreateSupply() else handleEditSupply()
+            }
+        }
+    }
+
+    private suspend fun handleEditSupply() {
+
+    }
+
+    private suspend fun handleCreateSupply() {
+        createProductUseCase(
+            CreateProductParameters(
+                name = uiState.name.value,
+                quantity = uiState.quantity.value.formatDouble(),
+                unitId = uiState.selectedUnit.value.id.orZero(),
+                suppliesId = uiState.selectedSupplies.value.map { it.id },
+                profitMargin = uiState.profitMargin.value.toDouble(),
+                laborValue = uiState.laborPrice.value.toDouble(),
+                variableExpenses = uiState.variableExpenses.value.toDouble(),
+            )
+        ).also { result ->
+            when (result) {
+                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                is Resource.Error -> showToast(result.message)
             }
         }
     }
@@ -229,7 +238,7 @@ class AddProductViewModel @Inject constructor(
     }
 
     class UIState {
-        val id = MutableStateFlow("")
+        val id = MutableStateFlow(0)
         val name = MutableStateFlow("")
         val quantity = MutableStateFlow("")
         val laborPrice = MutableStateFlow("")
