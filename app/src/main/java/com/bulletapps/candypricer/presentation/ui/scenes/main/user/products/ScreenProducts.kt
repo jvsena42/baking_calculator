@@ -57,7 +57,7 @@ private fun EventConsumer(
 
 @Composable
 fun Screen(
-    uiState: UIState,
+    uiState: ProductsUIState,
     onAction: (ScreenActions) -> Unit,
     ) {
 
@@ -94,7 +94,7 @@ fun Screen(
 }
 
 @Composable
-private fun MakeList(uiState: UIState, onAction: (ScreenActions) -> Unit,) {
+private fun MakeList(uiState: ProductsUIState, onAction: (ScreenActions) -> Unit,) {
     val list by uiState.productsList.collectAsState()
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -117,9 +117,10 @@ private fun MakeList(uiState: UIState, onAction: (ScreenActions) -> Unit,) {
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    Screen(onAction = {}, uiState = UIState().apply {
+    Screen(onAction = {}, uiState = ProductsUIState().apply {
         productsList.value = listOf(
             ProductResponse(
+                id = 0,
                 name = "Brigadeiro",
                 unit = UnitResponse(0, "und"),
                 profitMargin = 100.0,
