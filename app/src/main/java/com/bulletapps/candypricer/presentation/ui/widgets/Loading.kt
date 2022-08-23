@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.presentation.ui.widgets
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
@@ -18,7 +19,8 @@ fun ScreenLoading() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colors.background),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             CircularProgressIndicator()
         }

@@ -38,7 +38,7 @@ fun ScreenAddProduct(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    LaunchedEffect(key1 = Unit) { viewModel.setup() }
+    LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.selectedProduct.value) }
     Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(activity, viewModel)
 }

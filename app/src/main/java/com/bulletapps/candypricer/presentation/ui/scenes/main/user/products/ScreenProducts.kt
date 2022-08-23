@@ -25,6 +25,8 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsVertical
+import com.bulletapps.candypricer.presentation.ui.widgets.ScreenErrorRequest
+import com.bulletapps.candypricer.presentation.ui.widgets.ScreenLoading
 import com.bulletapps.candypricer.presentation.util.toCurrency
 
 @Composable
@@ -50,6 +52,7 @@ private fun EventConsumer(
                     sharedViewModel.selectedProduct.value = event.product
                     sharedViewModel.navigate(MainViewModel.Navigation.ProductDetail)
                 }
+                is ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
             }
         }
     }
@@ -61,35 +64,61 @@ fun Screen(
     onAction: (ScreenActions) -> Unit,
     ) {
 
+    val screenState = uiState.screenState.collectAsState().value
+
     CandyPricerTheme {
-        Scaffold(
-            backgroundColor = colors.background,
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            text = stringResource(R.string.my_products)
-                        )
-                    },
-                )
-            },
-            floatingActionButton = {
-                FloatingActionButton(
-                    backgroundColor = colors.secondary,
-                    contentColor = colors.background,
-                    onClick = {onAction(ScreenActions.OnClickAdd)},
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_add_),
-                        contentDescription = stringResource(id = R.string.add_product),
-                    )
-                }
-            }
-        ) {
-            MakeList(uiState, onAction)
+        ScreenProducts(onAction, uiState)
+        when(screenState) {
+            is ProductsUIState.ScreenState.Failure -> ErrorScreen(onAction)
+            is ProductsUIState.ScreenState.Loading -> ScreenLoading()
+            is ProductsUIState.ScreenState.ShowScreen -> ScreenProducts(onAction, uiState)
         }
+    }
+}
+
+@Composable
+private fun ErrorScreen(onAction: (ScreenActions) -> Unit) {
+    ScreenErrorRequest(reloadAction = {
+        onAction(
+            ScreenActions.OnRetry
+        )
+    }, logoutAction = {
+        onAction(ScreenActions.OnLogout)
+    })
+}
+
+@Composable
+private fun ScreenProducts(
+    onAction: (ScreenActions) -> Unit,
+    uiState: ProductsUIState
+) {
+    Scaffold(
+        backgroundColor = colors.background,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(R.string.my_products)
+                    )
+                },
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                backgroundColor = colors.secondary,
+                contentColor = colors.background,
+                onClick = { onAction(ScreenActions.OnClickAdd) },
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add_),
+                    contentDescription = stringResource(id = R.string.add_product),
+                )
+            }
+        }
+    ) {
+        MakeList(uiState, onAction)
     }
 }
 
