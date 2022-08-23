@@ -51,8 +51,8 @@ class ProductDetailViewModel @Inject constructor( ) : ViewModel(), EventFlow<Pro
         val selectedSupplies = MutableStateFlow(mutableListOf<MenuItemModel>())
         val product = MutableStateFlow(
             ProductResponse(
-                "", null, ZERO_DOUBLE, ZERO_DOUBLE, ZERO_DOUBLE, ZERO_DOUBLE, ZERO_DOUBLE,
-                emptyList()
+                0, "", null, ZERO_DOUBLE, ZERO_DOUBLE, ZERO_DOUBLE, ZERO_DOUBLE,
+                ZERO_DOUBLE, emptyList()
             )
         )
     }

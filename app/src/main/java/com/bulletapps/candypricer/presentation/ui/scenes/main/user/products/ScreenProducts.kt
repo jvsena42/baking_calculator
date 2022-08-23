@@ -1,5 +1,8 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.products
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,8 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.data.response.ProductResponse
@@ -25,6 +30,8 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsVertical
+import com.bulletapps.candypricer.presentation.ui.widgets.ScreenErrorRequest
+import com.bulletapps.candypricer.presentation.ui.widgets.ScreenLoading
 import com.bulletapps.candypricer.presentation.util.toCurrency
 
 @Composable
@@ -50,6 +57,7 @@ private fun EventConsumer(
                     sharedViewModel.selectedProduct.value = event.product
                     sharedViewModel.navigate(MainViewModel.Navigation.ProductDetail)
                 }
+                is ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
             }
         }
     }
@@ -57,69 +65,119 @@ private fun EventConsumer(
 
 @Composable
 fun Screen(
-    uiState: UIState,
+    uiState: ProductsUIState,
     onAction: (ScreenActions) -> Unit,
     ) {
 
+    val screenState = uiState.screenState.collectAsState().value
+
     CandyPricerTheme {
-        Scaffold(
-            backgroundColor = colors.background,
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            text = stringResource(R.string.my_products)
-                        )
-                    },
-                )
-            },
-            floatingActionButton = {
-                FloatingActionButton(
-                    backgroundColor = colors.secondary,
-                    contentColor = colors.background,
-                    onClick = {onAction(ScreenActions.OnClickAdd)},
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_add_),
-                        contentDescription = stringResource(id = R.string.add_product),
-                    )
-                }
-            }
-        ) {
-            MakeList(uiState, onAction)
+        ScreenProducts(onAction, uiState)
+        when(screenState) {
+            is ProductsUIState.ScreenState.Failure -> ErrorScreen(onAction)
+            is ProductsUIState.ScreenState.Loading -> ScreenLoading()
+            is ProductsUIState.ScreenState.ShowScreen -> ScreenProducts(onAction, uiState)
         }
     }
 }
 
 @Composable
-private fun MakeList(uiState: UIState, onAction: (ScreenActions) -> Unit,) {
-    val list by uiState.productsList.collectAsState()
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        content = {
-            items(list.size) { index ->
-                val item = list[index]
-                CardTwoItemsVertical(
-                    firstLabel = R.string.name_label,
-                    firsName = item.name,
-                    secondLabel = R.string.cost_label,
-                    secondName = item.price.toCurrency(),
-                    onClick = { onAction(ScreenActions.OnClickProduct(item)) }
+private fun ErrorScreen(onAction: (ScreenActions) -> Unit) {
+    ScreenErrorRequest(reloadAction = {
+        onAction(
+            ScreenActions.OnRetry
+        )
+    }, logoutAction = {
+        onAction(ScreenActions.OnLogout)
+    })
+}
+
+@Composable
+private fun ScreenProducts(
+    onAction: (ScreenActions) -> Unit,
+    uiState: ProductsUIState
+) {
+    Scaffold(
+        backgroundColor = colors.background,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(R.string.my_products)
+                    )
+                },
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                backgroundColor = colors.secondary,
+                contentColor = colors.background,
+                onClick = { onAction(ScreenActions.OnClickAdd) },
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add_),
+                    contentDescription = stringResource(id = R.string.add_product),
                 )
             }
         }
-    )
+    ) {
+        MakeList(uiState, onAction)
+    }
+}
+
+@Composable
+private fun MakeList(uiState: ProductsUIState, onAction: (ScreenActions) -> Unit,) {
+    val list by uiState.productsList.collectAsState()
+
+    if (list.isEmpty()) {
+        TextEmpty()
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            content = {
+                items(list.size) { index ->
+                    val item = list[index]
+                    CardTwoItemsVertical(
+                        firstLabel = R.string.name_label,
+                        firsName = item.name,
+                        secondLabel = R.string.cost_label,
+                        secondName = item.price.toCurrency(),
+                        onClick = { onAction(ScreenActions.OnClickProduct(item)) }
+                    )
+                }
+            }
+        )
+    }
+}
+
+@Composable
+private fun TextEmpty() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = colors.background),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            stringResource(R.string.add_product_and_start_pricing),
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center,
+            fontSize = 24.sp,
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    Screen(onAction = {}, uiState = UIState().apply {
+    Screen(onAction = {}, uiState = ProductsUIState().apply {
         productsList.value = listOf(
             ProductResponse(
+                id = 0,
                 name = "Brigadeiro",
                 unit = UnitResponse(0, "und"),
                 profitMargin = 100.0,
