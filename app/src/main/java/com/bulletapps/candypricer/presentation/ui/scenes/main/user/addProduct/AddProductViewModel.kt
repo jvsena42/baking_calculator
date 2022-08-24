@@ -57,8 +57,8 @@ class AddProductViewModel @Inject constructor(
     private suspend fun getUnits() {
         val unitsResult = getUnitsUseCase()
         when(unitsResult) {
-            is Resource.Error -> uiState.unities.value = unitsResult.data.orEmpty()
-            is Resource.Success -> showToast(uiState.textToast.value)
+            is Resource.Success -> uiState.unities.value = unitsResult.data.orEmpty()
+            is Resource.Error -> showToast(uiState.textToast.value)
         }
     }
 
