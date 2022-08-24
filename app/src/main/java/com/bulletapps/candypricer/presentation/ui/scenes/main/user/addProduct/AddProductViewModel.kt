@@ -139,6 +139,7 @@ class AddProductViewModel @Inject constructor(
                 profitMargin = uiState.profitMargin.value.toDouble(),
                 laborValue = uiState.laborPrice.value.toDouble(),
                 variableExpenses = uiState.variableExpenses.value.toDouble(),
+                amountQuantitySupply = uiState.selectedSupplies.value.map { it.qut }
             )
         ).also { result ->
             when (result) {
@@ -150,7 +151,7 @@ class AddProductViewModel @Inject constructor(
 
     private fun clearMenuSelection() {
         uiState.selectedSupplyItem.value = emptySupply
-        uiState.supplyQnt.value = 0
+        uiState.supplyQnt.value = ZERO_DOUBLE
     }
 
     private fun onClickConfirmMenu() {
@@ -195,7 +196,7 @@ class AddProductViewModel @Inject constructor(
         is FieldsTexts.LaborPrice -> uiState.laborPrice.value = fieldsTexts.text
         is FieldsTexts.ProfitMargin -> uiState.profitMargin.value = fieldsTexts.text
         is FieldsTexts.VariableExpenses -> uiState.variableExpenses.value = fieldsTexts.text
-        is FieldsTexts.SupplyQnt -> uiState.supplyQnt.value = fieldsTexts.text.toInt()
+        is FieldsTexts.SupplyQnt -> uiState.supplyQnt.value = fieldsTexts.text.formatDouble()
         is FieldsTexts.Quantity -> uiState.quantity.value = fieldsTexts.text
     }
 
@@ -252,7 +253,7 @@ class AddProductViewModel @Inject constructor(
         val suppliesMenuList = MutableStateFlow(mutableListOf<SupplyResponse>())
         val isMenuSuppliesExpanded = MutableStateFlow(false)
         val selectedSupplyItem = MutableStateFlow(SupplyResponse(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE, null))
-        val supplyQnt = MutableStateFlow(0)
+        val supplyQnt = MutableStateFlow(ZERO_DOUBLE)
         val isDialogVisible = MutableStateFlow(false)
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
         val isLoading = MutableStateFlow(false)
@@ -267,7 +268,7 @@ class AddProductViewModel @Inject constructor(
     data class MenuItemModel(
         val id: Int,
         val name: String,
-        val qut: Int
+        val qut: Double
     )
 }
 
