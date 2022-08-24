@@ -17,4 +17,6 @@ data class CreateProductParameters(
     var laborValue: Double,
     @SerializedName("variable_expenses")
     var variableExpenses: Double,
+    @SerializedName("amountQuantitySupply")
+    val amountQuantitySupply: List<Double>,
 )
