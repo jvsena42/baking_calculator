@@ -32,6 +32,7 @@ class AddProductViewModel @Inject constructor(
 
     val uiState = UIState()
     private val emptySupply = SupplyResponse(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE, null)
+    val selectedSuppliesList =  mutableListOf<MenuItemModel>()
 
     suspend fun setup(product: ProductResponse?) {
         getUnits()
@@ -162,8 +163,8 @@ class AddProductViewModel @Inject constructor(
             name = uiState.selectedSupplyItem.value.name,
             qut = uiState.supplyQnt.value
         )
-        val currentList = uiState.selectedSupplies.value.apply { add(newItem) }
-        uiState.selectedSupplies.value = currentList
+        selectedSuppliesList.add(newItem)
+        uiState.selectedSupplies.value = selectedSuppliesList
         clearMenuSelection()
     }
 
@@ -249,8 +250,8 @@ class AddProductViewModel @Inject constructor(
         val unities = MutableStateFlow<List<UnitResponse>>(listOf())
         val isExpanded = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow(UnitResponse(0, ""))
-        val selectedSupplies = MutableStateFlow(mutableListOf<MenuItemModel>())
-        val suppliesMenuList = MutableStateFlow(mutableListOf<SupplyResponse>())
+        val selectedSupplies = MutableStateFlow(listOf<MenuItemModel>())
+        val suppliesMenuList = MutableStateFlow(listOf<SupplyResponse>())
         val isMenuSuppliesExpanded = MutableStateFlow(false)
         val selectedSupplyItem = MutableStateFlow(SupplyResponse(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE, null))
         val supplyQnt = MutableStateFlow(ZERO_DOUBLE)
