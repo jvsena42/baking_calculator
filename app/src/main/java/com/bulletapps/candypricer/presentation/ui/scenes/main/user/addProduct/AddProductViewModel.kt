@@ -137,15 +137,15 @@ class AddProductViewModel @Inject constructor(
                 quantity = uiState.quantity.value.formatDouble(),
                 unitId = uiState.selectedUnit.value.id.orZero(),
                 suppliesId = uiState.selectedSupplies.value.map { it.id },
-                profitMargin = uiState.profitMargin.value.toDouble(),
-                laborValue = uiState.laborPrice.value.toDouble(),
-                variableExpenses = uiState.variableExpenses.value.toDouble(),
+                profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
+                laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
+                variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
                 amountQuantitySupply = uiState.selectedSupplies.value.map { it.qut }
             )
         ).also { result ->
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
-                is Resource.Error -> showToast(result.message)
+                is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.GoBack)/*showToast(result.message)*/
             }
         }
     }

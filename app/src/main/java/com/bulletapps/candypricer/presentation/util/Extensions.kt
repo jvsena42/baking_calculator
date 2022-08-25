@@ -12,6 +12,7 @@ import java.util.*
 const val ZERO = 0
 const val ZERO_DOUBLE = 0.0
 const val ZERO_FLOAT = 0f
+const val ONE_HUNDRED = 100.0
 const val COUNTRY = "BR"
 const val LANGUAGE = "pt"
 
@@ -45,6 +46,8 @@ fun Context.openWhatsapp(phone: String, message: String = "Oi!") {
 fun Double?.toCurrency(): String {
     return NumberFormat.getCurrencyInstance(Locale(LANGUAGE, COUNTRY)).format(this ?: ZERO_DOUBLE)
 }
+
+fun Double?.toPercent() = this.orZero()/ONE_HUNDRED
 
 fun String?.formatDouble(): Double {
     val value = if (this.isNullOrEmpty()) "0.0" else this

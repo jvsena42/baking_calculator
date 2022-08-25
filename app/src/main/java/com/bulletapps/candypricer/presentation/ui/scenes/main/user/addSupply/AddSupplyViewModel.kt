@@ -107,7 +107,7 @@ class AddSupplyViewModel @Inject constructor(
         ).also { result ->
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
-                is Resource.Error -> showToast(result.message)
+                is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.GoBack) /*showToast(result.message)*/
             }
         }
     }

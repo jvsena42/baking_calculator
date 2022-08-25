@@ -185,7 +185,7 @@ private fun MakeFieldVariableExpenses(onAction: (ScreenActions) -> Unit, uiState
         onValueChange = {
             onAction(OnTextChanged(FieldsTexts.VariableExpenses(it)))
         },
-        placeholder = { Text(stringResource(R.string.thirty_reals)) },
+        placeholder = { Text(stringResource(R.string.ten_percent)) },
         label = { Text(stringResource(R.string.variable_expenses)) },
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
@@ -202,7 +202,7 @@ private fun MakeFieldLaborPrice(onAction: (ScreenActions) -> Unit, uiState: UISt
         onValueChange = {
             onAction(OnTextChanged(FieldsTexts.LaborPrice(it)))
         },
-        placeholder = { Text(stringResource(R.string.labor_price)) },
+        placeholder = { Text(stringResource(R.string.ten_percent)) },
         label = { Text(stringResource(R.string.labor_price)) },
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
