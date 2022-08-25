@@ -277,7 +277,7 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
                     )
 
                     OutlinedTextField(
-                        value = supplyQnt.toString(),
+                        value = supplyQnt,
                         singleLine = true,
                         onValueChange = { onAction(OnTextChanged(FieldsTexts.SupplyQnt(it))) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
