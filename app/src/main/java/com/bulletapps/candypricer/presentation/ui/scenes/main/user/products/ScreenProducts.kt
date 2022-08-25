@@ -39,7 +39,10 @@ fun ScreenProducs(
     viewModel: ProductsViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    LaunchedEffect(key1 = Unit) { viewModel.setup() }
+    LaunchedEffect(key1 = Unit) {
+        sharedViewModel.selectedProduct.value = null
+        viewModel.setup()
+    }
     Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(viewModel, sharedViewModel)
 }
