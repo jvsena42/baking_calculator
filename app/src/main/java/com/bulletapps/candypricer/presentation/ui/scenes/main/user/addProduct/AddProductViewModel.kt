@@ -32,7 +32,7 @@ class AddProductViewModel @Inject constructor(
 
     val uiState = UIState()
     private val emptySupply = SupplyResponse(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE, null)
-    val selectedSuppliesList =  mutableListOf<MenuItemModel>()
+    private val selectedSuppliesList =  mutableListOf<MenuItemModel>()
 
     suspend fun setup(product: ProductResponse?) {
         getUnits()
@@ -164,7 +164,7 @@ class AddProductViewModel @Inject constructor(
             qut = uiState.supplyQnt.value
         )
         selectedSuppliesList.add(newItem)
-        uiState.selectedSupplies.value = selectedSuppliesList
+        uiState.selectedSupplies.value = selectedSuppliesList.toList()
         clearMenuSelection()
     }
 

@@ -164,7 +164,6 @@ private fun TextEmpty() {
     ) {
         Text(
             stringResource(R.string.add_product_and_start_pricing),
-            fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center,
             fontSize = 24.sp,
         )
