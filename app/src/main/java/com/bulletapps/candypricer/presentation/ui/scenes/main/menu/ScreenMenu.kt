@@ -24,8 +24,11 @@ import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.domain.model.MenuModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.MenuItem
+import com.bulletapps.candypricer.presentation.ui.widgets.ScreenErrorRequest
+import com.bulletapps.candypricer.presentation.ui.widgets.ScreenLoading
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
@@ -49,6 +52,7 @@ private fun EventConsumer(
             when (event) {
                 is MenuViewModel.ScreenEvent.ExpiredScreen -> sharedViewModel.navigate(MainViewModel.Navigation.Expired)
                 is MenuViewModel.ScreenEvent.Navigate -> sharedViewModel.navigate(event.path)
+                is MenuViewModel.ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
             }
         }
     }
@@ -56,9 +60,12 @@ private fun EventConsumer(
 
 @Composable
 fun Screen(
-    uiState: MenuViewModel.UIState,
+    uiState: MenuUIState,
     onAction: (MenuViewModel.ScreenActions) -> Unit
 ) {
+
+    val screenState = uiState.screenState.collectAsState().value
+
     CandyPricerTheme {
         Column (
             modifier = Modifier
@@ -74,7 +81,12 @@ fun Screen(
                     )
                 },
             )
-            MenuGrid(uiState, onAction)
+            when(screenState) {
+                is MenuUIState.ScreenState.Failure -> ErrorScreen(onAction)
+                is MenuUIState.ScreenState.Loading -> ScreenLoading()
+                is MenuUIState.ScreenState.ShowScreen -> MenuGrid(uiState, onAction)
+            }
+
         }
     }
 }
@@ -82,10 +94,10 @@ fun Screen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MenuGrid(
-    uiState: MenuViewModel.UIState,
+    uiState: MenuUIState,
     onAction: (MenuViewModel.ScreenActions) -> Unit
 ) {
-    val menuItems by uiState.menuItems.collectAsState()
+    val menuItems by uiState.menuList.collectAsState()
 
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
@@ -102,4 +114,16 @@ fun MenuGrid(
             }
         }
     )
+}
+
+
+@Composable
+private fun ErrorScreen(onAction: (MenuViewModel.ScreenActions) -> Unit) {
+    ScreenErrorRequest(reloadAction = {
+        onAction(
+            MenuViewModel.ScreenActions.OnRetry
+        )
+    }, logoutAction = {
+        onAction(MenuViewModel.ScreenActions.OnLogout)
+    })
 }
