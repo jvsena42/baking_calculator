@@ -80,6 +80,7 @@ fun Screen(
     }
 }
 
+@Composable
 private fun ScreenContent(
     onAction: (ScreenActions) -> Unit,
     uiState: SuppliesUIState
