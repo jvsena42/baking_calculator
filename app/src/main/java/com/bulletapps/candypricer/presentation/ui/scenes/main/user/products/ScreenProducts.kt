@@ -32,6 +32,7 @@ import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsVertical
 import com.bulletapps.candypricer.presentation.ui.widgets.ScreenErrorRequest
 import com.bulletapps.candypricer.presentation.ui.widgets.ScreenLoading
+import com.bulletapps.candypricer.presentation.ui.widgets.TextEmpty
 import com.bulletapps.candypricer.presentation.util.toCurrency
 
 @Composable
@@ -75,7 +76,6 @@ fun Screen(
     val screenState = uiState.screenState.collectAsState().value
 
     CandyPricerTheme {
-        ScreenProducts(onAction, uiState)
         when(screenState) {
             is ProductsUIState.ScreenState.Failure -> ErrorScreen(onAction)
             is ProductsUIState.ScreenState.Loading -> ScreenLoading()
@@ -135,7 +135,7 @@ private fun MakeList(uiState: ProductsUIState, onAction: (ScreenActions) -> Unit
     val list by uiState.productsList.collectAsState()
 
     if (list.isEmpty()) {
-        TextEmpty()
+        TextEmpty(stringResource(R.string.add_product_and_start_pricing))
     } else {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -152,23 +152,6 @@ private fun MakeList(uiState: ProductsUIState, onAction: (ScreenActions) -> Unit
                     )
                 }
             }
-        )
-    }
-}
-
-@Composable
-private fun TextEmpty() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = colors.background),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            stringResource(R.string.add_product_and_start_pricing),
-            textAlign = TextAlign.Center,
-            fontSize = 24.sp,
         )
     }
 }
