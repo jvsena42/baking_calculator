@@ -27,7 +27,7 @@ class ProductsViewModel @Inject constructor(
         val productsResult = getAllProductsUseCase()
         when(productsResult) {
             is Resource.Error -> uiState.onFailure(ScreenActions.OnRetry, ScreenActions.OnLogout)
-            is Resource.Success -> uiState.onSuccess(productsResult.data ?: emptyList())
+            is Resource.Success -> uiState.onSuccess(productsResult.data.orEmpty())
         }
     }
 

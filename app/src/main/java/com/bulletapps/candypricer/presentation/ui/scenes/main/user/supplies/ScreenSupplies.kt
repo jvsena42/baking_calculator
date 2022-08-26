@@ -20,16 +20,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.SuppliesViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.SuppliesViewModel.ScreenActions
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.SuppliesViewModel.ScreenEvent
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardSupply
+import com.bulletapps.candypricer.presentation.ui.widgets.ScreenErrorRequest
+import com.bulletapps.candypricer.presentation.ui.widgets.ScreenLoading
+import com.bulletapps.candypricer.presentation.ui.widgets.TextEmpty
 
 @Composable
 fun ScreenSupplies(
     viewModel: SuppliesViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    val activity = LocalContext.current as MainActivity
     LaunchedEffect(key1 = Unit) {
         sharedViewModel.selectedSupply.value = null
         viewModel.setup()
@@ -38,12 +41,11 @@ fun ScreenSupplies(
         viewModel.uiState,
         viewModel::onAction
     )
-    EventConsumer(activity, viewModel, sharedViewModel)
+    EventConsumer(viewModel, sharedViewModel)
 }
 
 @Composable
 private fun EventConsumer(
-    activity: MainActivity,
     viewModel: SuppliesViewModel,
     sharedViewModel: MainViewModel
 ) {
@@ -55,6 +57,7 @@ private fun EventConsumer(
                     sharedViewModel.selectedSupply.value = event.supply
                     sharedViewModel.navigate(MainViewModel.Navigation.SupplyDetail)
                 }
+                is ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
             }
         }
     }
@@ -62,61 +65,92 @@ private fun EventConsumer(
 
 @Composable
 fun Screen(
-    uiState: UIState,
+    uiState: SuppliesUIState,
     onAction: (ScreenActions) -> Unit,
     ) {
 
+    val screenState = uiState.screenState.collectAsState().value
+
     CandyPricerTheme {
-        Scaffold(
-            backgroundColor = colors.background,
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            text = stringResource(R.string.supplies)
-                        )
-                    },
-                )
-            },
-            floatingActionButton = {
-                FloatingActionButton(
-                    backgroundColor = colors.secondary,
-                    contentColor = colors.background,
-                    onClick = { onAction(ScreenActions.OnClickAdd) },
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_add_),
-                        contentDescription = stringResource(id = R.string.add_supply),
-                    )
-                }
-            }
-        ) {
-            MakeList(uiState, onAction)
+        when(screenState) {
+            is SuppliesUIState.ScreenState.Failure -> ErrorScreen(onAction)
+            SuppliesUIState.ScreenState.Loading -> ScreenLoading()
+            SuppliesUIState.ScreenState.ShowScreen -> ScreenContent(onAction, uiState)
         }
     }
 }
 
 @Composable
-private fun MakeList(uiState: UIState, onAction: (ScreenActions) -> Unit) {
-    val list by uiState.suppliesList.collectAsState()
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        content = {
-            items(list.size) { index ->
-                val item = list[index]
-                CardSupply(item, onClick = { onAction(ScreenActions.OnClickSupply(item)) })
+private fun ScreenContent(
+    onAction: (ScreenActions) -> Unit,
+    uiState: SuppliesUIState
+) {
+    Scaffold(
+        backgroundColor = colors.background,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(R.string.supplies)
+                    )
+                },
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                backgroundColor = colors.secondary,
+                contentColor = colors.background,
+                onClick = { onAction(ScreenActions.OnClickAdd) },
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add_),
+                    contentDescription = stringResource(id = R.string.add_supply),
+                )
             }
         }
-    )
+    ) {
+        MakeList(uiState, onAction)
+    }
+}
+
+@Composable
+private fun MakeList(uiState: SuppliesUIState, onAction: (ScreenActions) -> Unit) {
+    val list by uiState.suppliesList.collectAsState()
+
+    if (list.isEmpty()) {
+        TextEmpty(stringResource(R.string.add_supply_and_start_pricing))
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            content = {
+                items(list.size) { index ->
+                    val item = list[index]
+                    CardSupply(item, onClick = { onAction(ScreenActions.OnClickSupply(item)) })
+                }
+            }
+        )
+    }
+
+}
+
+@Composable
+private fun ErrorScreen(onAction: (ScreenActions) -> Unit) {
+    ScreenErrorRequest(reloadAction = {
+        onAction(
+            ScreenActions.OnRetry
+        )
+    }, logoutAction = {
+        onAction(ScreenActions.OnLogout)
+    })
 }
 
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
     Screen(
-        onAction = {}, uiState = UIState()
+        onAction = {}, uiState = SuppliesUIState()
     )
 }

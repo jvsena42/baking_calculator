@@ -23,11 +23,14 @@ fun CardSupply(supply: SupplyResponse, modifier: Modifier = Modifier, onClick: (
         elevation = 1.dp
     ) {
         Column(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier.padding(12.dp).fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             TextWithLabel(stringResource(id = R.string.name_label), supply.name)
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 TextWithLabel(
                     stringResource(id = R.string.quantity_label),
                     supply.quantity.toString()
