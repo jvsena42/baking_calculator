@@ -54,7 +54,7 @@ private fun EventConsumer(
                 is GoBack -> activity.onBackPressed()
                 is Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
                 is ScreenEvent.NavigateLink -> activity.navigateUrl(event.url)
-                is ScreenEvent.OpenWhatsApp -> activity.openWhatsapp(event.number)
+                is ScreenEvent.OpenWhatsApp -> activity.openWhatsapp(event.number, activity.getString(R.string.update_plan_text))
             }
         }
     }
