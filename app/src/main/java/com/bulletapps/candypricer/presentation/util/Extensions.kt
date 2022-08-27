@@ -6,7 +6,9 @@ import android.icu.text.NumberFormat
 import android.net.Uri
 import android.telephony.PhoneNumberUtils
 import androidx.core.content.ContextCompat
+import java.net.URLEncoder
 import java.util.*
+import kotlin.reflect.jvm.internal.impl.builtins.StandardNames.FqNames.number
 
 
 const val ZERO = 0
@@ -23,7 +25,7 @@ fun Float?.orZero() = this ?: ZERO_FLOAT
 
 fun Boolean?.orFalse() = this ?: false
 
-fun Context.openWhatsapp(phone: String = WHATSAPP_NUMBER, message: String = "Oi!") {
+/*fun Context.openWhatsapp(phone: String = WHATSAPP_NUMBER, message: String = "Oi!") {
     try {
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -41,6 +43,14 @@ fun Context.openWhatsapp(phone: String = WHATSAPP_NUMBER, message: String = "Oi!
         } catch (e :android.content.ActivityNotFoundException) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
         }
+    }
+}*/
+
+fun Context.openWhatsapp(phone: String = WHATSAPP_NUMBER, message: String = "Oi!") {
+    val url = "https://api.whatsapp.com/send?phone=$phone"+"&text=" + URLEncoder.encode(message, "UTF-8")
+    Intent(Intent.ACTION_VIEW).apply {
+        data = Uri.parse(url)
+        startActivity(this)
     }
 }
 
