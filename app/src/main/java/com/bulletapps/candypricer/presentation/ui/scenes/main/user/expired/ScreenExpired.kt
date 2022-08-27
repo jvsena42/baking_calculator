@@ -48,6 +48,7 @@ private fun EventConsumer(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is ScreenEvent.OpenWhatsApp -> activity.openWhatsapp(event.number)
+                ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
             }
         }
     }

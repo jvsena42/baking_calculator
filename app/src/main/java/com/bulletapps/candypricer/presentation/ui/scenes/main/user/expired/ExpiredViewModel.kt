@@ -2,7 +2,9 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
 import com.bulletapps.candypricer.domain.model.User
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +13,10 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class ExpiredViewModel @Inject constructor() : ViewModel(), EventFlow<ExpiredViewModel.ScreenEvent> by EventFlowImpl() {
+class ExpiredViewModel @Inject constructor(
+    private val preferencesDataSource: PreferencesDataSource,
+
+    ) : ViewModel(), EventFlow<ExpiredViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
@@ -20,7 +25,8 @@ class ExpiredViewModel @Inject constructor() : ViewModel(), EventFlow<ExpiredVie
     }
 
     private fun onClickLogout() {
-
+        preferencesDataSource.clearPref()
+        viewModelScope.sendEvent(ScreenEvent.Login)
     }
 
     fun onAction(action: ScreenActions) = when(action) {
@@ -30,6 +36,7 @@ class ExpiredViewModel @Inject constructor() : ViewModel(), EventFlow<ExpiredVie
 
     sealed class ScreenEvent {
         data class OpenWhatsApp(val number: String) : ScreenEvent()
+        object Login : ScreenEvent()
     }
 
     sealed class ScreenActions {
