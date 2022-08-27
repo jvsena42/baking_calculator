@@ -10,6 +10,7 @@ import java.util.*
 
 
 const val ZERO = 0
+const val WHATSAPP_NUMBER = "+5586981133033"
 const val ZERO_DOUBLE = 0.0
 const val ZERO_FLOAT = 0f
 const val ONE_HUNDRED = 100.0
@@ -22,7 +23,7 @@ fun Float?.orZero() = this ?: ZERO_FLOAT
 
 fun Boolean?.orFalse() = this ?: false
 
-fun Context.openWhatsapp(phone: String, message: String = "Oi!") {
+fun Context.openWhatsapp(phone: String = WHATSAPP_NUMBER, message: String = "Oi!") {
     try {
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
