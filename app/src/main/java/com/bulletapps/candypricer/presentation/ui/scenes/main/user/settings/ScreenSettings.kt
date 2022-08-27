@@ -30,6 +30,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.Sett
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.*
 import com.bulletapps.candypricer.presentation.util.navigateUrl
+import com.bulletapps.candypricer.presentation.util.openWhatsapp
 
 @Composable
 fun ScreenSettings(
@@ -53,6 +54,7 @@ private fun EventConsumer(
                 is GoBack -> activity.onBackPressed()
                 is Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
                 is ScreenEvent.NavigateLink -> activity.navigateUrl(event.url)
+                is ScreenEvent.OpenWhatsApp -> activity.openWhatsapp(event.number)
             }
         }
     }

@@ -6,6 +6,7 @@ import com.bulletapps.candypricer.BuildConfig
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
 import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ExpiredViewModel
 import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,12 +36,8 @@ class SettingsViewModel @Inject constructor(
 
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnClickLogout -> onClickLogout()
-        is ScreenActions.OnClickUpdate -> onClickUpdate()
+        is ScreenActions.OnClickUpdate -> viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp(WHATSAPP_NUMBER))
         is ScreenActions.OnClickLink -> onClickLink()
-    }
-
-    private fun onClickUpdate() = viewModelScope.launch {
-        sendEvent(ScreenEvent.NavigateLink(BuildConfig.BUY_A_PLAN_URL))
     }
 
     private fun onClickLink() = viewModelScope.launch {
@@ -56,6 +53,7 @@ class SettingsViewModel @Inject constructor(
         object GoBack : ScreenEvent()
         object Login : ScreenEvent()
         data class NavigateLink(val url: String) : ScreenEvent()
+        data class OpenWhatsApp(val number: String) : ScreenEvent()
     }
 
     sealed class ScreenActions {

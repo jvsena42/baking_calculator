@@ -7,6 +7,7 @@ import com.bulletapps.candypricer.domain.model.User
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.WHATSAPP_NUMBER
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.*
@@ -21,7 +22,7 @@ class ExpiredViewModel @Inject constructor(
     val uiState = UIState()
 
     private fun onClickMessage() {
-        viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp("+5586981133033"))
+        viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp(WHATSAPP_NUMBER))
     }
 
     private fun onClickLogout() {
