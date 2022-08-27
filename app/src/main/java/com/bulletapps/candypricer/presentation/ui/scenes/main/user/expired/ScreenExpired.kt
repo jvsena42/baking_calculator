@@ -47,7 +47,8 @@ private fun EventConsumer(
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is ScreenEvent.OpenWhatsApp -> activity.openWhatsapp(event.number)
+                is ScreenEvent.OpenWhatsApp -> activity.openWhatsapp(event.number, activity.getString(R.string.update_plan_text))
+                ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
             }
         }
     }
