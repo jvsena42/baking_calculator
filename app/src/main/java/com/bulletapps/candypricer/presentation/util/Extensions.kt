@@ -5,10 +5,9 @@ import android.content.Intent
 import android.icu.text.NumberFormat
 import android.net.Uri
 import android.telephony.PhoneNumberUtils
-import androidx.core.content.ContextCompat
+import com.bulletapps.candypricer.data.response.UnitResponse
 import java.net.URLEncoder
 import java.util.*
-import kotlin.reflect.jvm.internal.impl.builtins.StandardNames.FqNames.number
 
 
 const val ZERO = 0
@@ -57,4 +56,18 @@ fun Context.navigateUrl(url: String) {
 
 fun String?.formatPhone(): String {
     return if (this.isNullOrEmpty()) "" else PhoneNumberUtils.formatNumber(this, Locale.getDefault().country)
+}
+
+fun String?.formatUnit() = when (this) {
+    "UND" -> "Und."
+    "KG" -> "Kg"
+    "G" -> "g"
+    "L" -> "l"
+    "ML" -> "ml"
+    else -> ""
+}
+
+fun List<UnitResponse>.format(): List<UnitResponse> {
+    if (isEmpty()) return emptyList()
+    return this.map { UnitResponse(it.id, it.name.formatUnit()) }
 }

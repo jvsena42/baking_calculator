@@ -17,7 +17,6 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.Ad
 import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,7 +57,7 @@ class AddProductViewModel @Inject constructor(
     private suspend fun getUnits() {
         val unitsResult = getUnitsUseCase()
         when(unitsResult) {
-            is Resource.Success -> uiState.unities.value = unitsResult.data.orEmpty()
+            is Resource.Success -> uiState.unities.value = unitsResult.data.orEmpty().format()
             is Resource.Error -> showToast(uiState.textToast.value)
         }
     }

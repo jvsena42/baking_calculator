@@ -1,8 +1,5 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.products
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,18 +11,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.data.response.ProductResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
-import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
@@ -147,7 +140,7 @@ private fun MakeList(uiState: ProductsUIState, onAction: (ScreenActions) -> Unit
                         firstLabel = R.string.name_label,
                         firsName = item.name,
                         secondLabel = R.string.cost_label,
-                        secondName = item.price.toCurrency(),
+                        secondName = item.unitSaleValue.toCurrency(),
                         onClick = { onAction(ScreenActions.OnClickProduct(item)) }
                     )
                 }
@@ -169,7 +162,9 @@ private fun Preview() {
                 quantity = 20.0,
                 laborValue = 15.0,
                 variableExpenses = 13.0,
-                price = 3.00,
+                unitSaleValue = 3.00,
+                totalSaleValue = 3.00,
+                totalSpendsValue = 3.00,
                 suppliesId = listOf()
             )
         )
