@@ -136,9 +136,9 @@ class AddProductViewModel @Inject constructor(
                 quantity = uiState.quantity.value.formatDouble(),
                 unitId = uiState.selectedUnit.value.id.orZero(),
                 suppliesId = uiState.selectedSupplies.value.map { it.id },
-                profitMargin = uiState.profitMargin.value.formatDouble(),
-                laborValue = uiState.laborPrice.value.formatDouble(),
-                variableExpenses = uiState.variableExpenses.value.formatDouble(),
+                profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
+                laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
+                variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
                 amountQuantitySupply = uiState.selectedSupplies.value.map { it.qut.formatDouble() }
             )
         ).also { result ->

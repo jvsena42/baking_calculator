@@ -38,7 +38,7 @@ fun Double?.toCurrency(): String {
 
 fun Double?.toPercent() = this.orZero()/ONE_HUNDRED
 
-fun Double?.toPercentString() = "${this.orZero()/ONE_HUNDRED}%"
+fun Double?.toPercentString() = "${this.orZero()*ONE_HUNDRED}%"
 
 fun String?.formatDouble(): Double {
     val value = if (this.isNullOrEmpty()) "0.0" else this

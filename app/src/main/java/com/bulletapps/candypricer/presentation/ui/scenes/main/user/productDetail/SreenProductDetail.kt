@@ -31,6 +31,8 @@ import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsHorizontal
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
+import com.bulletapps.candypricer.presentation.util.toCurrency
+import com.bulletapps.candypricer.presentation.util.toPercentString
 
 @Composable
 fun ScreenProductDetail(
@@ -65,11 +67,14 @@ private fun Screen(
     onAction: (ScreenActions) -> Unit,
 ) {
 
-    val suppliesList by uiState.selectedSupplies.collectAsState()
+    val product by uiState.product.collectAsState()
 
     CandyPricerTheme {
 
-        Column {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+
 
             TopAppBar(
                 title = {
@@ -90,9 +95,10 @@ private fun Screen(
                 item {
                     Spacer(Modifier.height(16.dp))
 
-                    TextWithLabel(stringResource(R.string.labor_price), "100", modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), arrangement = Arrangement.SpaceBetween)
-                    TextWithLabel(stringResource(R.string.variable_expenses), "100", modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), arrangement = Arrangement.SpaceBetween)
-                    TextWithLabel(stringResource(R.string.profit_margin), "100", modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), arrangement = Arrangement.SpaceBetween)
+                    TextWithLabel(stringResource(R.string.quantity_label), product.quantity.toString(), modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), arrangement = Arrangement.SpaceBetween)
+                    TextWithLabel(stringResource(R.string.labor_price), product.laborValue.toPercentString(), modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), arrangement = Arrangement.SpaceBetween)
+                    TextWithLabel(stringResource(R.string.variable_expenses), product.variableExpenses.toPercentString(), modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), arrangement = Arrangement.SpaceBetween)
+                    TextWithLabel(stringResource(R.string.profit_margin), product.profitMargin.toPercentString(), modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), arrangement = Arrangement.SpaceBetween)
 
                     Spacer(Modifier.height(32.dp))
 
@@ -103,19 +109,19 @@ private fun Screen(
                             modifier = Modifier.fillMaxWidth().padding(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            TextWithLabel(stringResource(R.string.sell_by), "100", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+                            TextWithLabel(stringResource(R.string.total_cost), product.totalSpendsValue.toCurrency(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
                             Spacer(Modifier.height(8.dp))
-                            TextWithLabel(stringResource(R.string.sell_price_label), "100", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+                            TextWithLabel(stringResource(R.string.unit_sell_value), product.unitSaleValue.toCurrency(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
                         }
                     }
                 }
 
-                items(suppliesList) { itemSupply ->
+                items(product.supplies) { itemSupply ->
                     CardTwoItemsHorizontal(
                         firstLabel = R.string.name_label,
-                        secondLabel = R.string.quantity_label,
+                        secondLabel = R.string.empty, //todo add quantity
                         firsName = itemSupply.name,
-                        secondName = itemSupply.qut.toString(),
+                        secondName = "",
                         onClick = {}
                     )
                 }
