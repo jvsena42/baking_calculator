@@ -47,7 +47,7 @@ fun CardTwoItemsHorizontal(
 ) {
     Card(
         modifier = Modifier
-            .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+            .padding(horizontal = 16.dp)
             .clickable { onClick.invoke() }
             .fillMaxWidth(),
         elevation = 1.dp

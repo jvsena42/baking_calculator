@@ -10,7 +10,9 @@ data class ProductResponse(
     @SerializedName("profit_margin") val profitMargin: Double?,
     @SerializedName("labor_work") val laborValue: Double?,
     @SerializedName("variable_expenses") val variableExpenses: Double?,
-    @SerializedName("value") val price: Double?,
-    @SerializedName("supplies") val suppliesId: List<SupplyResponse>,
+    @SerializedName("supplies") val supplies: List<SupplyResponse>,
+    @SerializedName("total_spends_value") val totalSpendsValue: Double?,
+    @SerializedName("unit_sale_value") val unitSaleValue: Double?,
+    @SerializedName("total_sale_value") val totalSaleValue: Double?,
 )
 

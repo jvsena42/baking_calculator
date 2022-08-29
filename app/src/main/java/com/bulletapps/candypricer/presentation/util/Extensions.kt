@@ -5,10 +5,11 @@ import android.content.Intent
 import android.icu.text.NumberFormat
 import android.net.Uri
 import android.telephony.PhoneNumberUtils
-import androidx.core.content.ContextCompat
+import com.bulletapps.candypricer.data.response.UnitResponse
+import java.math.RoundingMode
 import java.net.URLEncoder
+import java.text.DecimalFormat
 import java.util.*
-import kotlin.reflect.jvm.internal.impl.builtins.StandardNames.FqNames.number
 
 
 const val ZERO = 0
@@ -39,9 +40,17 @@ fun Double?.toCurrency(): String {
 
 fun Double?.toPercent() = this.orZero()/ONE_HUNDRED
 
+fun Double?.toPercentString() = "${(this.orZero()*ONE_HUNDRED).round()}%"
+
+fun Double.round(): String {
+    val df = DecimalFormat("#.##")
+    df.roundingMode = RoundingMode.DOWN
+    return df.format(this)
+}
+
 fun String?.formatDouble(): Double {
     val value = if (this.isNullOrEmpty()) "0.0" else this
-    return value.replace(",",".").toDouble()
+    return value.replace(",", ".").replace("%", "").toDouble()
 }
 
 fun String?.filterNumbers(): String {
@@ -58,3 +67,19 @@ fun Context.navigateUrl(url: String) {
 fun String?.formatPhone(): String {
     return if (this.isNullOrEmpty()) "" else PhoneNumberUtils.formatNumber(this, Locale.getDefault().country)
 }
+
+fun String?.formatUnit() = when (this) {
+    "UND" -> "Und."
+    "KG" -> "Kg"
+    "G" -> "g"
+    "L" -> "l"
+    "ML" -> "ml"
+    else -> this.orEmpty()
+}
+
+fun List<UnitResponse>.format(): List<UnitResponse> {
+    if (isEmpty()) return emptyList()
+    return this.map { UnitResponse(it.id, it.name.formatUnit()) }
+}
+
+fun UnitResponse?.format() = UnitResponse(this?.id ?: -1, this?.name.formatUnit())

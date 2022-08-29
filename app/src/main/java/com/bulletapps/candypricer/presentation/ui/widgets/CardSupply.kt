@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.presentation.util.formatUnit
 import com.bulletapps.candypricer.presentation.util.toCurrency
 
 @Composable
@@ -35,7 +36,7 @@ fun CardSupply(supply: SupplyResponse, modifier: Modifier = Modifier, onClick: (
                     stringResource(id = R.string.quantity_label),
                     supply.quantity.toString()
                 )
-                TextWithLabel(stringResource(id = R.string.measure_type_label), supply.unit?.name.orEmpty())
+                TextWithLabel(stringResource(id = R.string.measure_type_label), supply.unit?.name.formatUnit())
                 TextWithLabel(stringResource(id = R.string.cost_label), supply.value.toCurrency())
             }
         }

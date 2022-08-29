@@ -28,7 +28,7 @@ class AddSupplyViewModel @Inject constructor(
     suspend fun setup(supply: SupplyResponse?) {
         val unitsResult = getUnitsUseCase()
         when(unitsResult) {
-            is Resource.Success -> uiState.unities.value = unitsResult.data.orEmpty()
+            is Resource.Success -> uiState.unities.value = unitsResult.data.orEmpty().format()
             is Resource.Error -> showToast(uiState.textToast.value)
         }
 

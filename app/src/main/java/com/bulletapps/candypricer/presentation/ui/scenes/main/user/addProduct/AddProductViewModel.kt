@@ -17,7 +17,6 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.Ad
 import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,13 +40,13 @@ class AddProductViewModel @Inject constructor(
         product?.let {
             uiState.id.value = it.id
             uiState.name.value = it.name
-            uiState.selectedUnit.value = it.unit!!
+            uiState.selectedUnit.value = it.unit.format()
             uiState.quantity.value = it.quantity.toString()
-            uiState.profitMargin.value = it.profitMargin.orZero().toString()
-            uiState.laborPrice.value = it.laborValue.orZero().toString()
-            uiState.variableExpenses.value = it.variableExpenses.orZero().toString()
-            uiState.price.value = it.price.orZero().toCurrency() //TODO implement
-            //TODO add supplies
+            uiState.profitMargin.value = it.profitMargin.toString()
+            uiState.laborPrice.value = it.laborValue.toString()
+            uiState.variableExpenses.value = it.variableExpenses.toString()
+            selectedSuppliesList.addAll(it.supplies.map { supply -> MenuItemModel(supply.id, supply.name, 1.0.toString()) })
+            uiState.selectedSupplies.value = selectedSuppliesList.toList()
         }
     }
 
@@ -58,7 +57,7 @@ class AddProductViewModel @Inject constructor(
     private suspend fun getUnits() {
         val unitsResult = getUnitsUseCase()
         when(unitsResult) {
-            is Resource.Success -> uiState.unities.value = unitsResult.data.orEmpty()
+            is Resource.Success -> uiState.unities.value = unitsResult.data.orEmpty().format()
             is Resource.Error -> showToast(uiState.textToast.value)
         }
     }
