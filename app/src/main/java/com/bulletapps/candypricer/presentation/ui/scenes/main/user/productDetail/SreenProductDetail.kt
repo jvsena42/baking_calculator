@@ -103,7 +103,7 @@ private fun Screen(
                             modifier = Modifier.fillMaxWidth().padding(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            TextWithLabel(stringResource(R.string.cost_label), "100", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+                            TextWithLabel(stringResource(R.string.sell_by), "100", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
                             Spacer(Modifier.height(8.dp))
                             TextWithLabel(stringResource(R.string.sell_price_label), "100", modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
                         }

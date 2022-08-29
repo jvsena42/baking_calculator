@@ -26,6 +26,7 @@ import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
+import com.bulletapps.candypricer.presentation.util.formatUnit
 import com.bulletapps.candypricer.presentation.util.toCurrency
 
 @Composable
@@ -109,7 +110,7 @@ private fun MakeCard(uiState: UIState) {
             Spacer(Modifier.height(8.dp))
             TextWithLabel(stringResource(R.string.quantity_label), supply.quantity.toString(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
             Spacer(Modifier.height(8.dp))
-            TextWithLabel(stringResource(R.string.measure_type_label), supply.unit!!.name, modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+            TextWithLabel(stringResource(R.string.measure_type_label), supply.unit?.name.formatUnit(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
             Spacer(Modifier.height(8.dp))
             TextWithLabel(stringResource(R.string.cost_label), supply.value.toCurrency(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
         }

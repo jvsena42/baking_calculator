@@ -139,7 +139,7 @@ private fun MakeList(uiState: ProductsUIState, onAction: (ScreenActions) -> Unit
                     CardTwoItemsVertical(
                         firstLabel = R.string.name_label,
                         firsName = item.name,
-                        secondLabel = R.string.cost_label,
+                        secondLabel = R.string.sell_by,
                         secondName = item.unitSaleValue.toCurrency(),
                         onClick = { onAction(ScreenActions.OnClickProduct(item)) }
                     )

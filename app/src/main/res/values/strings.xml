@@ -11,7 +11,8 @@
     <string name="expires_at_label">Expira em: </string>
     <string name="quantity_label">Qnt: </string>
     <string name="measure_type_label">Medida: </string>
-    <string name="cost_label">Vender por: </string>
+    <string name="sell_by">Vender por: </string>
+    <string name="cost_label">Preço: </string>
     <string name="sell_price_label">Valor de venda: </string>
     <string name="back">Voltar</string>
     <string name="delete">Excluir</string>

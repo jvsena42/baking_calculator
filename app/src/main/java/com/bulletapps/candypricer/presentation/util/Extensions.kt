@@ -66,7 +66,7 @@ fun String?.formatUnit() = when (this) {
     "G" -> "g"
     "L" -> "l"
     "ML" -> "ml"
-    else -> ""
+    else -> this.orEmpty()
 }
 
 fun List<UnitResponse>.format(): List<UnitResponse> {
