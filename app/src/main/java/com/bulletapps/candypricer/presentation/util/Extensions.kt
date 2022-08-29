@@ -38,9 +38,11 @@ fun Double?.toCurrency(): String {
 
 fun Double?.toPercent() = this.orZero()/ONE_HUNDRED
 
+fun Double?.toPercentString() = "${this.orZero()/ONE_HUNDRED}%"
+
 fun String?.formatDouble(): Double {
     val value = if (this.isNullOrEmpty()) "0.0" else this
-    return value.replace(",",".").toDouble()
+    return value.replace(",", ".").replace("%", "").toDouble()
 }
 
 fun String?.filterNumbers(): String {
@@ -71,3 +73,5 @@ fun List<UnitResponse>.format(): List<UnitResponse> {
     if (isEmpty()) return emptyList()
     return this.map { UnitResponse(it.id, it.name.formatUnit()) }
 }
+
+fun UnitResponse?.format() = UnitResponse(this?.id ?: -1, this?.name.formatUnit())

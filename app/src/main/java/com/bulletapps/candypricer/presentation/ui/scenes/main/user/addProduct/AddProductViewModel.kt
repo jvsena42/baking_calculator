@@ -40,13 +40,13 @@ class AddProductViewModel @Inject constructor(
         product?.let {
             uiState.id.value = it.id
             uiState.name.value = it.name
-            uiState.selectedUnit.value = it.unit!!
+            uiState.selectedUnit.value = it.unit.format()
             uiState.quantity.value = it.quantity.toString()
-            uiState.profitMargin.value = it.profitMargin.orZero().toString()
-            uiState.laborPrice.value = it.laborValue.orZero().toString()
-            uiState.variableExpenses.value = it.variableExpenses.orZero().toString()
-            uiState.price.value = it.price.orZero().toCurrency() //TODO implement
-            //TODO add supplies
+            uiState.profitMargin.value = it.profitMargin.toString()
+            uiState.laborPrice.value = it.laborValue.toString()
+            uiState.variableExpenses.value = it.variableExpenses.toString()
+            selectedSuppliesList.addAll(it.supplies.map { supply -> MenuItemModel(supply.id, supply.name, 1.0.toString()) })
+            uiState.selectedSupplies.value = selectedSuppliesList.toList()
         }
     }
 
@@ -136,9 +136,9 @@ class AddProductViewModel @Inject constructor(
                 quantity = uiState.quantity.value.formatDouble(),
                 unitId = uiState.selectedUnit.value.id.orZero(),
                 suppliesId = uiState.selectedSupplies.value.map { it.id },
-                profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
-                laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
-                variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
+                profitMargin = uiState.profitMargin.value.formatDouble(),
+                laborValue = uiState.laborPrice.value.formatDouble(),
+                variableExpenses = uiState.variableExpenses.value.formatDouble(),
                 amountQuantitySupply = uiState.selectedSupplies.value.map { it.qut.formatDouble() }
             )
         ).also { result ->
