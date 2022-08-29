@@ -37,7 +37,7 @@ fun CardSupply(supply: SupplyResponse, modifier: Modifier = Modifier, onClick: (
                     supply.quantity.toString()
                 )
                 TextWithLabel(stringResource(id = R.string.measure_type_label), supply.unit?.name.formatUnit())
-                TextWithLabel(stringResource(id = R.string.sell_by), supply.value.toCurrency())
+                TextWithLabel(stringResource(id = R.string.cost_label), supply.value.toCurrency())
             }
         }
     }
