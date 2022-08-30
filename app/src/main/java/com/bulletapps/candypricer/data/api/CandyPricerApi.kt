@@ -34,6 +34,11 @@ interface CandyPricerApi {
     @GET("/supply")
     suspend fun getSupplies(): List<SupplyResponse>
 
+    @PUT("/supply")
+    suspend fun updateSupply(
+        @Body parameters: SupplyResponse
+    ): SupplyResponse
+
     @DELETE("/supply/{id}")
     suspend fun deleteSupply(
         @Path("id") id: Int

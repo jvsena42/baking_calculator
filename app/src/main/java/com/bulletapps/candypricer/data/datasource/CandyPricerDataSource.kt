@@ -20,6 +20,8 @@ interface CandyPricerDataSource {
 
     suspend fun getSupplies(): List<SupplyResponse>
 
+    suspend fun updateSupply(parameters: SupplyResponse): SupplyResponse
+
     suspend fun deleteSupply(id: Int): CreateSupplyParameters
 
     suspend fun createUnit(parameters: CreateUnitParameters): UnitResponse

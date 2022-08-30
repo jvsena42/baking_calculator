@@ -45,6 +45,10 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.deleteSupply(id)
     }
 
+    override suspend fun updateSupply(parameters: SupplyResponse) = safeRequest(dispatcher) {
+        dataSource.updateSupply(parameters)
+    }
+
     override suspend fun createUnit(parameters: CreateUnitParameters) = safeRequest(dispatcher) {
         dataSource.createUnit(parameters)
     }
