@@ -49,8 +49,7 @@ class UseCaseModule {
     fun providesGetAllSuppliesUseCaseUseCase(repository: CandyPricerRepository) : GetAllSuppliesUseCase {
         return GetAllSuppliesUseCase(repository)
     }
-
-
+    
     @Singleton
     @Provides
     fun providesDeleteSupplyUseCase(repository: CandyPricerRepository) : DeleteSupplyUseCase {

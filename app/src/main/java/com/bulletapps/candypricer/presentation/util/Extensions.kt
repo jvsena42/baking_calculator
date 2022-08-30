@@ -13,6 +13,7 @@ import java.util.*
 
 
 const val ZERO = 0
+const val NEGATIVE = -1
 const val WHATSAPP_NUMBER = "+5586981133033"
 const val ZERO_DOUBLE = 0.0
 const val ZERO_FLOAT = 0f
@@ -21,6 +22,7 @@ const val COUNTRY = "BR"
 const val LANGUAGE = "pt"
 
 fun Int?.orZero() = this ?: ZERO
+fun Int?.orNegative() = this ?: NEGATIVE
 fun Double?.orZero() = this ?: ZERO_DOUBLE
 fun Float?.orZero() = this ?: ZERO_FLOAT
 
