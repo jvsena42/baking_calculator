@@ -1,5 +1,6 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
@@ -120,27 +121,29 @@ class AddProductViewModel @Inject constructor(
                 && profitMarginResult is Resource.Success
                 && supplyResult is Resource.Success
             ) {
-                if (uiState.id.value == 0) handleCreateSupply() else handleEditSupply()
+                if (uiState.id.value == 0) handleCreateProduct() else handleEditProduct()
             }
         }
     }
 
-    private suspend fun handleEditSupply() {
+    private suspend fun handleEditProduct() {
 
     }
 
-    private suspend fun handleCreateSupply() {
+    private suspend fun handleCreateProduct() {
+        val createProductParameters = CreateProductParameters(
+            name = uiState.name.value,
+            quantity = uiState.quantity.value.formatDouble(),
+            unitId = uiState.selectedUnit.value.id.orZero(),
+            suppliesId = uiState.selectedSupplies.value.map { it.id },
+            profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
+            laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
+            variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
+            amountQuantitySupply = uiState.selectedSupplies.value.map { it.qut.formatDouble() }
+        )
+        Log.d("", "handleCreateSupply: $createProductParameters")
         createProductUseCase(
-            CreateProductParameters(
-                name = uiState.name.value,
-                quantity = uiState.quantity.value.formatDouble(),
-                unitId = uiState.selectedUnit.value.id.orZero(),
-                suppliesId = uiState.selectedSupplies.value.map { it.id },
-                profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
-                laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
-                variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
-                amountQuantitySupply = uiState.selectedSupplies.value.map { it.qut.formatDouble() }
-            )
+            createProductParameters
         ).also { result ->
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
