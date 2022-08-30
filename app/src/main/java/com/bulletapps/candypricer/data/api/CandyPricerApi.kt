@@ -34,9 +34,9 @@ interface CandyPricerApi {
     @GET("/supply")
     suspend fun getSupplies(): List<SupplyResponse>
 
-    @DELETE("/supply")
+    @DELETE("/supply/{id}")
     suspend fun deleteSupply(
-        @Query("id") id: Int
+        @Path("id") id: Int
     ): CreateSupplyParameters
 
     @POST("/unit")
