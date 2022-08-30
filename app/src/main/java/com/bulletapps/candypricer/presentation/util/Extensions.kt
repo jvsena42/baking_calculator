@@ -26,6 +26,8 @@ fun Int?.orNegative() = this ?: NEGATIVE
 fun Double?.orZero() = this ?: ZERO_DOUBLE
 fun Float?.orZero() = this ?: ZERO_FLOAT
 
+fun Int.isNegative() = this < 0
+
 fun Boolean?.orFalse() = this ?: false
 
 fun Context.openWhatsapp(phone: String = WHATSAPP_NUMBER, message: String = "Oi!") {

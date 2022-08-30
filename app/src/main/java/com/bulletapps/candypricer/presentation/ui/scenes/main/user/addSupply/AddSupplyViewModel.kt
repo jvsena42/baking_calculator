@@ -9,6 +9,7 @@ import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.CreateSupplyUseCase
+import com.bulletapps.candypricer.domain.usecase.supply.UpdateSupplyUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class AddSupplyViewModel @Inject constructor(
     private val getUnitsUseCase: GetUnitsUseCase,
     private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
-    private val createSupplyUseCase: CreateSupplyUseCase
+    private val createSupplyUseCase: CreateSupplyUseCase,
+    private val updateSupplyUseCase: UpdateSupplyUseCase,
     ) : ViewModel(), EventFlow<AddSupplyViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -87,13 +89,26 @@ class AddSupplyViewModel @Inject constructor(
                 && qntResult is Resource.Success
                 && priceResult is Resource.Success
             ) {
-                if (uiState.id.value == 0) handleCreateSupply() else handleEditSupply()
+                if (uiState.id.value.isNegative()) handleCreateSupply() else handleEditSupply()
             }
         }
     }
 
     private suspend fun handleEditSupply() {
-        // TODO IMPLEMENT
+        updateSupplyUseCase(
+            SupplyResponse(
+                id = uiState.id.value,
+                name = uiState.name.value,
+                quantity = uiState.quantity.value.formatDouble(),
+                value = uiState.price.value.formatDouble(),
+                unit = uiState.selectedUnit.value,
+            )
+        ).also { result ->
+            when (result) {
+                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.GoBack) /*showToast(result.message)*/
+            }
+        }
     }
 
     private suspend fun handleCreateSupply() {
@@ -135,7 +150,7 @@ class AddSupplyViewModel @Inject constructor(
 
     class UIState {
         val name = MutableStateFlow("")
-        val id = MutableStateFlow(0)
+        val id = MutableStateFlow(NEGATIVE)
         val quantity = MutableStateFlow("")
         val price = MutableStateFlow("")
         val unities = MutableStateFlow<List<UnitResponse>>(listOf())
