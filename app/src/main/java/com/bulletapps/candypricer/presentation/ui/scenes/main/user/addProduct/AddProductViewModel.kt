@@ -141,7 +141,8 @@ class AddProductViewModel @Inject constructor(
             variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
             amountQuantitySupply = uiState.selectedSupplies.value.map { it.qut.formatDouble() }
         )
-        Log.d("", "handleCreateSupply: $createProductParameters")
+        Log.d("CREATE_PRODUCT", "create supply resquest: $createProductParameters")
+        Log.d("CREATE_PRODUCT", "supplies: ${uiState.selectedSupplies.value}")
         createProductUseCase(
             createProductParameters
         ).also { result ->
