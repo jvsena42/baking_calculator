@@ -11,6 +11,7 @@ import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyListUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.product.CreateProductUseCase
+import com.bulletapps.candypricer.domain.usecase.product.DeleteProductUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
@@ -24,7 +25,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductDetailViewModel @Inject constructor( ) : ViewModel(), EventFlow<ProductDetailViewModel.ScreenEvent> by EventFlowImpl() {
+class ProductDetailViewModel @Inject constructor(
+    private val deleteProductUseCase: DeleteProductUseCase
+) : ViewModel(), EventFlow<ProductDetailViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
@@ -33,8 +36,17 @@ class ProductDetailViewModel @Inject constructor( ) : ViewModel(), EventFlow<Pro
     }
 
     fun onAction(action: ScreenActions) = when(action) {
-        is ScreenActions.OnClickDelete -> {}
+        is ScreenActions.OnClickDelete -> deleteProduct()
         is ScreenActions.OnClickEdit -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddProduct)
+    }
+
+    private fun deleteProduct() = viewModelScope.launch {
+        deleteProductUseCase(uiState.product.value.id).also {
+            when(it) {
+                is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+            }
+        }
     }
 
     sealed class ScreenActions {
