@@ -37,8 +37,8 @@ class AddSupplyViewModel @Inject constructor(
         supply?.let { supply ->
             uiState.name.value = supply.name
             uiState.selectedUnit.value = supply.unit
-            uiState.quantity.value = supply.quantity.toString()
-            uiState.price.value = supply.value.toCurrency()
+            uiState.quantity.value = supply.quantity.round()
+            uiState.price.value = supply.value.round()
             uiState.id.value = supply.id
         }
     }

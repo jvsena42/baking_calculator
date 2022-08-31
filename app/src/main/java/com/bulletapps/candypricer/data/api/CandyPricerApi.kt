@@ -36,7 +36,7 @@ interface CandyPricerApi {
 
     @PUT("/supply")
     suspend fun updateSupply(
-        @Body parameters: SupplyResponse
+        @Body parameters: UpdateSupplyParameters
     ): SupplyResponse
 
     @DELETE("/supply/{id}")
