@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class UpdateSupplyParameters(
     @SerializedName("id")
-    var id: String,
+    var id: Int,
     @SerializedName("name")
     var name: String,
     @SerializedName("quantity")

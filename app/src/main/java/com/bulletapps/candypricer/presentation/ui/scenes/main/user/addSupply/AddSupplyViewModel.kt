@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
+import com.bulletapps.candypricer.data.parameters.UpdateSupplyParameters
 import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
@@ -96,12 +97,12 @@ class AddSupplyViewModel @Inject constructor(
 
     private suspend fun handleEditSupply() {
         updateSupplyUseCase(
-            SupplyResponse(
-                id = uiState.id.value,
+            UpdateSupplyParameters(
+                id = uiState.id.value.orNegative(),
                 name = uiState.name.value,
                 quantity = uiState.quantity.value.formatDouble(),
-                value = uiState.price.value.formatDouble(),
-                unit = uiState.selectedUnit.value,
+                price = uiState.price.value.formatDouble(),
+                unitId = uiState.selectedUnit.value?.id.orNegative(),
             )
         ).also { result ->
             when (result) {
