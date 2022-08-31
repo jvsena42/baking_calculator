@@ -17,6 +17,8 @@ class CandyPricerRemoteDataSource @Inject constructor(private val api: CandyPric
 
     override suspend fun getProducts(): List<ProductResponse> = api.getProducts()
 
+    override suspend fun deleteProduct(id: Int) = api.deleteProduct(id)
+
     override suspend fun createSupply(parameters: CreateSupplyParameters) = api.createSupply(parameters)
 
     override suspend fun getSupplies(): List<SupplyResponse> = api.getSupplies()

@@ -54,6 +54,10 @@ private fun EventConsumer(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is ScreenEvent.GoBack -> activity.onBackPressed()
+                is ScreenEvent.UpdateSupply -> {
+                    sharedViewModel.selectedSupply.value = event.supply
+                    activity.onBackPressed()
+                }
             }
         }
     }
