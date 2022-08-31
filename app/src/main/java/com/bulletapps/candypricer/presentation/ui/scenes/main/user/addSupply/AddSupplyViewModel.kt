@@ -36,11 +36,11 @@ class AddSupplyViewModel @Inject constructor(
         }
 
         supply?.let { supply ->
+            uiState.id.value = supply.id
             uiState.name.value = supply.name
             uiState.selectedUnit.value = supply.unit
             uiState.quantity.value = supply.quantity.round()
             uiState.price.value = supply.value.round()
-            uiState.id.value = supply.id
         }
     }
 
@@ -96,18 +96,26 @@ class AddSupplyViewModel @Inject constructor(
     }
 
     private suspend fun handleEditSupply() {
+        val parameters = UpdateSupplyParameters(
+            id = uiState.id.value.orNegative(),
+            name = uiState.name.value,
+            quantity = uiState.quantity.value.formatDouble(),
+            price = uiState.price.value.formatDouble(),
+            unitId = uiState.selectedUnit.value?.id.orNegative(),
+        )
         updateSupplyUseCase(
-            UpdateSupplyParameters(
-                id = uiState.id.value.orNegative(),
-                name = uiState.name.value,
-                quantity = uiState.quantity.value.formatDouble(),
-                price = uiState.price.value.formatDouble(),
-                unitId = uiState.selectedUnit.value?.id.orNegative(),
-            )
+            parameters
         ).also { result ->
+            val updatedSupply = SupplyResponse(
+                parameters.id,
+                parameters.name,
+                parameters.quantity,
+                parameters.price,
+                uiState.selectedUnit.value,
+            )
             when (result) {
-                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
-                is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.GoBack) /*showToast(result.message)*/
+                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.UpdateSupply(updatedSupply))
+                is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.UpdateSupply(updatedSupply)) /*showToast(result.message)*/
             }
         }
     }
@@ -174,6 +182,7 @@ class AddSupplyViewModel @Inject constructor(
 
     sealed class ScreenEvent {
         object GoBack : ScreenEvent()
+        data class UpdateSupply(val supply: SupplyResponse) : ScreenEvent()
     }
 }
 
