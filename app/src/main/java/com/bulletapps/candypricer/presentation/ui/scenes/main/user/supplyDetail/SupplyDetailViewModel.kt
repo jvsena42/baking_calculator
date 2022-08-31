@@ -6,17 +6,17 @@ import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.domain.usecase.supply.DeleteSupplyUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
-import com.bulletapps.candypricer.presentation.util.EventFlow
-import com.bulletapps.candypricer.presentation.util.EventFlowImpl
-import com.bulletapps.candypricer.presentation.util.ZERO
-import com.bulletapps.candypricer.presentation.util.ZERO_DOUBLE
+import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SupplyDetailViewModel @Inject constructor(
+    private val deleteSupplyUseCase: DeleteSupplyUseCase
 ) : ViewModel(), EventFlow<SupplyDetailViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -27,7 +27,15 @@ class SupplyDetailViewModel @Inject constructor(
 
     fun onAction(action: ScreenActions) = when(action) {
         ScreenActions.OnCLickEdit -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddSupply)
-        ScreenActions.OnCLickDelete -> {}
+        ScreenActions.OnCLickDelete -> deleteSupply()
+    }
+
+    private fun deleteSupply() = viewModelScope.launch {
+        val deleteResult = deleteSupplyUseCase(uiState.supply.value.id.orNegative())
+        when(deleteResult) {
+            is Resource.Error -> sendEvent(ScreenEvent.PopScreen)
+            is Resource.Success -> sendEvent(ScreenEvent.PopScreen)
+        }
     }
 
     private fun showToast(message: UiText?) {
@@ -42,6 +50,7 @@ class SupplyDetailViewModel @Inject constructor(
 
     sealed class ScreenEvent {
         object NavigateToAddSupply : ScreenEvent()
+        object PopScreen : ScreenEvent()
     }
 
     class UIState {

@@ -2,10 +2,7 @@ package com.bulletapps.candypricer.data.api
 
 import com.bulletapps.candypricer.data.parameters.*
 import com.bulletapps.candypricer.data.response.*
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface CandyPricerApi {
     @POST("/user")
@@ -36,6 +33,16 @@ interface CandyPricerApi {
 
     @GET("/supply")
     suspend fun getSupplies(): List<SupplyResponse>
+
+    @PUT("/supply")
+    suspend fun updateSupply(
+        @Body parameters: UpdateSupplyParameters
+    ): SupplyResponse
+
+    @DELETE("/supply/{id}")
+    suspend fun deleteSupply(
+        @Path("id") id: Int
+    ): CreateSupplyParameters
 
     @POST("/unit")
     suspend fun createUnit(

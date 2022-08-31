@@ -2,10 +2,7 @@ package com.bulletapps.candypricer.data.datasource
 
 import com.bulletapps.candypricer.data.parameters.*
 import com.bulletapps.candypricer.data.response.*
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface CandyPricerDataSource {
 
@@ -22,6 +19,10 @@ interface CandyPricerDataSource {
     suspend fun createSupply(parameters: CreateSupplyParameters): SupplyResponse
 
     suspend fun getSupplies(): List<SupplyResponse>
+
+    suspend fun updateSupply(parameters: UpdateSupplyParameters): SupplyResponse
+
+    suspend fun deleteSupply(id: Int): CreateSupplyParameters
 
     suspend fun createUnit(parameters: CreateUnitParameters): UnitResponse
 
