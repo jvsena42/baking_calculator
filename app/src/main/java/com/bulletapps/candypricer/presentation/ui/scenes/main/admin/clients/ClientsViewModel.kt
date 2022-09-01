@@ -2,7 +2,10 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bulletapps.candypricer.config.Resource
+import com.bulletapps.candypricer.data.response.UserResponse
 import com.bulletapps.candypricer.domain.model.User
+import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,33 +14,18 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsViewModel.ScreenEvent> by EventFlowImpl() {
+class ClientsViewModel @Inject constructor(
+    private val getUsersUseCase: GetUsersUseCase
+) : ViewModel(), EventFlow<ClientsViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
     suspend fun setup() {
-        uiState.clients.value = listOf(
-            User(
-                name = "Maria Júlia",
-                expirationDate = Calendar.getInstance(),
-                phone = "86998006407"
-            ),
-            User(
-                name = "Ana Maria Braga",
-                expirationDate = Calendar.getInstance(),
-                phone = "86998006407"
-            ),
-            User(
-                name = "Pequeno Chef",
-                expirationDate = Calendar.getInstance(),
-                phone = "86981133033"
-            ),
-            User(
-                name = "Teste da silva",
-                expirationDate = Calendar.getInstance(),
-                phone = "86998006407"
-            ),
-        )
+        val result = getUsersUseCase()
+        when (result) {
+            is Resource.Error -> {}
+            is Resource.Success ->  uiState.clients.value = result.data.orEmpty()
+        }
     }
 
     private fun onClickMessage(phone: String) {
@@ -84,7 +72,7 @@ class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsVie
     class UIState {
         val date = MutableStateFlow("")
         val isDialogVisible = MutableStateFlow(false)
-        val clients = MutableStateFlow<List<User>>(listOf())
+        val clients = MutableStateFlow<List<UserResponse>>(listOf())
     }
 }
 

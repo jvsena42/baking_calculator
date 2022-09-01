@@ -63,7 +63,7 @@ class MenuViewModel @Inject constructor(
         result: Resource<UserResponse>
     ) {
         val isExpired = isExpiredUserUseCase(result.data?.expirationDate!!)
-        if (isExpired) {
+        if (isExpired && !result.data.isAdmin) {
             viewModelScope.sendEvent(ScreenEvent.ExpiredScreen)
         }
     }
