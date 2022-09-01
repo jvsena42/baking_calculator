@@ -10,6 +10,7 @@ import com.bulletapps.candypricer.domain.usecase.unit.CreateUnitUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.domain.usecase.user.CreateUserUseCase
 import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
+import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
 import com.bulletapps.candypricer.domain.usecase.user.IsExpiredUserUseCase
 import dagger.Module
 import dagger.Provides
@@ -31,6 +32,12 @@ class UseCaseModule {
     @Provides
     fun providesGetUserUseCase(repository: CandyPricerRepository) : GetUserUseCase {
         return GetUserUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun providesGetUsersUseCase(repository: CandyPricerRepository) : GetUsersUseCase {
+        return GetUsersUseCase(repository)
     }
 
     @Singleton
