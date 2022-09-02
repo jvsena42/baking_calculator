@@ -14,6 +14,7 @@ import java.util.*
 
 const val ZERO = 0
 const val NEGATIVE = -1
+const val EMPTY_STRING = ""
 const val WHATSAPP_NUMBER = "+5586981133033"
 const val ZERO_DOUBLE = 0.0
 const val ZERO_FLOAT = 0f

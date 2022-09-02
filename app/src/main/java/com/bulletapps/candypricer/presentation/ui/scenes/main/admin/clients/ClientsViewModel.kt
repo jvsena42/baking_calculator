@@ -8,6 +8,7 @@ import com.bulletapps.candypricer.domain.model.User
 import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.NEGATIVE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.*
@@ -33,12 +34,15 @@ class ClientsViewModel @Inject constructor(
     }
 
     private fun changeExpirationDate() {
+        // call update user
 
     }
 
     private fun onShowDialog(selectedUser: UserResponse) {
+        uiState.selectedUser.value = selectedUser
         uiState.isDialogVisible.value = true
     }
+
     private fun onDismissDialog() {
         uiState.isDialogVisible.value = false
     }
@@ -55,7 +59,7 @@ class ClientsViewModel @Inject constructor(
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
         is ScreenActions.OnClickMessage -> onClickMessage(action.phone)
         is ScreenActions.OnClickChangeExpirationDate -> onShowDialog(action.user)
-        ScreenActions.OnDismissDialog -> onDismissDialog()
+        is ScreenActions.OnDismissDialog -> onDismissDialog()
     }
 
     sealed class ScreenEvent {
@@ -72,6 +76,7 @@ class ClientsViewModel @Inject constructor(
     class UIState {
         val date = MutableStateFlow("")
         val isDialogVisible = MutableStateFlow(false)
+        val selectedUser = MutableStateFlow(UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = ""))
         val clients = MutableStateFlow<List<UserResponse>>(listOf())
     }
 }

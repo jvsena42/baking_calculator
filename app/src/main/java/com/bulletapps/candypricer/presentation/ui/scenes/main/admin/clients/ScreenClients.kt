@@ -124,6 +124,7 @@ fun BuildCalendar(
     onAction: (ScreenActions) -> Unit
 ) {
     val isDialogVisible by uiState.isDialogVisible.collectAsState()
+    val selectedUser by uiState.selectedUser.collectAsState()
 
     val context = LocalContext.current
 
@@ -131,13 +132,10 @@ fun BuildCalendar(
     val month: Int
     val day: Int
 
-    // TODO ALTERAR PARA A DATA DO MODEL
-    val calendar = Calendar.getInstance()
-    year = calendar.get(Calendar.YEAR)
-    month = calendar.get(Calendar.MONTH)
-    day = calendar.get(Calendar.DAY_OF_MONTH)
-    calendar.time = Date()
-
+    val calendar = selectedUser.expirationDate.toDate()
+    year = calendar.year
+    month = calendar.month
+    day = calendar.day
     val date = remember { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
         context,
