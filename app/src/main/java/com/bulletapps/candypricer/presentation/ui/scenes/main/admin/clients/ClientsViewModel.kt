@@ -36,7 +36,7 @@ class ClientsViewModel @Inject constructor(
 
     }
 
-    private fun onShowDialog(selectedUser: User) {
+    private fun onShowDialog(selectedUser: UserResponse) {
         uiState.isDialogVisible.value = true
     }
     private fun onDismissDialog() {
@@ -64,7 +64,7 @@ class ClientsViewModel @Inject constructor(
 
     sealed class ScreenActions {
         data class OnClickMessage(val phone: String) : ScreenActions()
-        data class OnClickChangeExpirationDate(val user: User) : ScreenActions()
+        data class OnClickChangeExpirationDate(val user: UserResponse) : ScreenActions()
         object OnDismissDialog : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
     }
