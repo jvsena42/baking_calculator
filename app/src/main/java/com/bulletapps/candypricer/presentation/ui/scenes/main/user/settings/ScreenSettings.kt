@@ -29,8 +29,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.Sett
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.Login
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.*
-import com.bulletapps.candypricer.presentation.util.navigateUrl
-import com.bulletapps.candypricer.presentation.util.openWhatsapp
+import com.bulletapps.candypricer.presentation.util.*
 
 @Composable
 fun ScreenSettings(

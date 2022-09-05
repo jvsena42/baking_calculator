@@ -30,7 +30,7 @@ class SettingsViewModel @Inject constructor(
             uiState.name.value = user?.name.orEmpty()
             uiState.email.value = user?.email.orEmpty()
             uiState.phone.value =  user?.phone.formatPhone()
-            uiState.expirationDate.value = user?.expirationDate?.apply { toDate().formatToDayMonthYear() }.orEmpty()
+            uiState.expirationDate.value = user?.expirationDate?.toDate()?.formatToDayMonthYear().orEmpty()
         }
     }
 
