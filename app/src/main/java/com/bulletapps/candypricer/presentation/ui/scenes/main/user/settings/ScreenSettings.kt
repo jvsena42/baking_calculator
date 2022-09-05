@@ -140,7 +140,7 @@ private fun Screen(
 
 @Composable
 private fun CardInfo(uiState: UIState) {
-    val email  by uiState.name.collectAsState()
+    val email  by uiState.email.collectAsState()
     val phone  by uiState.phone.collectAsState()
     val expirationDate  by uiState.expirationDate.collectAsState()
 

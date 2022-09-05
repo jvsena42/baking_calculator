@@ -70,7 +70,7 @@ fun Context.navigateUrl(url: String) {
 }
 
 fun String?.formatPhone(): String {
-    return if (this.isNullOrEmpty()) "" else PhoneNumberUtils.formatNumber(this, Locale.getDefault().country)
+    return if (this.isNullOrEmpty()) "" else PhoneNumberUtils.formatNumber(this, "BR")
 }
 
 fun String?.formatUnit() = when (this) {
