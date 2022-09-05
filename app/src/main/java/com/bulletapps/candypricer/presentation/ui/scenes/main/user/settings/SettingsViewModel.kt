@@ -22,7 +22,7 @@ class SettingsViewModel @Inject constructor(
 
     val uiState = UIState()
 
-    suspend fun setup() {
+    fun setup() = viewModelScope.launch {
         val result = getUserUseCase()
 
         if (result is Resource.Success) {

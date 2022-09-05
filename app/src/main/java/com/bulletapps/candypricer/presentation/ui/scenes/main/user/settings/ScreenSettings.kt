@@ -37,6 +37,7 @@ fun ScreenSettings(
     viewModel: SettingsViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
+    LaunchedEffect(Unit) { viewModel.setup() }
     val activity = LocalContext.current as MainActivity
     Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(activity, viewModel, sharedViewModel)
