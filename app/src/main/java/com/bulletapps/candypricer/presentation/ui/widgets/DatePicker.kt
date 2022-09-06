@@ -1,9 +1,11 @@
 package com.bulletapps.candypricer.presentation.ui.widgets
 
+import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import java.util.*
 
 class DatePicker {
     companion object {
@@ -58,7 +60,23 @@ class DatePicker {
             .build()
     }
 
+    @VisibleForTesting
+    internal fun removeTimeFromDate(dateInMillis: Long) =
+        Calendar.getInstance(getUTCTimezone()).apply {
+            timeInMillis = dateInMillis
+            set(Calendar.HOUR_OF_DAY, ZERO)
+            set(Calendar.MINUTE, ZERO)
+            set(Calendar.SECOND, ZERO)
+            set(Calendar.MILLISECOND, ZERO)
+        }.timeInMillis
 
+    private fun getUTCTimezone() = TimeZone.getTimeZone(UTC_TIMEZONE)
+
+    data class Result(
+        val presentationDate: String,
+        val date: String,
+        val dateInMillis: Long
+    )
 
     data class DatePickerBuilder(
         var title: String = "",

@@ -47,9 +47,7 @@ class MenuViewModel @Inject constructor(
             handleExpired(result)
             handleUserType(result)
         } else {
-//            TODO Remove comment when fix get users
-//            uiState.onFailure(ScreenActions.OnRetry, ScreenActions.OnLogout)
-            uiState.onSuccess(menuClient)
+            uiState.onFailure(ScreenActions.OnRetry, ScreenActions.OnLogout)
         }
     }
 
@@ -62,8 +60,8 @@ class MenuViewModel @Inject constructor(
     private suspend fun handleExpired(
         result: Resource<UserResponse>
     ) {
-        val isExpired = isExpiredUserUseCase(result.data?.expirationDate!!)
-        if (isExpired && !result.data.isAdmin) {
+        val isExpired = isExpiredUserUseCase(result.data?.expirationDate.orEmpty())
+        if (isExpired && !result.data?.isAdmin.orFalse()) {
             viewModelScope.sendEvent(ScreenEvent.ExpiredScreen)
         }
     }
