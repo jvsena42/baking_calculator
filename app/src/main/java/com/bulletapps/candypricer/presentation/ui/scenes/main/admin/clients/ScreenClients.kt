@@ -1,10 +1,5 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 
-import android.app.DatePickerDialog
-import android.content.DialogInterface
-import android.content.Intent
-import android.net.Uri
-import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,12 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.data.response.UserResponse
-import com.bulletapps.candypricer.domain.model.User
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ClientsViewModel.ScreenActions
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ClientsViewModel.UIState
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.RegisterViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardClient
 import com.bulletapps.candypricer.presentation.util.formatToDayMonthYear
@@ -137,7 +130,8 @@ fun BuildCalendar(
     month = calendar.month
     day = calendar.day
     val date = remember { mutableStateOf("") }
-    val datePickerDialog = DatePickerDialog(
+
+    /*val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
             date.value = "$dayOfMonth/$month/$year"
@@ -152,7 +146,7 @@ fun BuildCalendar(
         datePickerDialog.show()
     } else if (!isDialogVisible && datePickerDialog.isShowing) {
         datePickerDialog.dismiss()
-    }
+    }*/
 }
 
 @Preview(showBackground = true)

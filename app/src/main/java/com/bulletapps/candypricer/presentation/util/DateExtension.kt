@@ -18,6 +18,6 @@ fun String.toDate(format: String = BACKEND_FORMAT) = SimpleDateFormat(format, Lo
 fun Date.formatToHour() = format(HOUR_FORMAT)
 fun Date.formatToDayMonthYear() = format(DAY_MONTH_YEAR_FORMAT)
 
-private fun Date.format(format: String) = SimpleDateFormat(format, Locale.getDefault()).format(this).orEmpty()
+private fun Date.format(format: String) = SimpleDateFormat(format, LOCALE_BR).format(this).orEmpty()
 
 class NotDateFoundException : RuntimeException()
