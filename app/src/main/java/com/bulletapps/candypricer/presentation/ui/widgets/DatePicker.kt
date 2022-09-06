@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
 class DatePicker {
@@ -77,6 +78,14 @@ class DatePicker {
         val date: String,
         val dateInMillis: Long
     )
+
+    @Parcelize
+    internal class BetweenDateValidator(
+        private val start: Long,
+        private val end: Long
+    ): CalendarConstraints.DateValidator {
+        override fun isValid(date: Long) = date in start..end
+    }
 
     data class DatePickerBuilder(
         var title: String = "",
