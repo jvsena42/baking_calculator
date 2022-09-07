@@ -2,10 +2,13 @@ package com.bulletapps.candypricer.presentation.ui.widgets
 
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentManager
+import com.bulletapps.candypricer.presentation.util.LOCALE_BR
 import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.parcelize.Parcelize
+import java.text.SimpleDateFormat
 import java.util.*
 
 class DatePicker {
@@ -57,9 +60,27 @@ class DatePicker {
 
     private fun buildCalendarConstraints(start: Long): CalendarConstraints {
         return CalendarConstraints.Builder()
-            .setValidator(DateValidatorPointForward(removeTimeFromDate(start)))
+            .setValidator(DateValidatorPointForward.from(removeTimeFromDate(start)))
             .build()
     }
+
+    private fun buildCalendarUntilConstraints(start: Long): CalendarConstraints {
+        return CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointBackward.before(removeTimeFromDate(start)))
+            .build()
+    }
+
+    @VisibleForTesting
+    fun buildResult(dateInMillis: Long) = Result(
+        presentationDate = formatDate(dateInMillis, builder.presentationDateFormatResult),
+        date = formatDate(dateInMillis, builder.dateFormatResult),
+        dateInMillis = removeTimeFromDate(dateInMillis)
+    )
+
+    private fun formatDate(dateInMillis: Long, format: String) =
+        SimpleDateFormat(format, LOCALE_BR)
+            .apply { timeZone = getUTCTimezone() }
+            .format(Date(dateInMillis))
 
     @VisibleForTesting
     internal fun removeTimeFromDate(dateInMillis: Long) =
