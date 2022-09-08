@@ -121,6 +121,10 @@ class RegisterViewModel @Inject constructor(
         uiState.isPasswordConfirmVisible.value = !uiState.isPasswordConfirmVisible.value
     }
 
+    private fun onCheckedChanged(isChecked: Boolean) {
+        uiState.isChecked.value = isChecked
+    }
+
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when (fieldsTexts) {
         is FieldsTexts.Name -> uiState.name.value = fieldsTexts.text
         is FieldsTexts.Email -> uiState.email.value = fieldsTexts.text
@@ -142,16 +146,21 @@ class RegisterViewModel @Inject constructor(
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
         is ScreenActions.OnClickTogglePassword -> onClickTogglePassword()
         is ScreenActions.OnClickTogglePasswordConf -> onClickTogglePasswordConf()
+        is ScreenActions.OnCheckChanged -> onCheckedChanged(action.isChecked)
+        ScreenActions.OnClickTerms -> viewModelScope.sendEvent(ScreenEvent.NavigateTerms)
     }
 
     sealed class ScreenEvent {
         object MainScreen : ScreenEvent()
+        object NavigateTerms : ScreenEvent()
     }
 
     sealed class ScreenActions {
         object OnClickConfirm : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
+        data class OnCheckChanged(val isChecked: Boolean) : ScreenActions()
         object OnClickTogglePassword : ScreenActions()
+        object OnClickTerms : ScreenActions()
         object OnClickTogglePasswordConf : ScreenActions()
     }
 
@@ -169,6 +178,7 @@ class RegisterViewModel @Inject constructor(
         val passwordError = MutableStateFlow<UiText?>(null)
         val passwordConfError = MutableStateFlow<UiText?>(null)
         val isLoading = MutableStateFlow(false)
+        val isChecked = MutableStateFlow(true)
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
 }
