@@ -23,10 +23,10 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.Clie
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ClientsViewModel.UIState
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardClient
+import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
 import com.bulletapps.candypricer.presentation.util.formatToDayMonthYear
 import com.bulletapps.candypricer.presentation.util.openWhatsapp
 import com.bulletapps.candypricer.presentation.util.toDate
-import java.util.*
 
 @Composable
 fun ScreenClients(
@@ -119,34 +119,19 @@ fun BuildCalendar(
     val isDialogVisible by uiState.isDialogVisible.collectAsState()
     val selectedUser by uiState.selectedUser.collectAsState()
 
-    val context = LocalContext.current
-
-    val year: Int
-    val month: Int
-    val day: Int
-
     val calendar = selectedUser.expirationDate.toDate()
-    year = calendar.year
-    month = calendar.month
-    day = calendar.day
-    val date = remember { mutableStateOf("") }
-
-    /*val datePickerDialog = DatePickerDialog(
-        context,
-        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            date.value = "$dayOfMonth/$month/$year"
-        }, year, month, day
-    ).apply {
-        setOnDismissListener {
-            onAction(ScreenActions.OnDismissDialog)
-        }
+    val datePickerDialog = DatePicker()
+    datePickerDialog.builder.apply {
+        selectedDate = calendar.time
+        onDateSelect = { result -> onAction(ScreenActions.OnConfirmDate(result)) }
+        onCancel = { onAction(ScreenActions.OnDismissDialog) }
+        onDismiss = { onAction(ScreenActions.OnDismissDialog) }
     }
 
-    if (isDialogVisible && !datePickerDialog.isShowing) {
-        datePickerDialog.show()
-    } else if (!isDialogVisible && datePickerDialog.isShowing) {
-        datePickerDialog.dismiss()
-    }*/
+    if (isDialogVisible) {
+        val activity = LocalContext.current as MainActivity
+        datePickerDialog.show(activity.supportFragmentManager)
+    }
 }
 
 @Preview(showBackground = true)

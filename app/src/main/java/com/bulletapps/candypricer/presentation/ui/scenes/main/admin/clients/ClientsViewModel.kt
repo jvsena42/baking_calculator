@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.response.UserResponse
-import com.bulletapps.candypricer.domain.model.User
 import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
+import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import com.bulletapps.candypricer.presentation.util.NEGATIVE
+import com.bulletapps.candypricer.presentation.util.isNegative
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,8 +33,12 @@ class ClientsViewModel @Inject constructor(
         viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp(phone))
     }
 
-    private fun changeExpirationDate() {
-        // call update user
+    private fun changeExpirationDate(response: DatePicker.Result) {
+        val selectedUser = uiState.selectedUser.value
+        if (!selectedUser.id.isNegative()) {
+            val updatedUser = selectedUser.copy(expirationDate = response.date)
+
+        }
 
     }
 
@@ -60,6 +64,7 @@ class ClientsViewModel @Inject constructor(
         is ScreenActions.OnClickMessage -> onClickMessage(action.phone)
         is ScreenActions.OnClickChangeExpirationDate -> onShowDialog(action.user)
         is ScreenActions.OnDismissDialog -> onDismissDialog()
+        is ScreenActions.OnConfirmDate -> changeExpirationDate(action.response)
     }
 
     sealed class ScreenEvent {
@@ -69,6 +74,7 @@ class ClientsViewModel @Inject constructor(
     sealed class ScreenActions {
         data class OnClickMessage(val phone: String) : ScreenActions()
         data class OnClickChangeExpirationDate(val user: UserResponse) : ScreenActions()
+        data class OnConfirmDate(val response: DatePicker.Result) : ScreenActions()
         object OnDismissDialog : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
     }

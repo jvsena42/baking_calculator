@@ -2,6 +2,7 @@ package com.bulletapps.candypricer.presentation.ui.widgets
 
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.FragmentManager
+import com.bulletapps.candypricer.presentation.util.DateConstant.BACKEND_FORMAT
 import com.bulletapps.candypricer.presentation.util.LOCALE_BR
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
@@ -15,7 +16,7 @@ class DatePicker {
     companion object {
         const val ZERO = 0
         const val UTC_TIMEZONE = "UTC"
-        const val DATE_FORMAT = "yyyy-MM-dd"
+        const val DATE_FORMAT = BACKEND_FORMAT
         const val DAY_MONTH_YEAR_FORMAT = "dd/MM/yyy"
     }
 
@@ -116,7 +117,7 @@ class DatePicker {
         var validDateRange: Pair<Long, Long>? = null,
         var validOnlyDateAfter: Long? = null,
         var validDateUntil: Long? = null,
-        var onDateSelect: (DatePicker.Result) -> Unit = {},
+        var onDateSelect: (Result) -> Unit = {},
         var onCancel: () -> Unit = {},
         var onDismiss: () -> Unit = {}
     )
