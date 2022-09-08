@@ -1,7 +1,9 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.register
 
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
@@ -70,6 +72,8 @@ class RegisterViewModel @Inject constructor(
             is Resource.Success -> uiState.passwordConfError.value = null
         }
 
+        if (!uiState.isChecked.value) { showToast(UiText.StringResource(R.string.accept_the_terms_error)) }
+
         uiState.isLoading.value = false
 
         if (
@@ -78,6 +82,7 @@ class RegisterViewModel @Inject constructor(
             && phoneResult is Resource.Success
             && passwordResult is Resource.Success
             && confPasswordResult is Resource.Success
+            && uiState.isChecked.value
         ) {
             createUserUseCase(
                 CreateUserParameters(
@@ -121,6 +126,10 @@ class RegisterViewModel @Inject constructor(
         uiState.isPasswordConfirmVisible.value = !uiState.isPasswordConfirmVisible.value
     }
 
+    private fun onCheckedChanged(isChecked: Boolean) {
+        uiState.isChecked.value = isChecked
+    }
+
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when (fieldsTexts) {
         is FieldsTexts.Name -> uiState.name.value = fieldsTexts.text
         is FieldsTexts.Email -> uiState.email.value = fieldsTexts.text
@@ -142,16 +151,21 @@ class RegisterViewModel @Inject constructor(
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
         is ScreenActions.OnClickTogglePassword -> onClickTogglePassword()
         is ScreenActions.OnClickTogglePasswordConf -> onClickTogglePasswordConf()
+        is ScreenActions.OnCheckChanged -> onCheckedChanged(action.isChecked)
+        ScreenActions.OnClickTerms -> viewModelScope.sendEvent(ScreenEvent.NavigateTerms)
     }
 
     sealed class ScreenEvent {
         object MainScreen : ScreenEvent()
+        object NavigateTerms : ScreenEvent()
     }
 
     sealed class ScreenActions {
         object OnClickConfirm : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
+        data class OnCheckChanged(val isChecked: Boolean) : ScreenActions()
         object OnClickTogglePassword : ScreenActions()
+        object OnClickTerms : ScreenActions()
         object OnClickTogglePasswordConf : ScreenActions()
     }
 
@@ -169,6 +183,7 @@ class RegisterViewModel @Inject constructor(
         val passwordError = MutableStateFlow<UiText?>(null)
         val passwordConfError = MutableStateFlow<UiText?>(null)
         val isLoading = MutableStateFlow(false)
+        val isChecked = MutableStateFlow(true)
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
 }

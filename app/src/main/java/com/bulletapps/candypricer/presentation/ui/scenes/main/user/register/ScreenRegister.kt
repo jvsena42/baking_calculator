@@ -30,7 +30,9 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.Regi
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoWithText
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.TextButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.Toast
+import com.bulletapps.candypricer.presentation.util.navigateUrl
 import com.bulletapps.candypricer.presentation.util.visualTransformation.MaskPatterns.BR_PHONE_MASK
 import com.bulletapps.candypricer.presentation.util.visualTransformation.MaskVisualTransformation
 
@@ -54,6 +56,7 @@ private fun EventConsumer(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 ScreenEvent.MainScreen -> sharedViewModel.navigate(MainViewModel.Navigation.MainMenu)
+                ScreenEvent.NavigateTerms -> activity.navigateUrl(activity.getString(R.string.terms_url))
             }
         }
     }
@@ -97,13 +100,35 @@ private fun Screen(
 
             MakeFieldConfirmPassword(onAction, uiState)
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.weight(1f))
+
+            MakeCheckBox(onAction, uiState)
 
             MakeConfirmButton(onAction, uiState)
+
+            Spacer(Modifier.height(16.dp))
 
             DisplayToast(uiState)
         }
     }
+}
+
+
+@Composable
+private fun MakeCheckBox(onAction: (ScreenActions) -> Unit, uiState: UIState) {
+    val isChecked by uiState.isChecked.collectAsState()
+
+    Row {
+        Checkbox(
+            checked = isChecked,
+            onCheckedChange = { onAction(ScreenActions.OnCheckChanged(it)) }
+        )
+        TextButtonCustom(stringResource(R.string.accept_user_terms), onClick = {
+            onAction(ScreenActions.OnClickTerms)
+        })
+    }
+
+
 }
 
 @Composable

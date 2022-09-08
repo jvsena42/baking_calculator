@@ -2,7 +2,9 @@
     <string name="app_name">Precificando</string>
     <string name="pricing_with_tricia">Precificando\ncom Tricia</string>
     <string name="empty"> </string>
+    <string name="terms_url">https://drive.google.com/file/d/1dQ4PYxYbCyJLjB7LgWz7uIwx57725IaZ/view?usp=sharing</string>
     <string name="do_sign_in">Faça seu cadastro</string>
+    <string name="accept_the_terms_error">Para criar a conta, é necessário que aceite os termos de uso e politicas de privacidade</string>
     <string name="main_menu">Menu Principal</string>
     <string name="my_products">Meus Produtos</string>
     <string name="supplies">Insumos</string>
@@ -59,6 +61,7 @@
     <string name="clients">Clientes</string>
     <string name="mandatory_field">Campo obrigatório</string>
     <string name="select_supply">Selecione pelo menos um insumo</string>
+    <string name="accept_user_terms">Declaro que li e aceito os termos de uso e políticas de privacidade</string>
     <string name="your_account_has_expiring">Ops!\nSua conta expirou 🙁</string>
     <string name="unexpected_error">Ops!\nOcorreu um erro inesperado 🙁</string>
     <string name="send_a_message_to">Envie uma mensagem para</string>
