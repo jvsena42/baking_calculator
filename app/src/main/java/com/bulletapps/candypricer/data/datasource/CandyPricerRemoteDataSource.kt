@@ -11,6 +11,10 @@ class CandyPricerRemoteDataSource @Inject constructor(private val api: CandyPric
 
     override suspend fun getUser() = api.getUser()
 
+    override suspend fun updateUser(parameters: UpdateUserParameters) = api.updateUser(parameters)
+
+    override suspend fun getUsers() = api.getUsers()
+
     override suspend fun login(parameters: LoginParameters): LoginResponse = api.login(parameters)
 
     override suspend fun createProduct(parameters: CreateProductParameters) = api.createProduct(parameters)

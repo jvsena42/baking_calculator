@@ -10,6 +10,10 @@ interface CandyPricerRepository {
 
     suspend fun getUser(): Resource<UserResponse>
 
+    suspend fun getUsers(): Resource<List<UserResponse>>
+
+    suspend fun updateUser(parameters: UpdateUserParameters): Resource<UserResponse>
+
     suspend fun login(parameters: LoginParameters): Resource<LoginResponse>
 
     suspend fun createProduct(parameters: CreateProductParameters): Resource<ProductResponse>

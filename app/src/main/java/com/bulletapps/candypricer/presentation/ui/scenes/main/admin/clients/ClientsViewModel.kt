@@ -2,57 +2,67 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bulletapps.candypricer.domain.model.User
+import com.bulletapps.candypricer.config.Resource
+import com.bulletapps.candypricer.data.parameters.UpdateUserParameters
+import com.bulletapps.candypricer.data.response.UserResponse
+import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
+import com.bulletapps.candypricer.domain.usecase.user.UpdateUserUseCase
+import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.NEGATIVE
+import com.bulletapps.candypricer.presentation.util.isNegative
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.util.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsViewModel.ScreenEvent> by EventFlowImpl() {
+class ClientsViewModel @Inject constructor(
+    private val getUsersUseCase: GetUsersUseCase,
+    private val updateUserUseCase: UpdateUserUseCase
+) : ViewModel(), EventFlow<ClientsViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
     suspend fun setup() {
-        uiState.clients.value = listOf(
-            User(
-                name = "Maria Júlia",
-                expirationDate = Calendar.getInstance(),
-                phone = "86998006407"
-            ),
-            User(
-                name = "Ana Maria Braga",
-                expirationDate = Calendar.getInstance(),
-                phone = "86998006407"
-            ),
-            User(
-                name = "Pequeno Chef",
-                expirationDate = Calendar.getInstance(),
-                phone = "86981133033"
-            ),
-            User(
-                name = "Teste da silva",
-                expirationDate = Calendar.getInstance(),
-                phone = "86998006407"
-            ),
-        )
+        val result = getUsersUseCase()
+        when (result) {
+            is Resource.Error -> {}
+            is Resource.Success ->  uiState.clients.value = result.data.orEmpty()
+        }
     }
 
     private fun onClickMessage(phone: String) {
         viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp(phone))
     }
 
-    private fun changeExpirationDate() {
+    private fun changeExpirationDate(response: DatePicker.Result) = viewModelScope.launch {
+        val selectedUser = uiState.selectedUser.value
+        if (!selectedUser.id.isNegative()) {
+            val updatedUser = UpdateUserParameters(
+                selectedUser.id,
+                selectedUser.name,
+                selectedUser.phone,
+                selectedUser.email,
+                selectedUser.isAdmin,
+                response.date
+            )
+            val result = updateUserUseCase(updatedUser)
+            if (result is Resource.Success) getUsersUseCase()
+            onDismissDialog()
+        }
 
     }
 
-    private fun onShowDialog(selectedUser: User) {
+    private fun onShowDialog(selectedUser: UserResponse) {
+        uiState.selectedUser.value = selectedUser
         uiState.isDialogVisible.value = true
     }
+
     private fun onDismissDialog() {
         uiState.isDialogVisible.value = false
+        uiState.selectedUser.value = UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "")
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
@@ -67,7 +77,8 @@ class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsVie
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
         is ScreenActions.OnClickMessage -> onClickMessage(action.phone)
         is ScreenActions.OnClickChangeExpirationDate -> onShowDialog(action.user)
-        ScreenActions.OnDismissDialog -> onDismissDialog()
+        is ScreenActions.OnDismissDialog -> onDismissDialog()
+        is ScreenActions.OnConfirmDate -> changeExpirationDate(action.response)
     }
 
     sealed class ScreenEvent {
@@ -76,7 +87,8 @@ class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsVie
 
     sealed class ScreenActions {
         data class OnClickMessage(val phone: String) : ScreenActions()
-        data class OnClickChangeExpirationDate(val user: User) : ScreenActions()
+        data class OnClickChangeExpirationDate(val user: UserResponse) : ScreenActions()
+        data class OnConfirmDate(val response: DatePicker.Result) : ScreenActions()
         object OnDismissDialog : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
     }
@@ -84,7 +96,8 @@ class ClientsViewModel @Inject constructor() : ViewModel(), EventFlow<ClientsVie
     class UIState {
         val date = MutableStateFlow("")
         val isDialogVisible = MutableStateFlow(false)
-        val clients = MutableStateFlow<List<User>>(listOf())
+        val selectedUser = MutableStateFlow(UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = ""))
+        val clients = MutableStateFlow<List<UserResponse>>(listOf())
     }
 }
 

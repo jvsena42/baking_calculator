@@ -29,14 +29,14 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.Sett
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.Login
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.*
-import com.bulletapps.candypricer.presentation.util.navigateUrl
-import com.bulletapps.candypricer.presentation.util.openWhatsapp
+import com.bulletapps.candypricer.presentation.util.*
 
 @Composable
 fun ScreenSettings(
     viewModel: SettingsViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
+    LaunchedEffect(Unit) { viewModel.setup() }
     val activity = LocalContext.current as MainActivity
     Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(activity, viewModel, sharedViewModel)
@@ -140,7 +140,7 @@ private fun Screen(
 
 @Composable
 private fun CardInfo(uiState: UIState) {
-    val email  by uiState.name.collectAsState()
+    val email  by uiState.email.collectAsState()
     val phone  by uiState.phone.collectAsState()
     val expirationDate  by uiState.expirationDate.collectAsState()
 

@@ -22,7 +22,7 @@ class SettingsViewModel @Inject constructor(
 
     val uiState = UIState()
 
-    suspend fun setup() {
+    fun setup() = viewModelScope.launch {
         val result = getUserUseCase()
 
         if (result is Resource.Success) {
@@ -30,7 +30,7 @@ class SettingsViewModel @Inject constructor(
             uiState.name.value = user?.name.orEmpty()
             uiState.email.value = user?.email.orEmpty()
             uiState.phone.value =  user?.phone.formatPhone()
-            uiState.expirationDate.value = user?.expirationDate?.apply { toDate().formatToDayMonthYear() }.orEmpty()
+            uiState.expirationDate.value = user?.expirationDate?.toDate()?.formatToDayMonthYear().orEmpty()
         }
     }
 
