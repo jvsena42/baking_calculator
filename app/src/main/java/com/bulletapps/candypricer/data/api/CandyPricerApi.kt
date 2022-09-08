@@ -13,7 +13,12 @@ interface CandyPricerApi {
     @GET("/user")
     suspend fun getUser(): UserResponse
 
-    @GET("/user")
+    @PUT("/user")
+    suspend fun updateUser(
+        @Body parameters: UpdateUserParameters
+    ): UserResponse
+
+    @GET("/users")
     suspend fun getUsers(): List<UserResponse>
 
     @POST("/login")

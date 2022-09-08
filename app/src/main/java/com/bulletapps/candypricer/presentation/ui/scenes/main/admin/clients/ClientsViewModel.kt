@@ -3,8 +3,10 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
+import com.bulletapps.candypricer.data.parameters.UpdateUserParameters
 import com.bulletapps.candypricer.data.response.UserResponse
 import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
+import com.bulletapps.candypricer.domain.usecase.user.UpdateUserUseCase
 import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
@@ -12,11 +14,13 @@ import com.bulletapps.candypricer.presentation.util.NEGATIVE
 import com.bulletapps.candypricer.presentation.util.isNegative
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ClientsViewModel @Inject constructor(
-    private val getUsersUseCase: GetUsersUseCase
+    private val getUsersUseCase: GetUsersUseCase,
+    private val updateUserUseCase: UpdateUserUseCase
 ) : ViewModel(), EventFlow<ClientsViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -33,11 +37,20 @@ class ClientsViewModel @Inject constructor(
         viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp(phone))
     }
 
-    private fun changeExpirationDate(response: DatePicker.Result) {
+    private fun changeExpirationDate(response: DatePicker.Result) = viewModelScope.launch {
         val selectedUser = uiState.selectedUser.value
         if (!selectedUser.id.isNegative()) {
-            val updatedUser = selectedUser.copy(expirationDate = response.date)
-
+            val updatedUser = UpdateUserParameters(
+                selectedUser.id,
+                selectedUser.name,
+                selectedUser.phone,
+                selectedUser.email,
+                selectedUser.isAdmin,
+                response.date
+            )
+            val result = updateUserUseCase(updatedUser)
+            if (result is Resource.Success) getUsersUseCase()
+            onDismissDialog()
         }
 
     }
@@ -49,6 +62,7 @@ class ClientsViewModel @Inject constructor(
 
     private fun onDismissDialog() {
         uiState.isDialogVisible.value = false
+        uiState.selectedUser.value = UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "")
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {

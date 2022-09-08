@@ -25,6 +25,10 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.getUsers()
     }
 
+    override suspend fun updateUser(parameters: UpdateUserParameters) = safeRequest(dispatcher) {
+        dataSource.updateUser(parameters)
+    }
+
     override suspend fun login(parameters: LoginParameters) = safeRequest(dispatcher) {
         dataSource.login(parameters)
     }
