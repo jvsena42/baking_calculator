@@ -4,6 +4,7 @@
     <string name="empty"> </string>
     <string name="terms_url">https://drive.google.com/file/d/1dQ4PYxYbCyJLjB7LgWz7uIwx57725IaZ/view?usp=sharing</string>
     <string name="do_sign_in">Faça seu cadastro</string>
+    <string name="accept_the_terms_error">Para criar a conta, é necessário que aceite os termos de uso e politicas de privacidade</string>
     <string name="main_menu">Menu Principal</string>
     <string name="my_products">Meus Produtos</string>
     <string name="supplies">Insumos</string>

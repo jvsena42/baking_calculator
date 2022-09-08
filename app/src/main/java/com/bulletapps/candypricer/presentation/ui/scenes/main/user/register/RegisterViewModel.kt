@@ -1,7 +1,9 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.register
 
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
@@ -70,6 +72,8 @@ class RegisterViewModel @Inject constructor(
             is Resource.Success -> uiState.passwordConfError.value = null
         }
 
+        if (!uiState.isChecked.value) { showToast(UiText.StringResource(R.string.accept_the_terms_error)) }
+
         uiState.isLoading.value = false
 
         if (
@@ -78,6 +82,7 @@ class RegisterViewModel @Inject constructor(
             && phoneResult is Resource.Success
             && passwordResult is Resource.Success
             && confPasswordResult is Resource.Success
+            && uiState.isChecked.value
         ) {
             createUserUseCase(
                 CreateUserParameters(
