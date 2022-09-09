@@ -10,6 +10,7 @@ import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import com.bulletapps.candypricer.presentation.util.WHATSAPP_NUMBER
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -30,9 +31,20 @@ class ExpiredViewModel @Inject constructor(
         viewModelScope.sendEvent(ScreenEvent.Login)
     }
 
+    private fun onDelete() = viewModelScope.launch {
+        onClickLogout()
+    }
+
+    private fun handleDialogVisibility(shouldShow: Boolean) = viewModelScope.launch {
+        uiState.isDialogVisible.value = shouldShow
+    }
+
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnClickMessage -> onClickMessage()
         is ScreenActions.OnClickLogout -> onClickLogout()
+        is ScreenActions.OnClickDelete -> handleDialogVisibility(true)
+        is ScreenActions.OnDismissDialog -> handleDialogVisibility(false)
+        is ScreenActions.OnConfirmDelete -> onDelete()
     }
 
     sealed class ScreenEvent {
@@ -43,9 +55,13 @@ class ExpiredViewModel @Inject constructor(
     sealed class ScreenActions {
         object OnClickMessage : ScreenActions()
         object OnClickLogout : ScreenActions()
+        object OnClickDelete : ScreenActions()
+        object OnConfirmDelete : ScreenActions()
+        object OnDismissDialog : ScreenActions()
     }
 
     class UIState {
+        val isDialogVisible = MutableStateFlow(false)
     }
 }
 

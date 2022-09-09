@@ -119,6 +119,7 @@ private fun Screen(
 
             Text(
                 stringResource(R.string.get_the_news_first),
+                modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
@@ -133,58 +134,12 @@ private fun Screen(
 
             Spacer(Modifier.height(24.dp))
 
-            TextButtonCustom(
-                stringResource(R.string.i_want_update_my_account),
-                onClick = { onAction(ScreenActions.OnClickDelete) }
-            )
-
             OutlinedButtonCustom(
                 text = stringResource(R.string.logout),
                 onClick = { onAction(OnClickLogout) }
             )
 
             Spacer(Modifier.height(16.dp))
-
-            MakeDialog(uiState, onAction)
-        }
-    }
-}
-
-@Composable
-private fun MakeDialog(uiState: UIState, onAction: (ScreenActions) -> Unit) {
-    val isVisible by uiState.isDialogVisible.collectAsState()
-
-    if (isVisible) {
-        Dialog(
-            onDismissRequest = { onAction(ScreenActions.OnDismissDialog) },
-            DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
-        ) {
-            Card(
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    TextTitle(stringResource(R.string.are_you_sure, 32.sp))
-                    TextTitle(stringResource(R.string.warning_emoji, 64.sp))
-                    TextTitle(stringResource(R.string.all_your_data_will_be_lost, 24.sp))
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceAround,
-                    ) {
-                        OutlinedButtonCustom(
-                            text = stringResource(R.string.no),
-                            modifier = Modifier.padding(16.dp),
-                            onClick = { onAction(ScreenActions.OnDismissDialog) }
-                        )
-                        NormalButton(
-                            text = stringResource(R.string.yes),
-                            modifier = Modifier.padding(16.dp),
-                            onClick = { onAction(ScreenActions.OnConfirmDelete) }
-                        )
-                    }
-                }
-            }
         }
     }
 }
@@ -242,9 +197,7 @@ private fun Greeting(uiState: UIState) {
 @Composable
 fun Preview() {
     Screen(
-        uiState = UIState().apply {
-            isDialogVisible.value = true
-        },
+        uiState = UIState(),
         onAction = {}
     )
 }
