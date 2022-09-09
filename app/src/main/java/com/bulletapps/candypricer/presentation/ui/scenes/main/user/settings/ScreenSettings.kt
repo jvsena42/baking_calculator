@@ -19,10 +19,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.*
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenActions.OnClickLogout
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.GoBack
@@ -132,7 +135,7 @@ private fun Screen(
 
             TextButtonCustom(
                 stringResource(R.string.i_want_update_my_account),
-                onClick = { onAction(ScreenActions.OnClickLink) }
+                onClick = { onAction(ScreenActions.OnClickDelete) }
             )
 
             OutlinedButtonCustom(
@@ -141,15 +144,40 @@ private fun Screen(
             )
 
             Spacer(Modifier.height(16.dp))
+
+            MakeDialog(uiState, onAction)
+        }
+    }
+}
+
+@Composable
+private fun MakeDialog(uiState: UIState, onAction: (ScreenActions) -> Unit) {
+    val isVisible by uiState.isDialogVisible.collectAsState()
+
+    if (isVisible) {
+        Dialog(
+            onDismissRequest = { onAction(ScreenActions.OnDismissDialog) },
+            DialogProperties()
+        ) {
+            Card(
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Column(modifier = Modifier.padding(8.dp)) {
+                    TextTitle(stringResource(R.string.are_you_sure))
+                    TextTitle(stringResource(R.string.warning_emoji, 32.sp))
+                    TextTitle(stringResource(R.string.all_your_data_will_be_lost))
+
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun CardInfo(uiState: UIState) {
-    val email  by uiState.email.collectAsState()
-    val phone  by uiState.phone.collectAsState()
-    val expirationDate  by uiState.expirationDate.collectAsState()
+    val email by uiState.email.collectAsState()
+    val phone by uiState.phone.collectAsState()
+    val expirationDate by uiState.expirationDate.collectAsState()
 
     Card(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)

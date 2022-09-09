@@ -76,4 +76,7 @@
     <string name="error_invalid_password">Sua senha deve conter pelo menos 6 caracteres</string>
     <string name="error_confirm_password">Senhas não compatíveis</string>
     <string name="update_plan_text">Oi, Trícia! Eu quero atualizar meu plano</string>
+    <string name="are_you_sure">Você tem certeza?</string>
+    <string name="warning_emoji">⚠</string>
+    <string name="all_your_data_will_be_lost">Todos os seus dados serão perdidos</string>
 </resources>

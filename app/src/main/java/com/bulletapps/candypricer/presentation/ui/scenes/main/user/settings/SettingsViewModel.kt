@@ -38,11 +38,12 @@ class SettingsViewModel @Inject constructor(
         is ScreenActions.OnClickLogout -> onClickLogout()
         is ScreenActions.OnClickUpdate -> viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp(WHATSAPP_NUMBER))
         is ScreenActions.OnClickLink -> onClickLink()
-        is ScreenActions.OnClickDelete -> displayDialog()
+        is ScreenActions.OnClickDelete -> handleDialogVisibility(true)
+        is ScreenActions.OnDismissDialog -> handleDialogVisibility(false)
     }
 
-    private fun displayDialog() = viewModelScope.launch {
-
+    private fun handleDialogVisibility(shouldShow: Boolean) = viewModelScope.launch {
+        uiState.isDialogVisible.value = shouldShow
     }
 
     private fun onClickLink() = viewModelScope.launch {
@@ -66,6 +67,7 @@ class SettingsViewModel @Inject constructor(
         object OnClickUpdate : ScreenActions()
         object OnClickLink : ScreenActions()
         object OnClickDelete : ScreenActions()
+        object OnDismissDialog : ScreenActions()
     }
 
     class UIState {
@@ -73,7 +75,7 @@ class SettingsViewModel @Inject constructor(
         val email = MutableStateFlow("")
         val phone = MutableStateFlow("")
         val expirationDate = MutableStateFlow("")
+        val isDialogVisible = MutableStateFlow(false)
     }
-
 }
 

@@ -6,10 +6,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
+import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.theme.brownText
 import com.bulletapps.candypricer.presentation.ui.theme.primary
 
@@ -44,5 +48,15 @@ fun TextButtonCustom(text: String, modifier: Modifier = Modifier, onClick: () ->
         },
         modifier = modifier,
         onClick = onClick
+    )
+}
+
+@Composable
+fun TextTitle(text: String, fontSize: TextUnit = 16.sp) {
+    Text(
+        text,
+        textAlign = TextAlign.Center,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold
     )
 }
