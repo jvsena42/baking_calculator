@@ -40,6 +40,11 @@ class SettingsViewModel @Inject constructor(
         is ScreenActions.OnClickLink -> onClickLink()
         is ScreenActions.OnClickDelete -> handleDialogVisibility(true)
         is ScreenActions.OnDismissDialog -> handleDialogVisibility(false)
+        is ScreenActions.OnConfirmDelete -> onDelete()
+    }
+
+    private fun onDelete() = viewModelScope.launch {
+
     }
 
     private fun handleDialogVisibility(shouldShow: Boolean) = viewModelScope.launch {
@@ -67,6 +72,7 @@ class SettingsViewModel @Inject constructor(
         object OnClickUpdate : ScreenActions()
         object OnClickLink : ScreenActions()
         object OnClickDelete : ScreenActions()
+        object OnConfirmDelete : ScreenActions()
         object OnDismissDialog : ScreenActions()
     }
 

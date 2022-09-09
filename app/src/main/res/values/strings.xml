@@ -79,4 +79,6 @@
     <string name="are_you_sure">Você tem certeza?</string>
     <string name="warning_emoji">⚠</string>
     <string name="all_your_data_will_be_lost">Todos os seus dados serão perdidos</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 </resources>

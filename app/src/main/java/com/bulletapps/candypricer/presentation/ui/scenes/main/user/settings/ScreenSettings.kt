@@ -157,7 +157,7 @@ private fun MakeDialog(uiState: UIState, onAction: (ScreenActions) -> Unit) {
     if (isVisible) {
         Dialog(
             onDismissRequest = { onAction(ScreenActions.OnDismissDialog) },
-            DialogProperties()
+            DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)
         ) {
             Card(
                 shape = MaterialTheme.shapes.medium
@@ -166,7 +166,16 @@ private fun MakeDialog(uiState: UIState, onAction: (ScreenActions) -> Unit) {
                     TextTitle(stringResource(R.string.are_you_sure))
                     TextTitle(stringResource(R.string.warning_emoji, 32.sp))
                     TextTitle(stringResource(R.string.all_your_data_will_be_lost))
-
+                    Row {
+                        OutlinedButtonCustom(
+                            text = stringResource(R.string.no),
+                            onClick = { onAction(ScreenActions.OnDismissDialog) }
+                        )
+                        TextButtonCustom(
+                            stringResource(R.string.yes),
+                            onClick = { onAction(ScreenActions.OnConfirmDelete) }
+                        )
+                    }
                 }
             }
         }
