@@ -38,6 +38,11 @@ class SettingsViewModel @Inject constructor(
         is ScreenActions.OnClickLogout -> onClickLogout()
         is ScreenActions.OnClickUpdate -> viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp(WHATSAPP_NUMBER))
         is ScreenActions.OnClickLink -> onClickLink()
+        is ScreenActions.OnClickDelete -> displayDialog()
+    }
+
+    private fun displayDialog() = viewModelScope.launch {
+
     }
 
     private fun onClickLink() = viewModelScope.launch {
@@ -60,6 +65,7 @@ class SettingsViewModel @Inject constructor(
         object OnClickLogout : ScreenActions()
         object OnClickUpdate : ScreenActions()
         object OnClickLink : ScreenActions()
+        object OnClickDelete : ScreenActions()
     }
 
     class UIState {

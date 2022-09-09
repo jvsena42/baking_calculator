@@ -128,6 +128,13 @@ private fun Screen(
 
             Spacer(Modifier.weight(1f))
 
+            Spacer(Modifier.height(24.dp))
+
+            TextButtonCustom(
+                stringResource(R.string.i_want_update_my_account),
+                onClick = { onAction(ScreenActions.OnClickLink) }
+            )
+
             OutlinedButtonCustom(
                 text = stringResource(R.string.logout),
                 onClick = { onAction(OnClickLogout) }
