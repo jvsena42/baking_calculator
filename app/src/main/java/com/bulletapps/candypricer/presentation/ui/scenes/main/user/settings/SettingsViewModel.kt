@@ -45,6 +45,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun onDelete() = viewModelScope.launch {
 
+        onClickLogout()
     }
 
     private fun handleDialogVisibility(shouldShow: Boolean) = viewModelScope.launch {

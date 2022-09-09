@@ -162,17 +162,24 @@ private fun MakeDialog(uiState: UIState, onAction: (ScreenActions) -> Unit) {
             Card(
                 shape = MaterialTheme.shapes.medium
             ) {
-                Column(modifier = Modifier.padding(8.dp)) {
-                    TextTitle(stringResource(R.string.are_you_sure))
-                    TextTitle(stringResource(R.string.warning_emoji, 32.sp))
-                    TextTitle(stringResource(R.string.all_your_data_will_be_lost))
-                    Row {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TextTitle(stringResource(R.string.are_you_sure, 32.sp))
+                    TextTitle(stringResource(R.string.warning_emoji, 64.sp))
+                    TextTitle(stringResource(R.string.all_your_data_will_be_lost, 24.sp))
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceAround,
+                    ) {
                         OutlinedButtonCustom(
                             text = stringResource(R.string.no),
+                            modifier = Modifier.padding(16.dp),
                             onClick = { onAction(ScreenActions.OnDismissDialog) }
                         )
-                        TextButtonCustom(
-                            stringResource(R.string.yes),
+                        NormalButton(
+                            text = stringResource(R.string.yes),
+                            modifier = Modifier.padding(16.dp),
                             onClick = { onAction(ScreenActions.OnConfirmDelete) }
                         )
                     }
@@ -235,7 +242,9 @@ private fun Greeting(uiState: UIState) {
 @Composable
 fun Preview() {
     Screen(
-        uiState = UIState(),
+        uiState = UIState().apply {
+            isDialogVisible.value = true
+        },
         onAction = {}
     )
 }

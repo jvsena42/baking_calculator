@@ -56,7 +56,7 @@ fun TextTitle(text: String, fontSize: TextUnit = 16.sp) {
     Text(
         text,
         textAlign = TextAlign.Center,
-        fontSize = 16.sp,
+        fontSize = fontSize,
         fontWeight = FontWeight.Bold
     )
 }
