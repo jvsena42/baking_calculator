@@ -160,7 +160,8 @@ private fun Preview() {
                     expirationDate = "123456",
                     phone = "86998006407",
                     isAdmin = false,
-                    email = "abc"
+                    email = "abc",
+                    isActive = true
                 ),
             )
         }

@@ -73,7 +73,7 @@ class ClientsViewModel @Inject constructor(
 
     private fun onDismissDialog() {
         uiState.isDialogVisible.value = false
-        uiState.selectedUser.value = UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "")
+        uiState.selectedUser.value = UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "", isActive = true)
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
@@ -107,7 +107,7 @@ class ClientsViewModel @Inject constructor(
     class UIState {
         val date = MutableStateFlow("")
         val isDialogVisible = MutableStateFlow(false)
-        val selectedUser = MutableStateFlow(UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = ""))
+        val selectedUser = MutableStateFlow(UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "", isActive = true))
         val clients = MutableStateFlow<List<UserResponse>>(listOf())
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }

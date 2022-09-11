@@ -9,8 +9,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bulletapps.candypricer.R
-import com.bulletapps.candypricer.data.response.ProductResponse
-import com.bulletapps.candypricer.domain.model.Product
 
 @Composable
 fun CardTwoItemsVertical(
@@ -69,7 +67,7 @@ private fun Preview() {
 
         CardTwoItemsHorizontal(
             firstLabel = R.string.name_label,
-            secondLabel = R.string.quantity_label,
+            secondLabel = R.string.quantity_short_label,
             firsName = "teste",
             secondName = "teste",
             onClick = {}
@@ -77,7 +75,7 @@ private fun Preview() {
 
         CardTwoItemsVertical(
             firstLabel = R.string.name_label,
-            secondLabel = R.string.quantity_label,
+            secondLabel = R.string.quantity_short_label,
             firsName = "teste",
             secondName = "teste"
         ) {}

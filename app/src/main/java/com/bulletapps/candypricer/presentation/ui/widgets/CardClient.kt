@@ -49,7 +49,7 @@ fun CardClient(
 private fun Preview() {
     CardClient(
         firstLabel = R.string.name_label,
-        secondLabel = R.string.quantity_label,
+        secondLabel = R.string.quantity_short_label,
         firsName = "teste",
         secondName = "teste",
         leftBTLabel = R.string.change_expiring_date,

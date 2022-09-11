@@ -33,7 +33,7 @@ fun CardSupply(supply: SupplyResponse, modifier: Modifier = Modifier, onClick: (
                 modifier = Modifier.fillMaxWidth()
             ) {
                 TextWithLabel(
-                    stringResource(id = R.string.quantity_label),
+                    stringResource(id = R.string.quantity_short_label),
                     supply.quantity.toString()
                 )
                 TextWithLabel(stringResource(id = R.string.measure_type_label), supply.unit?.name.formatUnit())

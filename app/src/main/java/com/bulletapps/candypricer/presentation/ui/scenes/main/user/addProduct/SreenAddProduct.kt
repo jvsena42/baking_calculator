@@ -115,7 +115,7 @@ private fun Screen(
                 items(suppliesList) { itemSupply ->
                     CardTwoItemsHorizontal(
                         firstLabel = R.string.name_label,
-                        secondLabel = R.string.quantity_label,
+                        secondLabel = R.string.quantity_short_label,
                         firsName = itemSupply.name,
                         secondName = itemSupply.qut.toString(),
                         onClick = {}

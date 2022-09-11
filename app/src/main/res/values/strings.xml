@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Precificando</string>
     <string name="pricing_with_tricia">Precificando\ncom Tricia</string>
     <string name="empty"> </string>
@@ -12,7 +12,8 @@
     <string name="settings">Configurações</string>
     <string name="name_label">Nome: </string>
     <string name="expires_at_label">Expira em: </string>
-    <string name="quantity_label">Qnt.: </string>
+    <string name="quantity_short_label">Qnt.: </string>
+    <string name="quantity_label">Quantidade: </string>
     <string name="measure_type_label">Medida: </string>
     <string name="total_cost">Custo total: </string>
     <string name="total_sell_value">Preço de venda total: </string>

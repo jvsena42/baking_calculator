@@ -77,6 +77,7 @@ class ProductDetailViewModel @Inject constructor(
                 ZERO_DOUBLE,
                 ZERO_DOUBLE,
                 ZERO_DOUBLE,
+                emptyList()
             )
         )
     }
