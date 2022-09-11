@@ -10,13 +10,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun NormalButton(modifier: Modifier = Modifier, isEnabled: Boolean = true, text: String, onClick: () -> Unit) {
+fun NormalButton(
+    modifier: Modifier = Modifier.fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 8.dp),
+    isEnabled: Boolean = true,
+    text: String,
+    onClick: () -> Unit
+) {
     Button(
         onClick = onClick,
         enabled = isEnabled,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = modifier,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colors.secondary
         )
@@ -24,8 +28,15 @@ fun NormalButton(modifier: Modifier = Modifier, isEnabled: Boolean = true, text:
         Text(text, color = Color.White)
     }
 }
+
 @Composable
-fun OutlinedButtonCustom(modifier: Modifier = Modifier, isEnabled: Boolean = true, text: String, onClick: () -> Unit) {
+fun OutlinedButtonCustom(
+    modifier: Modifier = Modifier.fillMaxWidth()
+        .padding(horizontal = 16.dp, vertical = 8.dp),
+    isEnabled: Boolean = true,
+    text: String,
+    onClick: () -> Unit
+) {
     OutlinedButton(
         onClick = onClick,
         border = BorderStroke(
@@ -36,9 +47,7 @@ fun OutlinedButtonCustom(modifier: Modifier = Modifier, isEnabled: Boolean = tru
         colors = ButtonDefaults.outlinedButtonColors(
             backgroundColor = Color.Transparent
         ),
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = modifier,
     ) {
         Text(text, color = MaterialTheme.colors.secondary)
     }

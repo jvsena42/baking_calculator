@@ -68,6 +68,5 @@ class SettingsViewModel @Inject constructor(
         val phone = MutableStateFlow("")
         val expirationDate = MutableStateFlow("")
     }
-
 }
 

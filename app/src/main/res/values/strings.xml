@@ -25,6 +25,7 @@
     <string name="i_want_update_my_plan">Quero atualizar meu plano</string>
     <string name="get_the_news_first">Confira as novidades em primeira mão e receba dicas valiosas</string>
     <string name="clicking_here">Clicando aqui</string>
+    <string name="i_want_update_my_account">Quero deletar minha conta</string>
     <string name="reload">Recarregar</string>
     <string name="add_supply">Cadastre ou edite seu Insumo</string>
     <string name="add_a_supply">Adicione um insumo</string>
@@ -75,4 +76,9 @@
     <string name="error_invalid_password">Sua senha deve conter pelo menos 6 caracteres</string>
     <string name="error_confirm_password">Senhas não compatíveis</string>
     <string name="update_plan_text">Oi, Trícia! Eu quero atualizar meu plano</string>
+    <string name="are_you_sure">Você tem certeza?</string>
+    <string name="warning_emoji">🥺</string>
+    <string name="all_your_data_will_be_lost">Todos os seus dados serão perdidos</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 </resources>

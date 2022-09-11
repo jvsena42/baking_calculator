@@ -19,10 +19,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.*
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenActions.OnClickLogout
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel.ScreenEvent.GoBack
@@ -116,6 +119,7 @@ private fun Screen(
 
             Text(
                 stringResource(R.string.get_the_news_first),
+                modifier = Modifier.padding(horizontal = 8.dp),
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
@@ -127,6 +131,8 @@ private fun Screen(
             )
 
             Spacer(Modifier.weight(1f))
+
+            Spacer(Modifier.height(24.dp))
 
             OutlinedButtonCustom(
                 text = stringResource(R.string.logout),
@@ -140,9 +146,9 @@ private fun Screen(
 
 @Composable
 private fun CardInfo(uiState: UIState) {
-    val email  by uiState.email.collectAsState()
-    val phone  by uiState.phone.collectAsState()
-    val expirationDate  by uiState.expirationDate.collectAsState()
+    val email by uiState.email.collectAsState()
+    val phone by uiState.phone.collectAsState()
+    val expirationDate by uiState.expirationDate.collectAsState()
 
     Card(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
