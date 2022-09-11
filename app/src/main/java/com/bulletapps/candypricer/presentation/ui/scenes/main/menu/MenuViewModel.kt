@@ -40,7 +40,7 @@ class MenuViewModel @Inject constructor(
         add(MenuModel(R.string.clients, R.drawable.ic_clients, MainViewModel.Navigation.Clients))
     }
 
-    suspend fun setup() {
+    fun setup() = viewModelScope.launch {
         val result = getUserUseCase()
 
         if (result is Resource.Success) {
@@ -69,7 +69,7 @@ class MenuViewModel @Inject constructor(
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnClickItem -> viewModelScope.sendEvent(ScreenEvent.Navigate(action.path))
         ScreenActions.OnLogout -> onClickLogout()
-        ScreenActions.OnRetry -> viewModelScope.launch { setup() }
+        ScreenActions.OnRetry -> setup()
     }
 
     private fun onClickLogout() = viewModelScope.launch {
