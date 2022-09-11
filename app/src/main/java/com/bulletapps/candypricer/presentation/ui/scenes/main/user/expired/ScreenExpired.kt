@@ -24,6 +24,7 @@ import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ExpiredViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.*
@@ -49,7 +50,7 @@ private fun EventConsumer(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is ScreenEvent.OpenWhatsApp -> activity.openWhatsapp(event.number, activity.getString(R.string.update_plan_text))
-                ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
+                is ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
             }
         }
     }
@@ -120,8 +121,19 @@ private fun Screen(
             )
 
             Spacer(modifier = Modifier.height(32.dp))
+
+            MakeDialog(uiState, onAction)
+
+            DisplayToast(uiState)
         }
     }
+}
+
+@Composable
+private fun DisplayToast(uiState: UIState) {
+    val toastMessage by uiState.textToast.collectAsState()
+    val message = toastMessage.asString()
+    if (message.isNotEmpty()) Toast(message)
 }
 
 @Composable
