@@ -45,7 +45,7 @@ interface CandyPricerApi {
     @POST("/supply")
     suspend fun createSupply(
         @Body parameters: CreateSupplyParameters
-    ): SupplyResponse // TODO REMOVE RETURN
+    )
 
     @GET("/supply")
     suspend fun getSupplies(): List<SupplyResponse>

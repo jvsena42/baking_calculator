@@ -2,6 +2,7 @@ package com.bulletapps.candypricer.data.datasource
 
 import com.bulletapps.candypricer.data.parameters.*
 import com.bulletapps.candypricer.data.response.*
+import retrofit2.Response
 import retrofit2.http.*
 
 interface CandyPricerDataSource {
@@ -24,7 +25,7 @@ interface CandyPricerDataSource {
 
     suspend fun deleteProduct(id: Int): ProductResponse
 
-    suspend fun createSupply(parameters: CreateSupplyParameters): SupplyResponse
+    suspend fun createSupply(parameters: CreateSupplyParameters)
 
     suspend fun getSupplies(): List<SupplyResponse>
 
