@@ -141,14 +141,12 @@ class AddProductViewModel @Inject constructor(
             variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
             amountQuantitySupply = uiState.selectedSupplies.value.map { it.qut.formatDouble() }
         )
-        Log.d("CREATE_PRODUCT", "create supply resquest: $createProductParameters")
-        Log.d("CREATE_PRODUCT", "supplies: ${uiState.selectedSupplies.value}")
         createProductUseCase(
             createProductParameters
         ).also { result ->
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
-                is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.GoBack)/*showToast(result.message)*/
+                is Resource.Error -> showToast(result.message)
             }
         }
     }

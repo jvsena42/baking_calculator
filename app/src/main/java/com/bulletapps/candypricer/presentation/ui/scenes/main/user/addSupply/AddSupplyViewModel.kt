@@ -55,7 +55,7 @@ class AddSupplyViewModel @Inject constructor(
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
     }
 
-    fun onClickConfirm() {
+    private fun onClickConfirm() {
 
         viewModelScope.launch {
             uiState.isLoading.value = true
@@ -115,7 +115,7 @@ class AddSupplyViewModel @Inject constructor(
             )
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.UpdateSupply(updatedSupply))
-                is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.UpdateSupply(updatedSupply)) /*showToast(result.message)*/
+                is Resource.Error -> showToast(result.message)
             }
         }
     }
@@ -131,7 +131,7 @@ class AddSupplyViewModel @Inject constructor(
         ).also { result ->
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
-                is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.GoBack) /*showToast(result.message)*/
+                is Resource.Error -> showToast(result.message)
             }
         }
     }

@@ -9,6 +9,7 @@ fun Toast(
     text: String,
     duration: Int = Toast.LENGTH_LONG
 ) {
+    if(text.isEmpty()) return
     val context = LocalContext.current
     val toast = Toast.makeText(context, text, duration)
     toast.show()

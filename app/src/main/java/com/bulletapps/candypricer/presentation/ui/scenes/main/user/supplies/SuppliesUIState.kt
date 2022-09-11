@@ -11,7 +11,7 @@ class SuppliesUIState(
 ) {
 
     fun onSuccess(supplies: List<SupplyResponse>) {
-        suppliesList.value = supplies
+        suppliesList.value = supplies.sortedBy { it.name }
         isLoading.value = false
         screenState.value = ScreenState.ShowScreen
     }

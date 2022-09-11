@@ -6,7 +6,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,6 +27,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.Clie
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardClient
 import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
+import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 import com.bulletapps.candypricer.presentation.util.formatToDayMonthYear
 import com.bulletapps.candypricer.presentation.util.openWhatsapp
 import com.bulletapps.candypricer.presentation.util.toDate
@@ -78,8 +82,17 @@ private fun Screen(
             )
             BuildCalendar(uiState, onAction)
             CLientsList(uiState, onAction)
+            DisplayToast(uiState)
         }
     }
+}
+
+
+@Composable
+private fun DisplayToast(uiState: UIState) {
+    val toastMessage by uiState.textToast.collectAsState()
+    val message = toastMessage.asString()
+    if (message.isNotEmpty()) Toast(message)
 }
 
 @Composable

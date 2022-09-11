@@ -24,11 +24,13 @@ class SuppliesViewModel @Inject constructor(
     val uiState = SuppliesUIState()
 
     suspend fun setup() {
-        val suppliesResult = getAllSuppliesUseCase()
-        when(suppliesResult) {
-            is Resource.Error -> uiState.onFailure(ScreenActions.OnRetry, ScreenActions.OnLogout)
-            is Resource.Success -> uiState.onSuccess(suppliesResult.data.orEmpty())
+        getAllSuppliesUseCase().also {
+            when(it) {
+                is Resource.Error -> uiState.onFailure(ScreenActions.OnRetry, ScreenActions.OnLogout)
+                is Resource.Success -> uiState.onSuccess(it.data.orEmpty())
+            }
         }
+
     }
 
     fun onAction(action: ScreenActions) = when(action) {

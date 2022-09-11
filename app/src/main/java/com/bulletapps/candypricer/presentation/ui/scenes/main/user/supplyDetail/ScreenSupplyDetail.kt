@@ -26,6 +26,7 @@ import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
+import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 import com.bulletapps.candypricer.presentation.util.formatUnit
 import com.bulletapps.candypricer.presentation.util.toCurrency
 
@@ -92,6 +93,9 @@ fun Screen(
             OutlinedButtonCustom(text = stringResource(R.string.delete), onClick = { onAction(ScreenActions.OnCLickDelete) })
             NormalButton(text = stringResource(R.string.edit), onClick = { onAction(ScreenActions.OnCLickEdit) })
             Spacer(Modifier.height(32.dp))
+
+            val toastMessage by uiState.textToast.collectAsState()
+            Toast(toastMessage.asString())
         }
     }
 }
