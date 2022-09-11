@@ -16,5 +16,7 @@ data class UserResponse(
     val isAdmin: Boolean,
     @SerializedName("expiration_date")
     val expirationDate: String,
+    @SerializedName("isActive")
+    val isActive: Boolean,
 )
 

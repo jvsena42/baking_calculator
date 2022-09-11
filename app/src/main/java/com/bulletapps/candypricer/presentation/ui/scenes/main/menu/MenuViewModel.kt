@@ -8,22 +8,17 @@ import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
 import com.bulletapps.candypricer.data.response.UserResponse
 import com.bulletapps.candypricer.domain.model.MenuModel
 import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
-import com.bulletapps.candypricer.domain.usecase.user.IsExpiredUserUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import com.bulletapps.candypricer.presentation.util.orFalse
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
-    private val isExpiredUserUseCase: IsExpiredUserUseCase,
     private val preferencesDataSource: PreferencesDataSource,
     ) : ViewModel(), EventFlow<MenuViewModel.ScreenEvent> by EventFlowImpl()  {
 
@@ -44,8 +39,8 @@ class MenuViewModel @Inject constructor(
         val result = getUserUseCase()
 
         if (result is Resource.Success) {
-            handleExpired(result)
-            handleUserType(result)
+            val handleUser = handleActive(result)
+            if (handleUser) handleUserType(result)
         } else {
             uiState.onFailure(ScreenActions.OnRetry, ScreenActions.OnLogout)
         }
@@ -57,13 +52,15 @@ class MenuViewModel @Inject constructor(
         uiState.onSuccess(items)
     }
 
-    private suspend fun handleExpired(
+    private suspend fun handleActive(
         result: Resource<UserResponse>
-    ) {
-        val isExpired = isExpiredUserUseCase(result.data?.expirationDate.orEmpty())
-        if (isExpired && !result.data?.isAdmin.orFalse()) {
+    ): Boolean {
+        val isActive = result.data?.isActive.orFalse()
+        val isAdmin = result.data?.isAdmin.orFalse()
+        if (!isActive && !isAdmin) {
             viewModelScope.sendEvent(ScreenEvent.ExpiredScreen)
         }
+        return isActive || isAdmin
     }
 
     fun onAction(action: ScreenActions) = when(action) {
@@ -88,6 +85,5 @@ class MenuViewModel @Inject constructor(
         object ExpiredScreen : ScreenEvent()
         data class Navigate(val path: MainViewModel.Navigation) : ScreenEvent()
     }
-
 }
 
