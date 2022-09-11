@@ -11,7 +11,7 @@ class ProductsUIState(
 ) {
 
     fun onSuccess(products: List<ProductResponse>) {
-        productsList.value = products
+        productsList.value = products.sortedBy { it.name }
         isLoading.value = false
         screenState.value = ScreenState.ShowScreen
     }

@@ -27,10 +27,11 @@ class ClientsViewModel @Inject constructor(
     val uiState = UIState()
 
     suspend fun setup() {
-        val result = getUsersUseCase()
-        when (result) {
-            is Resource.Error -> {}
-            is Resource.Success ->  uiState.clients.value = result.data.orEmpty()
+        getUsersUseCase().also {
+            when (it) {
+                is Resource.Error -> {}
+                is Resource.Success -> uiState.clients.value = it.data.orEmpty().sortedBy { it2 -> it2.name }
+            }
         }
     }
 
