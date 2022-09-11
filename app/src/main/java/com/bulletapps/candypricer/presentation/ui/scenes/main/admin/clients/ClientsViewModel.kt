@@ -3,6 +3,7 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
+import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.UpdateUserParameters
 import com.bulletapps.candypricer.data.response.UserResponse
 import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
@@ -48,11 +49,20 @@ class ClientsViewModel @Inject constructor(
                 selectedUser.isAdmin,
                 response.date
             )
-            val result = updateUserUseCase(updatedUser)
-            if (result is Resource.Success) getUsersUseCase()
-            onDismissDialog()
+            updateUserUseCase(updatedUser).also {
+                when(it) {
+                    is Resource.Error -> showToast(it.message)
+                    is Resource.Success -> getUsersUseCase()
+                }
+                onDismissDialog()
+            }
         }
 
+    }
+
+
+    private fun showToast(message: UiText?) {
+        message?.let{ uiState.textToast.value = it }
     }
 
     private fun onShowDialog(selectedUser: UserResponse) {
@@ -98,6 +108,7 @@ class ClientsViewModel @Inject constructor(
         val isDialogVisible = MutableStateFlow(false)
         val selectedUser = MutableStateFlow(UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = ""))
         val clients = MutableStateFlow<List<UserResponse>>(listOf())
+        val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
 }
 

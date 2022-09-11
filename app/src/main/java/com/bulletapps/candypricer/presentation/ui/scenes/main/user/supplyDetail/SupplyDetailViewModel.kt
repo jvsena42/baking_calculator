@@ -31,10 +31,11 @@ class SupplyDetailViewModel @Inject constructor(
     }
 
     private fun deleteSupply() = viewModelScope.launch {
-        val deleteResult = deleteSupplyUseCase(uiState.supply.value.id.orNegative())
-        when(deleteResult) {
-            is Resource.Error -> sendEvent(ScreenEvent.PopScreen)
-            is Resource.Success -> sendEvent(ScreenEvent.PopScreen)
+        deleteSupplyUseCase(uiState.supply.value.id.orNegative()).also {
+            when(it) {
+                is Resource.Error -> sendEvent(ScreenEvent.PopScreen)
+                is Resource.Success -> showToast(it.message)
+            }
         }
     }
 

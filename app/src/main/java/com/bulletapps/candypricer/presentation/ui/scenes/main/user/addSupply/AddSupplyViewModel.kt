@@ -115,7 +115,7 @@ class AddSupplyViewModel @Inject constructor(
             )
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.UpdateSupply(updatedSupply))
-                is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.UpdateSupply(updatedSupply)) /*showToast(result.message)*/
+                is Resource.Error -> showToast(result.message)
             }
         }
     }
