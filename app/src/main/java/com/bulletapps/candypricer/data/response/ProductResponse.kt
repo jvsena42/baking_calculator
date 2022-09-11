@@ -14,5 +14,6 @@ data class ProductResponse(
     @SerializedName("total_spends_value") val totalSpendsValue: Double?,
     @SerializedName("unit_sale_value") val unitSaleValue: Double?,
     @SerializedName("total_sale_value") val totalSaleValue: Double?,
+    @SerializedName("amount_quantity_supply") val amountQuantitySupply: List<Double>,
 )
 
