@@ -16,7 +16,10 @@ interface CandyPricerApi {
     @PUT("/user")
     suspend fun updateUser(
         @Body parameters: UpdateUserParameters
-    ): UserResponse
+    ): UserResponse // TODO REMOVE RETURN
+
+    @DELETE("/user")
+    suspend fun deleteUser(): UserResponse // TODO REMOVE RETURN
 
     @GET("/users")
     suspend fun getUsers(): List<UserResponse>
@@ -29,7 +32,7 @@ interface CandyPricerApi {
     @POST("/product")
     suspend fun createProduct(
         @Body parameters: CreateProductParameters
-    ): ProductResponse
+    ): ProductResponse // TODO REMOVE RETURN
 
     @GET("/product")
     suspend fun getProducts(): List<ProductResponse>
@@ -37,12 +40,12 @@ interface CandyPricerApi {
     @DELETE("/product/{id}")
     suspend fun deleteProduct(
         @Path("id") id: Int
-    ): ProductResponse
+    ): ProductResponse // TODO REMOVE RETURN
 
     @POST("/supply")
     suspend fun createSupply(
         @Body parameters: CreateSupplyParameters
-    ): SupplyResponse
+    ): SupplyResponse // TODO REMOVE RETURN
 
     @GET("/supply")
     suspend fun getSupplies(): List<SupplyResponse>
@@ -50,17 +53,17 @@ interface CandyPricerApi {
     @PUT("/supply")
     suspend fun updateSupply(
         @Body parameters: UpdateSupplyParameters
-    ): SupplyResponse
+    ): SupplyResponse // TODO REMOVE RETURN
 
     @DELETE("/supply/{id}")
     suspend fun deleteSupply(
         @Path("id") id: Int
-    ): CreateSupplyParameters
+    ): CreateSupplyParameters // TODO REMOVE RETURN
 
     @POST("/unit")
     suspend fun createUnit(
         @Body parameters: CreateUnitParameters
-    ): UnitResponse
+    ): UnitResponse // TODO REMOVE RETURN
 
     @GET("/unit")
     suspend fun getUnits(): List<UnitResponse>

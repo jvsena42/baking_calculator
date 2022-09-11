@@ -12,6 +12,8 @@ interface CandyPricerDataSource {
 
     suspend fun updateUser(parameters: UpdateUserParameters): UserResponse
 
+    suspend fun deleteUser(): UserResponse
+
     suspend fun getUsers(): List<UserResponse>
 
     suspend fun login(parameters: LoginParameters): LoginResponse
