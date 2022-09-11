@@ -33,8 +33,8 @@ class SupplyDetailViewModel @Inject constructor(
     private fun deleteSupply() = viewModelScope.launch {
         deleteSupplyUseCase(uiState.supply.value.id.orNegative()).also {
             when(it) {
-                is Resource.Error -> sendEvent(ScreenEvent.PopScreen)
-                is Resource.Success -> showToast(it.message)
+                is Resource.Error -> showToast(it.message)
+                is Resource.Success -> sendEvent(ScreenEvent.PopScreen)
             }
         }
     }

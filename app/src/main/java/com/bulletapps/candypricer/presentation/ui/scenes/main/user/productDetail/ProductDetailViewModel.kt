@@ -43,10 +43,14 @@ class ProductDetailViewModel @Inject constructor(
     private fun deleteProduct() = viewModelScope.launch {
         deleteProductUseCase(uiState.product.value.id).also {
             when(it) {
-                is Resource.Error -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                is Resource.Error -> showToast(it.message)
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
             }
         }
+    }
+
+    private fun showToast(message: UiText?) {
+        message?.let{ uiState.textToast.value = it }
     }
 
     sealed class ScreenActions {
@@ -60,6 +64,7 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     class UIState {
+        val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
         val product = MutableStateFlow(
             ProductResponse(-1,
                 "",
