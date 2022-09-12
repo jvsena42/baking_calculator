@@ -5,7 +5,9 @@ import android.content.Intent
 import android.icu.text.NumberFormat
 import android.net.Uri
 import android.telephony.PhoneNumberUtils
+import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.domain.model.MenuItemModel
 import java.math.RoundingMode
 import java.net.URLEncoder
 import java.text.DecimalFormat
@@ -89,3 +91,13 @@ fun List<UnitResponse>.format(): List<UnitResponse> {
 }
 
 fun UnitResponse?.format() = UnitResponse(this?.id ?: -1, this?.name.formatUnit())
+
+fun List<SupplyResponse>.toItemMenuList(amountQuantitySupply: List<Double>) : List<MenuItemModel> {
+    if (this.isEmpty()) return emptyList()
+    if (this.size != amountQuantitySupply.size) return emptyList()
+    val menuList = mutableListOf<MenuItemModel>()
+    this.forEachIndexed { index, item ->
+        menuList.add(MenuItemModel(item.id, item.name, amountQuantitySupply[index].round()))
+    }
+    return menuList.toList()
+}

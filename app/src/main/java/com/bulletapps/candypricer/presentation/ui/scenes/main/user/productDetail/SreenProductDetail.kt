@@ -32,6 +32,7 @@ import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsHorizontal
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
+import com.bulletapps.candypricer.presentation.util.round
 import com.bulletapps.candypricer.presentation.util.toCurrency
 import com.bulletapps.candypricer.presentation.util.toPercentString
 
@@ -69,6 +70,7 @@ private fun Screen(
 ) {
 
     val product by uiState.product.collectAsState()
+    val supplyList by uiState.supplyList.collectAsState()
 
     CandyPricerTheme {
 
@@ -123,12 +125,12 @@ private fun Screen(
                     Spacer(Modifier.height(8.dp))
                 }
 
-                items(product.supplies) { itemSupply ->
+                items(supplyList) { itemSupply ->
                     CardTwoItemsHorizontal(
                         firstLabel = R.string.name_label,
-                        secondLabel = R.string.empty, //todo add quantity
+                        secondLabel = R.string.quantity_short_label,
                         firsName = itemSupply.name,
-                        secondName = "",
+                        secondName = itemSupply.qut,
                         onClick = {}
                     )
                 }

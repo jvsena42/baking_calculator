@@ -1,6 +1,5 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
@@ -9,12 +8,13 @@ import com.bulletapps.candypricer.data.parameters.CreateProductParameters
 import com.bulletapps.candypricer.data.response.ProductResponse
 import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.domain.model.MenuItemModel
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyListUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.product.CreateProductUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.ScreenEvent
 import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -266,11 +266,5 @@ class AddProductViewModel @Inject constructor(
         val variableExpensesError = MutableStateFlow<UiText?>(null)
         val profitMarginError = MutableStateFlow<UiText?>(null)
     }
-
-    data class MenuItemModel(
-        val id: Int,
-        val name: String,
-        val qut: String
-    )
 }
 

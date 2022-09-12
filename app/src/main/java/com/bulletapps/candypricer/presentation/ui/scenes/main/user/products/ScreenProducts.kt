@@ -165,7 +165,8 @@ private fun Preview() {
                 unitSaleValue = 3.00,
                 totalSaleValue = 3.00,
                 totalSpendsValue = 3.00,
-                supplies = listOf()
+                supplies = listOf(),
+                amountQuantitySupply = emptyList()
             )
         )
     })
