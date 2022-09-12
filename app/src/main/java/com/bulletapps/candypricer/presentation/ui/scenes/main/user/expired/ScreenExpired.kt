@@ -2,8 +2,11 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,8 +27,6 @@ import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ExpiredViewModel.*
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.*
 import com.bulletapps.candypricer.presentation.util.openWhatsapp
@@ -84,28 +85,9 @@ private fun Screen(
 
             Spacer(modifier = Modifier.height(42.dp))
 
-            Text(
-                stringResource(R.string.send_a_message_to),
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            TextButton(onClick = { onAction(ScreenActions.OnClickMessage) }) {
-                Text(
-                    stringResource(R.string.whatsapp_number),
-                    textAlign = TextAlign.Center,
-                    fontSize = 24.sp
-                )
-            }
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                stringResource(R.string.and_renew_your_account),
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp
+            NormalButton(
+                text = stringResource(R.string.i_want_update_my_plan),
+                onClick = { onAction(ScreenActions.OnClickMessage) }
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -181,7 +163,7 @@ private fun Preview() {
     Screen(
         onAction = {},
         uiState = UIState().apply {
-            isDialogVisible.value = true
+            isDialogVisible.value = false
         }
     )
 }
