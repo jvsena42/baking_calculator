@@ -46,7 +46,7 @@ class AddProductViewModel @Inject constructor(
             uiState.profitMargin.value = it.profitMargin.toString()
             uiState.laborPrice.value = it.laborValue.toString()
             uiState.variableExpenses.value = it.variableExpenses.toString()
-            selectedSuppliesList.addAll(it.supplies.map { supply -> MenuItemModel(supply.id, supply.name, 1.0.toString()) })
+            selectedSuppliesList.addAll(it.supplies.toItemMenuList(it.amountQuantitySupply))
             uiState.selectedSupplies.value = selectedSuppliesList.toList()
         }
     }
@@ -56,10 +56,11 @@ class AddProductViewModel @Inject constructor(
     }
 
     private suspend fun getUnits() {
-        val unitsResult = getUnitsUseCase()
-        when(unitsResult) {
-            is Resource.Success -> uiState.unities.value = unitsResult.data.orEmpty().format()
-            is Resource.Error -> showToast(uiState.textToast.value)
+        getUnitsUseCase().also {
+            when (it) {
+                is Resource.Success -> uiState.unities.value = it.data.orEmpty().format()
+                is Resource.Error -> showToast(uiState.textToast.value)
+            }
         }
     }
 
