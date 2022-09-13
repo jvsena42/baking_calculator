@@ -14,6 +14,8 @@ interface CandyPricerRepository {
 
     suspend fun updateUser(parameters: UpdateUserParameters): Resource<Unit>
 
+    suspend fun updateExpirationDate(id:Int, parameters: UpdateExpirationDateParameters): Resource<Unit>
+
     suspend fun deleteUser(): Resource<Unit>
 
     suspend fun login(parameters: LoginParameters): Resource<LoginResponse>

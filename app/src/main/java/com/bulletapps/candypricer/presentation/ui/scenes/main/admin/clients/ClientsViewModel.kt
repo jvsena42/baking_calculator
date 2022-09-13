@@ -4,10 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
-import com.bulletapps.candypricer.data.parameters.UpdateUserParameters
+import com.bulletapps.candypricer.data.parameters.CreateUserParameters
+import com.bulletapps.candypricer.data.parameters.UpdateExpirationDateParameters
 import com.bulletapps.candypricer.data.response.UserResponse
 import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
-import com.bulletapps.candypricer.domain.usecase.user.UpdateUserUseCase
+import com.bulletapps.candypricer.domain.usecase.user.UpdateExpirationDateUseCase
 import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
@@ -21,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ClientsViewModel @Inject constructor(
     private val getUsersUseCase: GetUsersUseCase,
-    private val updateUserUseCase: UpdateUserUseCase
+    private val updateExpirationDateUseCase: UpdateExpirationDateUseCase
 ) : ViewModel(), EventFlow<ClientsViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -42,15 +43,7 @@ class ClientsViewModel @Inject constructor(
     private fun changeExpirationDate(response: DatePicker.Result) = viewModelScope.launch {
         val selectedUser = uiState.selectedUser.value
         if (!selectedUser.id.isNegative()) {
-            val updatedUser = UpdateUserParameters(
-                selectedUser.id,
-                selectedUser.name,
-                selectedUser.phone,
-                selectedUser.email,
-                selectedUser.isAdmin,
-                response.date
-            )
-            updateUserUseCase(updatedUser).also {
+            updateExpirationDateUseCase(selectedUser.id, UpdateExpirationDateParameters(response.date)).also {
                 when(it) {
                     is Resource.Error -> showToast(it.message)
                     is Resource.Success -> getUsersUseCase()
@@ -60,7 +53,6 @@ class ClientsViewModel @Inject constructor(
         }
 
     }
-
 
     private fun showToast(message: UiText?) {
         message?.let{ uiState.textToast.value = it }

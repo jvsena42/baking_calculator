@@ -18,6 +18,12 @@ interface CandyPricerApi {
         @Body parameters: UpdateUserParameters
     )
 
+    @PUT("/admin/{id}")
+    suspend fun updateExpirationDate(
+        @Path("id") id: Int,
+        @Body parameters: UpdateExpirationDateParameters
+    )
+
     @DELETE("/user")
     suspend fun deleteUser()
 

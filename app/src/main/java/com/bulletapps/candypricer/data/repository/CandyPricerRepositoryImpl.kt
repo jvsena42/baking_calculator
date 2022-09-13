@@ -29,6 +29,10 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.updateUser(parameters)
     }
 
+    override suspend fun updateExpirationDate(id: Int, parameters: UpdateExpirationDateParameters) = safeRequest(dispatcher) {
+        dataSource.updateExpirationDate(id, parameters)
+    }
+
     override suspend fun deleteUser() = safeRequest(dispatcher) {
         dataSource.deleteUser()
     }
@@ -72,6 +76,4 @@ class CandyPricerRepositoryImpl @Inject constructor(
     override suspend fun getUnits() = safeRequest(dispatcher) {
         dataSource.getUnits()
     }
-
-
 }

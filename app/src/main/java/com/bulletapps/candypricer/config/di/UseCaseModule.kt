@@ -45,6 +45,12 @@ class UseCaseModule {
 
     @Singleton
     @Provides
+    fun providesUpdateUserAdminUseCase(repository: CandyPricerRepository) : UpdateExpirationDateUseCase {
+        return UpdateExpirationDateUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
     fun providesDeleteUserUseCase(repository: CandyPricerRepository) : DeleteUserUseCase {
         return DeleteUserUseCase(repository)
     }
