@@ -68,6 +68,8 @@ fun Screen(
     uiState: UIState,
     onAction: (ScreenActions) -> Unit,
 ) {
+    val toolbarTitle by uiState.toolbarTitle.collectAsState()
+
     CandyPricerTheme {
         Column(
             modifier = Modifier
@@ -80,7 +82,7 @@ fun Screen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
-                        text = stringResource(R.string.add_supply)
+                        text = stringResource(toolbarTitle)
                     )
                 },
             )

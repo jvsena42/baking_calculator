@@ -28,7 +28,8 @@
     <string name="clicking_here">Clicando aqui</string>
     <string name="i_want_update_my_account">Quero deletar minha conta</string>
     <string name="reload">Recarregar</string>
-    <string name="add_supply">Cadastre ou edite seu Insumo</string>
+    <string name="add_supply">Cadastre seu Insumo</string>
+    <string name="edit_supply">Atualize seu Insumo</string>
     <string name="add_a_supply">Adicione um insumo</string>
     <string name="add_product">Adicionar Produto</string>
     <string name="edit_product">Editar Produto</string>

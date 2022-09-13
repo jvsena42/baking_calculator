@@ -30,7 +30,7 @@ class ProductDetailViewModel @Inject constructor(
 
     val uiState = UIState()
 
-    suspend fun setup(product: ProductResponse?) {
+    fun setup(product: ProductResponse?) {
         product?.let {
             uiState.product.value = it
             uiState.supplyList.value = it.supplies.toItemMenuList(it.amountQuantitySupply)

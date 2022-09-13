@@ -2,6 +2,7 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
@@ -36,6 +37,7 @@ class AddSupplyViewModel @Inject constructor(
         }
 
         supply?.let { supply ->
+            uiState.toolbarTitle.value = R.string.edit_supply
             uiState.id.value = supply.id
             uiState.name.value = supply.name
             uiState.selectedUnit.value = supply.unit
@@ -164,6 +166,7 @@ class AddSupplyViewModel @Inject constructor(
         val price = MutableStateFlow("")
         val unities = MutableStateFlow<List<UnitResponse>>(listOf())
         val isExpanded = MutableStateFlow(false)
+        val toolbarTitle = MutableStateFlow(R.string.add_supply)
         val isLoading = MutableStateFlow(false)
         val selectedUnit = MutableStateFlow<UnitResponse?>(null)
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
