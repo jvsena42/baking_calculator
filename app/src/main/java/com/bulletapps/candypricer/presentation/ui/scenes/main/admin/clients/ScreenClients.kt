@@ -31,6 +31,7 @@ import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 import com.bulletapps.candypricer.presentation.util.formatToDayMonthYear
 import com.bulletapps.candypricer.presentation.util.openWhatsapp
 import com.bulletapps.candypricer.presentation.util.toDate
+import java.util.*
 
 @Composable
 fun ScreenClients(
@@ -130,12 +131,11 @@ fun BuildCalendar(
     onAction: (ScreenActions) -> Unit
 ) {
     val isDialogVisible by uiState.isDialogVisible.collectAsState()
-    val selectedUser by uiState.selectedUser.collectAsState()
+    val expirationDateTime by uiState.expirationDateTime.collectAsState()
 
-    val calendar = selectedUser.expirationDate.toDate()
     val datePickerDialog = DatePicker()
     datePickerDialog.builder.apply {
-        selectedDate = calendar.time
+        selectedDate = expirationDateTime
         onDateSelect = { result -> onAction(ScreenActions.OnConfirmDate(result)) }
         onCancel = { onAction(ScreenActions.OnDismissDialog) }
         onDismiss = { onAction(ScreenActions.OnDismissDialog) }

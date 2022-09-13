@@ -20,6 +20,7 @@ const val EMPTY_STRING = ""
 const val WHATSAPP_NUMBER = "+5586981133033"
 const val ZERO_DOUBLE = 0.0
 const val ZERO_FLOAT = 0f
+const val ZERO_LONG = 0L
 const val ONE_HUNDRED = 100.0
 const val BRASIL = "BR"
 const val PORTUGUES = "pt"

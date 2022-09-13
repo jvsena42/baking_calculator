@@ -27,7 +27,7 @@ interface CandyPricerApi {
     @DELETE("/user")
     suspend fun deleteUser()
 
-    @GET("/admin")
+    @GET("/admin/users")
     suspend fun getUsers(): List<UserResponse>
 
     @POST("/login")

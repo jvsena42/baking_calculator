@@ -10,10 +10,7 @@ import com.bulletapps.candypricer.data.response.UserResponse
 import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
 import com.bulletapps.candypricer.domain.usecase.user.UpdateExpirationDateUseCase
 import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
-import com.bulletapps.candypricer.presentation.util.EventFlow
-import com.bulletapps.candypricer.presentation.util.EventFlowImpl
-import com.bulletapps.candypricer.presentation.util.NEGATIVE
-import com.bulletapps.candypricer.presentation.util.isNegative
+import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -60,12 +57,14 @@ class ClientsViewModel @Inject constructor(
 
     private fun onShowDialog(selectedUser: UserResponse) {
         uiState.selectedUser.value = selectedUser
+        uiState.expirationDateTime.value = selectedUser.expirationDate.toDate().time
         uiState.isDialogVisible.value = true
     }
 
     private fun onDismissDialog() {
         uiState.isDialogVisible.value = false
         uiState.selectedUser.value = UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "", isActive = true)
+        uiState.expirationDateTime.value = ZERO_LONG
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
@@ -99,6 +98,7 @@ class ClientsViewModel @Inject constructor(
     class UIState {
         val date = MutableStateFlow("")
         val isDialogVisible = MutableStateFlow(false)
+        val expirationDateTime = MutableStateFlow(ZERO_LONG)
         val selectedUser = MutableStateFlow(UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "", isActive = true))
         val clients = MutableStateFlow<List<UserResponse>>(listOf())
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
