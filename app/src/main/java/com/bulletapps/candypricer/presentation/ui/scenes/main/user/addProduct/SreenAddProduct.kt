@@ -64,6 +64,8 @@ private fun Screen(
 ) {
 
     val suppliesList by uiState.selectedSupplies.collectAsState()
+    val isCreation by uiState.isCreation.collectAsState()
+    val toolbarTitle by uiState.toolbarTitle.collectAsState()
 
     CandyPricerTheme {
 
@@ -74,7 +76,7 @@ private fun Screen(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
-                        text = stringResource(R.string.add_product)
+                        text = stringResource(toolbarTitle)
                     )
                 },
             )
@@ -117,19 +119,19 @@ private fun Screen(
                         firstLabel = R.string.name_label,
                         secondLabel = R.string.quantity_short_label,
                         firsName = itemSupply.name,
-                        secondName = itemSupply.qut.toString(),
+                        secondName = itemSupply.qut,
                         onClick = {}
                     )
                 }
 
-
-                item {
-                    MakeDialog(onAction, uiState)
-                    OutlinedButtonCustom(text = stringResource(R.string.add_a_supply), onClick = {
-                        onAction(OnClickAddSupply)
-                    })
+                if (isCreation) {
+                    item {
+                        MakeDialog(onAction, uiState)
+                        OutlinedButtonCustom(text = stringResource(R.string.add_a_supply), onClick = {
+                            onAction(OnClickAddSupply)
+                        })
+                    }
                 }
-
 
                 item {
                     NormalButton(

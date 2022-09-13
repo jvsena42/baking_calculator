@@ -31,6 +31,7 @@
     <string name="add_supply">Cadastre ou edite seu Insumo</string>
     <string name="add_a_supply">Adicione um insumo</string>
     <string name="add_product">Adicionar Produto</string>
+    <string name="edit_product">Editar Produto</string>
     <string name="add_product_and_start_pricing">Cadastre um produto e comece já a precificar 🤩</string>
     <string name="add_supply_and_start_pricing">Cadastre um insumo e comece já a precificar 🤩</string>
     <string name="name">Nome</string>

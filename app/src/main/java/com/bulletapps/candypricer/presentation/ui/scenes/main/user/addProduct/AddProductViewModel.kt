@@ -2,6 +2,7 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateProductParameters
@@ -39,6 +40,8 @@ class AddProductViewModel @Inject constructor(
         getSupplies()
 
         product?.let {
+            uiState.isExpanded.value = false
+            uiState.toolbarTitle.value = R.string.edit_product
             uiState.id.value = it.id
             uiState.name.value = it.name
             uiState.selectedUnit.value = it.unit.format()
@@ -65,10 +68,11 @@ class AddProductViewModel @Inject constructor(
     }
 
     private suspend fun getSupplies() {
-        val suppliesResult = getAllSuppliesUseCase()
-        when(suppliesResult) {
-            is Resource.Error -> showToast(suppliesResult.message)
-            is Resource.Success -> uiState.suppliesMenuList.value = suppliesResult.data.orEmpty().toMutableList()
+        getAllSuppliesUseCase().also {
+            when (it) {
+                is Resource.Error -> showToast(it.message)
+                is Resource.Success -> uiState.suppliesMenuList.value = it.data.orEmpty().toMutableList()
+            }
         }
     }
 
@@ -122,7 +126,7 @@ class AddProductViewModel @Inject constructor(
                 && profitMarginResult is Resource.Success
                 && supplyResult is Resource.Success
             ) {
-                if (uiState.id.value == 0) handleCreateProduct() else handleEditProduct()
+                if (uiState.id.value.isNegative()) handleCreateProduct() else handleEditProduct()
             }
         }
     }
@@ -242,7 +246,7 @@ class AddProductViewModel @Inject constructor(
     }
 
     class UIState {
-        val id = MutableStateFlow(0)
+        val id = MutableStateFlow(-1)
         val name = MutableStateFlow("")
         val quantity = MutableStateFlow("")
         val laborPrice = MutableStateFlow("")
@@ -251,6 +255,8 @@ class AddProductViewModel @Inject constructor(
         val price = MutableStateFlow("")
         val unities = MutableStateFlow<List<UnitResponse>>(listOf())
         val isExpanded = MutableStateFlow(false)
+        val isCreation = MutableStateFlow(true)
+        val toolbarTitle = MutableStateFlow(R.string.add_product)
         val selectedUnit = MutableStateFlow(UnitResponse(0, ""))
         val selectedSupplies = MutableStateFlow(listOf<MenuItemModel>())
         val suppliesMenuList = MutableStateFlow(listOf<SupplyResponse>())
