@@ -6,6 +6,7 @@ import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateProductParameters
+import com.bulletapps.candypricer.data.parameters.UpdateProductParameters
 import com.bulletapps.candypricer.data.response.ProductResponse
 import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
@@ -13,6 +14,7 @@ import com.bulletapps.candypricer.domain.model.MenuItemModel
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyListUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.product.CreateProductUseCase
+import com.bulletapps.candypricer.domain.usecase.product.UpdateProductUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.ScreenEvent
@@ -28,7 +30,8 @@ class AddProductViewModel @Inject constructor(
     private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
     private val validateEmptyListUseCase: ValidateEmptyListUseCase,
     private val getUnitsUseCase: GetUnitsUseCase,
-    private val createProductUseCase: CreateProductUseCase
+    private val createProductUseCase: CreateProductUseCase,
+    private val updateProductUseCase: UpdateProductUseCase
     ) : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -132,9 +135,24 @@ class AddProductViewModel @Inject constructor(
     }
 
     private suspend fun handleEditProduct() {
+        val parameters = UpdateProductParameters(
+            id = uiState.id.value,
+            name = uiState.name.value,
+            unitId = uiState.selectedUnit.value.id.orZero(),
+            quantity = uiState.quantity.value.formatDouble(),
+            suppliesId = uiState.selectedSupplies.value.map { it.id },
+            profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
+            laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
+            variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
+            amountQuantitySupply = uiState.selectedSupplies.value.map { it.qut.formatDouble() }
+        )
 
-
-
+        updateProductUseCase(parameters).also { result ->
+            when (result) {
+                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                is Resource.Error -> showToast(result.message)
+            }
+        }
     }
 
     private suspend fun handleCreateProduct() {
