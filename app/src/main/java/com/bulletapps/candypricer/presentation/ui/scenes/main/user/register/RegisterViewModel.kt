@@ -1,6 +1,5 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.register
 
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.R
@@ -14,7 +13,6 @@ import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordU
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidatePasswordConfirmationUseCase
 import com.bulletapps.candypricer.domain.usecase.user.CreateUserUseCase
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import com.bulletapps.candypricer.presentation.util.PreferencesKeys.ACCESS_TOKEN

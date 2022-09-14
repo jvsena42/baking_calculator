@@ -12,6 +12,7 @@ import com.bulletapps.candypricer.domain.usecase.user.UpdateExpirationDateUseCas
 import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
 import com.bulletapps.candypricer.presentation.util.*
 import com.bulletapps.candypricer.presentation.util.DateConstant.BACKEND_FORMAT
+import com.bulletapps.candypricer.presentation.util.DateConstant.DAY_MONTH_YEAR_CLEAR_FORMAT
 import com.bulletapps.candypricer.presentation.util.DateConstant.DAY_MONTH_YEAR_FORMAT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,11 +40,11 @@ class ClientsViewModel @Inject constructor(
         viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp(phone))
     }
 
-    private fun changeExpirationDate( ) = viewModelScope.launch {
+    private fun changeExpirationDate() = viewModelScope.launch {
         val selectedUser = uiState.selectedUser.value
         val currentDate = uiState.date.value
         if (!selectedUser.id.isNegative() && currentDate.isNotEmpty()) {
-            val formattedDate = currentDate.toDate(DAY_MONTH_YEAR_FORMAT).format(BACKEND_FORMAT)
+            val formattedDate = currentDate.toDate(DAY_MONTH_YEAR_CLEAR_FORMAT).format(BACKEND_FORMAT)
             updateExpirationDateUseCase(selectedUser.id, UpdateExpirationDateParameters(formattedDate)).also {
                 when(it) {
                     is Resource.Error -> showToast(it.message)
@@ -66,6 +67,7 @@ class ClientsViewModel @Inject constructor(
 
     private fun onDismissDialog() {
         uiState.isDialogVisible.value = false
+        uiState.date.value = ""
         uiState.selectedUser.value = UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "", isActive = true)
     }
 

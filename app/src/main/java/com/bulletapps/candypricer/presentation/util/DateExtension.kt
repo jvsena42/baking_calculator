@@ -10,6 +10,7 @@ import java.util.Locale
 object DateConstant {
     const val BACKEND_FORMAT = "yyyy-MM-dd"
     const val DAY_MONTH_YEAR_FORMAT = "dd/MM/yyyy"
+    const val DAY_MONTH_YEAR_CLEAR_FORMAT = "ddMMyyyy"
     const val HOUR_FORMAT = "HH:mm"
 }
 

@@ -28,13 +28,12 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ClientsViewModel.ScreenActions
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ClientsViewModel.UIState
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
-import com.bulletapps.candypricer.presentation.ui.widgets.CardClient
-import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
-import com.bulletapps.candypricer.presentation.ui.widgets.TextButtonCustom
-import com.bulletapps.candypricer.presentation.ui.widgets.Toast
+import com.bulletapps.candypricer.presentation.ui.widgets.*
 import com.bulletapps.candypricer.presentation.util.formatToDayMonthYear
 import com.bulletapps.candypricer.presentation.util.openWhatsapp
 import com.bulletapps.candypricer.presentation.util.toDate
+import com.bulletapps.candypricer.presentation.util.visualTransformation.MaskPatterns
+import com.bulletapps.candypricer.presentation.util.visualTransformation.MaskVisualTransformation
 
 @Composable
 fun ScreenClients(
@@ -145,7 +144,7 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
                 shape = MaterialTheme.shapes.medium
             ) {
 
-                Column(modifier = Modifier.padding(top = 16.dp)) {
+                Column(modifier = Modifier.padding(top = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
 
                     OutlinedTextField(
                         value = date,
@@ -154,21 +153,28 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
                             ScreenActions.OnTextChanged(
                                 ClientsViewModel.FieldsTexts.Date(it))
                         ) },
+                        visualTransformation = MaskVisualTransformation(MaskPatterns.DD_MM_YYY_MASK),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         placeholder = { Text(stringResource(R.string.day_month_year)) },
                         label = { Text(stringResource(R.string.expiration)) },
                         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
                     )
 
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     NormalButton(
                         text = stringResource(R.string.confirm),
                         onClick = { onAction(ScreenActions.OnConfirmDate) }
                     )
 
-                    TextButtonCustom(
+                    OutlinedButtonCustom(
+                        modifier = Modifier.fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 0.dp),
                         text = stringResource(R.string.cancel),
                         onClick = { onAction(ScreenActions.OnDismissDialog) }
                     )
+
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
@@ -205,7 +211,7 @@ private fun Preview() {
         uiState = UIState().apply {
             clients.value = listOf(
                 UserResponse(
-                    id = 0,
+                    id = 1,
                     name = "Maria Júlia",
                     expirationDate = "123456",
                     phone = "86998006407",
@@ -214,6 +220,7 @@ private fun Preview() {
                     isActive = true
                 ),
             )
+            isDialogVisible.value = true
         }
     )
 }
