@@ -31,7 +31,6 @@ import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 import com.bulletapps.candypricer.presentation.util.formatToDayMonthYear
 import com.bulletapps.candypricer.presentation.util.openWhatsapp
 import com.bulletapps.candypricer.presentation.util.toDate
-import java.util.*
 
 @Composable
 fun ScreenClients(
@@ -81,8 +80,7 @@ private fun Screen(
                     )
                 },
             )
-            BuildCalendar(uiState, onAction)
-            CLientsList(uiState, onAction)
+            ClientsList(uiState, onAction)
             DisplayToast(uiState)
         }
     }
@@ -93,11 +91,11 @@ private fun Screen(
 private fun DisplayToast(uiState: UIState) {
     val toastMessage by uiState.textToast.collectAsState()
     val message = toastMessage.asString()
-    if (message.isNotEmpty()) Toast(message)
+    Toast(message)
 }
 
 @Composable
-private fun CLientsList(
+private fun ClientsList(
     uiState: UIState,
     onAction: (ScreenActions) -> Unit
 ) {
@@ -111,9 +109,11 @@ private fun CLientsList(
                 val user = list[index]
                 CardClient(
                     firstLabel = R.string.name_label,
-                    secondLabel = R.string.expires_at_label,
+                    secondLabel = R.string.email_label,
+                    thirdLabel = R.string.expires_at_label,
                     firsName = user.name,
-                    secondName = user.expirationDate.toDate().formatToDayMonthYear(),
+                    secondName = user.email,
+                    thirdName = user.expirationDate.toDate().formatToDayMonthYear(),
                     leftBTLabel = R.string.change_expiring_date,
                     rightBTLabel = R.string.send_message,
                     onClickLeft = { onAction(ScreenActions.OnClickChangeExpirationDate(user)) },

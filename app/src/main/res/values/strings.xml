@@ -38,6 +38,7 @@
     <string name="name">Nome</string>
     <string name="product">Produto</string>
     <string name="email">Email</string>
+    <string name="email_label">Email:</string>
     <string name="whatsapp">Whatsapp</string>
     <string name="valid_at">Conta válida até</string>
     <string name="phone_placeholder">(00) 9 0000–0000</string>

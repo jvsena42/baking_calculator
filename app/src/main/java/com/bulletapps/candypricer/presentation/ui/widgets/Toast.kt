@@ -13,4 +13,5 @@ fun Toast(
     val context = LocalContext.current
     val toast = Toast.makeText(context, text, duration)
     toast.show()
+    // TODO CALLBACK ON DISMISS
 }
