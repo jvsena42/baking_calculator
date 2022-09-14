@@ -3,9 +3,9 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -14,9 +14,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.data.response.UserResponse
@@ -26,7 +29,8 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.Clie
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ClientsViewModel.UIState
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardClient
-import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
+import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.TextButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 import com.bulletapps.candypricer.presentation.util.formatToDayMonthYear
 import com.bulletapps.candypricer.presentation.util.openWhatsapp
@@ -120,11 +124,57 @@ private fun ClientsList(
                     onClickRight = { onAction(ScreenActions.OnClickMessage(user.phone)) }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
+                MakeDialog(onAction, uiState)
             }
         }
     )
 }
 
+@Composable
+private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
+    val isVisible by uiState.isDialogVisible.collectAsState()
+    val date by uiState.date.collectAsState()
+
+    if (isVisible) {
+        Dialog(
+            onDismissRequest = { onAction(ScreenActions.OnDismissDialog) },
+            DialogProperties()
+        ) {
+
+            Card(
+                shape = MaterialTheme.shapes.medium
+            ) {
+
+                Column(modifier = Modifier.padding(top = 16.dp)) {
+
+                    OutlinedTextField(
+                        value = date,
+                        singleLine = true,
+                        onValueChange = { onAction(
+                            ScreenActions.OnTextChanged(
+                                ClientsViewModel.FieldsTexts.Date(it))
+                        ) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        placeholder = { Text(stringResource(R.string.day_month_year)) },
+                        label = { Text(stringResource(R.string.expiration)) },
+                        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+                    )
+
+                    NormalButton(
+                        text = stringResource(R.string.confirm),
+                        onClick = { onAction(ScreenActions.OnConfirmDate) }
+                    )
+
+                    TextButtonCustom(
+                        text = stringResource(R.string.cancel),
+                        onClick = { onAction(ScreenActions.OnDismissDialog) }
+                    )
+                }
+            }
+        }
+    }
+}
+/*
 @Composable
 fun BuildCalendar(
     uiState: UIState,
@@ -145,7 +195,7 @@ fun BuildCalendar(
         val activity = LocalContext.current as MainActivity
         datePickerDialog.show(activity.supportFragmentManager)
     }
-}
+}*/
 
 @Preview(showBackground = true)
 @Composable

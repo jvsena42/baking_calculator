@@ -11,6 +11,8 @@ import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
 import com.bulletapps.candypricer.domain.usecase.user.UpdateExpirationDateUseCase
 import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
 import com.bulletapps.candypricer.presentation.util.*
+import com.bulletapps.candypricer.presentation.util.DateConstant.BACKEND_FORMAT
+import com.bulletapps.candypricer.presentation.util.DateConstant.DAY_MONTH_YEAR_FORMAT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -37,10 +39,12 @@ class ClientsViewModel @Inject constructor(
         viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp(phone))
     }
 
-    private fun changeExpirationDate(response: DatePicker.Result) = viewModelScope.launch {
+    private fun changeExpirationDate( ) = viewModelScope.launch {
         val selectedUser = uiState.selectedUser.value
-        if (!selectedUser.id.isNegative()) {
-            updateExpirationDateUseCase(selectedUser.id, UpdateExpirationDateParameters(response.date)).also {
+        val currentDate = uiState.date.value
+        if (!selectedUser.id.isNegative() && currentDate.isNotEmpty()) {
+            val formattedDate = currentDate.toDate(DAY_MONTH_YEAR_FORMAT).format(BACKEND_FORMAT)
+            updateExpirationDateUseCase(selectedUser.id, UpdateExpirationDateParameters(formattedDate)).also {
                 when(it) {
                     is Resource.Error -> showToast(it.message)
                     is Resource.Success -> getUsersUseCase()
@@ -57,14 +61,12 @@ class ClientsViewModel @Inject constructor(
 
     private fun onShowDialog(selectedUser: UserResponse) {
         uiState.selectedUser.value = selectedUser
-        uiState.expirationDateTime.value = selectedUser.expirationDate.toDate().time
         uiState.isDialogVisible.value = true
     }
 
     private fun onDismissDialog() {
         uiState.isDialogVisible.value = false
         uiState.selectedUser.value = UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "", isActive = true)
-        uiState.expirationDateTime.value = ZERO_LONG
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
@@ -80,8 +82,9 @@ class ClientsViewModel @Inject constructor(
         is ScreenActions.OnClickMessage -> onClickMessage(action.phone)
         is ScreenActions.OnClickChangeExpirationDate -> onShowDialog(action.user)
         is ScreenActions.OnDismissDialog -> onDismissDialog()
-        is ScreenActions.OnConfirmDate -> changeExpirationDate(action.response)
+        is ScreenActions.OnConfirmDate -> changeExpirationDate()
     }
+
 
     sealed class ScreenEvent {
         data class OpenWhatsApp(val number: String) : ScreenEvent()
@@ -90,7 +93,7 @@ class ClientsViewModel @Inject constructor(
     sealed class ScreenActions {
         data class OnClickMessage(val phone: String) : ScreenActions()
         data class OnClickChangeExpirationDate(val user: UserResponse) : ScreenActions()
-        data class OnConfirmDate(val response: DatePicker.Result) : ScreenActions()
+        object OnConfirmDate : ScreenActions()
         object OnDismissDialog : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
     }
@@ -98,7 +101,6 @@ class ClientsViewModel @Inject constructor(
     class UIState {
         val date = MutableStateFlow("")
         val isDialogVisible = MutableStateFlow(false)
-        val expirationDateTime = MutableStateFlow(ZERO_LONG)
         val selectedUser = MutableStateFlow(UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "", isActive = true))
         val clients = MutableStateFlow<List<UserResponse>>(listOf())
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
