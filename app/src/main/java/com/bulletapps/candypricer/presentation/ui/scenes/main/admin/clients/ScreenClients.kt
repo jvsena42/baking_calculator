@@ -174,7 +174,7 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
                         onClick = { onAction(ScreenActions.OnDismissDialog) }
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
