@@ -149,7 +149,7 @@ class AddProductViewModel @Inject constructor(
 
         updateProductUseCase(parameters).also { result ->
             when (result) {
-                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
+                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoHome)
                 is Resource.Error -> showToast(result.message)
             }
         }
@@ -250,6 +250,7 @@ class AddProductViewModel @Inject constructor(
 
     sealed class ScreenEvent {
         object GoBack : ScreenEvent()
+        object GoHome : ScreenEvent()
     }
 
     sealed class ScreenActions {

@@ -40,18 +40,20 @@ fun ScreenAddProduct(
     val activity = LocalContext.current as MainActivity
     LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.selectedProduct.value) }
     Screen(viewModel.uiState, viewModel::onAction)
-    EventConsumer(activity, viewModel)
+    EventConsumer(activity, viewModel, sharedViewModel)
 }
 
 @Composable
 private fun EventConsumer(
     activity: MainActivity,
-    viewModel: AddProductViewModel
+    viewModel: AddProductViewModel,
+    sharedViewModel: MainViewModel
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
                 ScreenEvent.GoBack -> activity.onBackPressed()
+                ScreenEvent.GoHome -> sharedViewModel.navigate(MainViewModel.Navigation.MainMenu)
             }
         }
     }
