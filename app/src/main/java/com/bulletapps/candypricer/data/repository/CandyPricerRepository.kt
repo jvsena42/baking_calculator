@@ -24,6 +24,8 @@ interface CandyPricerRepository {
 
     suspend fun getProducts(): Resource<List<ProductResponse>>
 
+    suspend fun updateProduct(parameters: UpdateProductParameters): Resource<Unit>
+
     suspend fun deleteProduct(id: Int): Resource<Unit>
 
     suspend fun createSupply(parameters: CreateSupplyParameters): Resource<Unit>

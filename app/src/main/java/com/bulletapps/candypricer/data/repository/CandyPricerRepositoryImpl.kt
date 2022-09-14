@@ -49,6 +49,10 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.getProducts()
     }
 
+    override suspend fun updateProduct(parameters: UpdateProductParameters) = safeRequest(dispatcher) {
+        dataSource.updateProduct(parameters)
+    }
+
     override suspend fun deleteProduct(id: Int) = safeRequest(dispatcher) {
         dataSource.deleteProduct(id)
     }
