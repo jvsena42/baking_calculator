@@ -141,7 +141,7 @@ private fun Screen(
 
                     OutlinedButtonCustom(
                         text = stringResource(R.string.delete),
-                        onClick = { }
+                        onClick = { onAction(ScreenActions.OnClickDelete) }
                     )
 
                     NormalButton(
