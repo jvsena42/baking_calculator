@@ -49,6 +49,8 @@ fun Double?.toCurrency(): String {
 
 fun Double?.toPercent() = this.orZero()/ONE_HUNDRED
 
+fun Double?.fromPercent() = this.orZero()*ONE_HUNDRED
+
 fun Double?.toPercentString() = "${(this.orZero()*ONE_HUNDRED).round()}%"
 
 fun Double.round(): String {
