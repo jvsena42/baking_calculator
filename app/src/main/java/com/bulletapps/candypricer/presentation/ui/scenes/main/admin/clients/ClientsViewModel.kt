@@ -48,7 +48,7 @@ class ClientsViewModel @Inject constructor(
             updateExpirationDateUseCase(selectedUser.id, UpdateExpirationDateParameters(formattedDate)).also {
                 when(it) {
                     is Resource.Error -> showToast(it.message)
-                    is Resource.Success -> getUsersUseCase()
+                    is Resource.Success -> setup()
                 }
                 onDismissDialog()
             }
