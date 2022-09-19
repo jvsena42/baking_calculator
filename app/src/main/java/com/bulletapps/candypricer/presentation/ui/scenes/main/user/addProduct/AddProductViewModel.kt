@@ -43,7 +43,7 @@ class AddProductViewModel @Inject constructor(
         getSupplies()
 
         product?.let {
-            uiState.isExpanded.value = false
+            uiState.isCreation.value = false
             uiState.toolbarTitle.value = R.string.edit_product
             uiState.id.value = it.id
             uiState.name.value = it.name
