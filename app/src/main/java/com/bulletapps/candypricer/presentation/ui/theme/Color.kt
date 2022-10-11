@@ -14,3 +14,4 @@ val colorDivider = Color(0xFFBDBDBD)
 val brownText = Color(0xFF8A4B38)
 
 val whiteBackground = Color(0xFFF2F6F9)
+val buttonDisabled = Color(0xFF9E9E9E)

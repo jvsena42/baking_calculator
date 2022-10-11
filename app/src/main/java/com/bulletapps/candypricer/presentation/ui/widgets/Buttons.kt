@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.bulletapps.candypricer.presentation.ui.theme.buttonDisabled
 
 @Composable
 fun NormalButton(
@@ -22,7 +23,8 @@ fun NormalButton(
         enabled = isEnabled,
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colors.secondary
+            backgroundColor = MaterialTheme.colors.secondary,
+            disabledBackgroundColor = buttonDisabled
         )
     ) {
         Text(text, color = Color.White)
