@@ -39,11 +39,13 @@ fun CardClient(
             }
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth().wrapContentHeight(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(16.dp))
             OutlinedButtonCustom(
                 modifier = Modifier.padding(horizontal = 0.dp, vertical = 0.dp).weight(1f),
                 text = stringResource(leftBTLabel),
@@ -55,7 +57,7 @@ fun CardClient(
                 text = stringResource(rightBTLabel),
                 onClick = onClickRight
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(16.dp))
         }
     }
 }
