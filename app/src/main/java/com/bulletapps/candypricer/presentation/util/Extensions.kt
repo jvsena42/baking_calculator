@@ -17,7 +17,8 @@ import java.util.*
 const val ZERO = 0
 const val NEGATIVE = -1
 const val EMPTY_STRING = ""
-const val WHATSAPP_NUMBER = "+5586981133033"
+const val WHATSAPP_NUMBER = "86981133033"
+const val BR_CODE = "+55"
 const val ZERO_DOUBLE = 0.0
 const val ZERO_FLOAT = 0f
 const val ZERO_LONG = 0L
@@ -36,7 +37,7 @@ fun Int.isNegative() = this < 0
 fun Boolean?.orFalse() = this ?: false
 
 fun Context.openWhatsapp(phone: String = WHATSAPP_NUMBER, message: String = "Oi!") {
-    val url = "https://api.whatsapp.com/send?phone=$phone"+"&text=" + URLEncoder.encode(message, "UTF-8")
+    val url = "https://api.whatsapp.com/send?phone=$BR_CODE$phone"+"&text=" + URLEncoder.encode(message, "UTF-8")
     Intent(Intent.ACTION_VIEW).apply {
         data = Uri.parse(url)
         startActivity(this)
