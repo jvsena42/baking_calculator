@@ -8,7 +8,7 @@ import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
 import com.bulletapps.candypricer.data.parameters.UpdateSupplyParameters
 import com.bulletapps.candypricer.data.response.SupplyResponse
-import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.CreateSupplyUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.UpdateSupplyUseCase
@@ -30,12 +30,11 @@ class AddSupplyViewModel @Inject constructor(
     val uiState = UIState()
 
     suspend fun setup(supply: SupplyResponse?) {
-        getUnitsUseCase().also {
-            when (it) {
-                is Resource.Success -> uiState.unities.value = it.data.orEmpty().format()
-                is Resource.Error -> showToast(uiState.textToast.value)
-            }
-        }
+
+        getUnitsUseCase().fold(
+            onSuccess = { uiState.unities.value = it},
+            onFailure = { showToast(uiState.textToast.value) }
+        )
 
         supply?.let { supply ->
             uiState.toolbarTitle.value = R.string.edit_supply
@@ -165,11 +164,11 @@ class AddSupplyViewModel @Inject constructor(
         val id = MutableStateFlow(NEGATIVE)
         val quantity = MutableStateFlow("")
         val price = MutableStateFlow("")
-        val unities = MutableStateFlow<List<UnitResponse>>(listOf())
+        val unities = MutableStateFlow<List<UnitModel>>(listOf())
         val isExpanded = MutableStateFlow(false)
         val toolbarTitle = MutableStateFlow(R.string.add_supply)
         val isLoading = MutableStateFlow(false)
-        val selectedUnit = MutableStateFlow<UnitResponse?>(null)
+        val selectedUnit = MutableStateFlow<UnitModel?>(null)
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
         val nameError = MutableStateFlow<UiText?>(null)
         val unitError = MutableStateFlow<UiText?>(null)

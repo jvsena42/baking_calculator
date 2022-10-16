@@ -2,7 +2,11 @@ package com.bulletapps.candypricer.data.repository
 
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.parameters.*
-import com.bulletapps.candypricer.data.response.*
+import com.bulletapps.candypricer.data.response.LoginResponse
+import com.bulletapps.candypricer.data.response.ProductResponse
+import com.bulletapps.candypricer.data.response.SupplyResponse
+import com.bulletapps.candypricer.data.response.UserResponse
+import com.bulletapps.candypricer.domain.model.UnitModel
 
 interface CandyPricerRepository {
 
@@ -38,5 +42,5 @@ interface CandyPricerRepository {
 
     suspend fun createUnit(parameters: CreateUnitParameters): Resource<Unit>
 
-    suspend fun getUnits(): Resource<List<UnitResponse>>
+    suspend fun getUnits(): Result<List<UnitModel>>
 }
