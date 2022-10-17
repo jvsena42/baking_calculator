@@ -6,6 +6,7 @@ import com.bulletapps.candypricer.data.response.LoginResponse
 import com.bulletapps.candypricer.data.response.ProductResponse
 import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UserResponse
+import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.domain.model.UnitModel
 
 interface CandyPricerRepository {
@@ -34,7 +35,7 @@ interface CandyPricerRepository {
 
     suspend fun createSupply(parameters: CreateSupplyParameters): Resource<Unit>
 
-    suspend fun getSupplies(): Resource<List<SupplyResponse>>
+    suspend fun getSupplies(): Result<List<SupplyModel>>
 
     suspend fun deleteSupply(id: Int): Resource<Unit>
 

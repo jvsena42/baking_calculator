@@ -55,8 +55,9 @@ fun Double?.fromPercent() = this.orZero()*ONE_HUNDRED
 fun Double?.toPercentString() = "${(this.orZero()*ONE_HUNDRED).round()}%"
 
 fun Double.round(): String {
-    val df = DecimalFormat("#.##")
-    df.roundingMode = RoundingMode.DOWN
+    val df = DecimalFormat("#.##").apply {
+        roundingMode = RoundingMode.DOWN
+    }
     return df.format(this)
 }
 

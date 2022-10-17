@@ -1,9 +1,11 @@
 package com.bulletapps.candypricer.data.datasource
 
 import com.bulletapps.candypricer.data.parameters.*
-import com.bulletapps.candypricer.data.response.*
-import retrofit2.Response
-import retrofit2.http.*
+import com.bulletapps.candypricer.data.response.LoginResponse
+import com.bulletapps.candypricer.data.response.ProductResponse
+import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.data.response.UserResponse
+import com.bulletapps.candypricer.domain.model.SupplyModel
 
 interface CandyPricerDataSource {
 
@@ -31,7 +33,7 @@ interface CandyPricerDataSource {
 
     suspend fun createSupply(parameters: CreateSupplyParameters)
 
-    suspend fun getSupplies(): List<SupplyResponse>
+    suspend fun getSupplies(): List<SupplyModel>
 
     suspend fun updateSupply(parameters: UpdateSupplyParameters)
 
