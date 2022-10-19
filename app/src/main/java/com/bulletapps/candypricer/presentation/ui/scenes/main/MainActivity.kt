@@ -94,7 +94,7 @@ class MainActivity : FragmentActivity() {
                 return@navigate
             }
 
-            if (navScreen.popHome && currentScreen.isNotEmpty()) {
+            if (navScreen.popHome) {
                 popUpTo(MainViewModel.Navigation.MainMenu.router) { inclusive = false }
                 return@navigate
             }
