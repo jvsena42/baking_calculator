@@ -8,6 +8,7 @@ import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
 import com.bulletapps.candypricer.data.parameters.UpdateSupplyParameters
 import com.bulletapps.candypricer.data.response.SupplyResponse
+import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.CreateSupplyUseCase
@@ -29,7 +30,7 @@ class AddSupplyViewModel @Inject constructor(
 
     val uiState = UIState()
 
-    suspend fun setup(supply: SupplyResponse?) {
+    fun setup(supply: SupplyModel?) = viewModelScope.launch {
 
         getUnitsUseCase().fold(
             onSuccess = { uiState.unities.value = it},
@@ -37,12 +38,14 @@ class AddSupplyViewModel @Inject constructor(
         )
 
         supply?.let { supply ->
-            uiState.toolbarTitle.value = R.string.edit_supply
-            uiState.id.value = supply.id
-            uiState.name.value = supply.name
-            uiState.selectedUnit.value = supply.unit
-            uiState.quantity.value = supply.quantity.round()
-            uiState.price.value = supply.value.round()
+            uiState.run {
+                toolbarTitle.value = R.string.edit_supply
+                id.value = supply.id
+                name.value = supply.name
+                selectedUnit.value = supply.unit
+                quantity.value = supply.quantity
+                price.value = supply.value
+            }
         }
     }
 

@@ -2,16 +2,11 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bulletapps.candypricer.R
-import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.response.ProductResponse
-import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.domain.model.MenuModel
-import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
-import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.MenuViewModel
+import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
-import com.bulletapps.candypricer.presentation.util.orFalse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +17,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.Navigation> by EventFlowImpl()  {
 
     val isLoading = MutableStateFlow(true)
-    val selectedSupply = MutableStateFlow<SupplyResponse?>(null)
+    val selectedSupply = MutableStateFlow<SupplyModel?>(null)
     val selectedProduct = MutableStateFlow<ProductResponse?>(null)
 
 
