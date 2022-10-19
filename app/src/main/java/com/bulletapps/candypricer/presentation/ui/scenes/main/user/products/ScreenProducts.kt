@@ -55,6 +55,7 @@ private fun EventConsumer(
                     sharedViewModel.navigate(MainViewModel.Navigation.ProductDetail)
                 }
                 is ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
+                is ScreenEvent.NavigateToSupplies -> sharedViewModel.navigate(MainViewModel.Navigation.Supplies)
             }
         }
     }
