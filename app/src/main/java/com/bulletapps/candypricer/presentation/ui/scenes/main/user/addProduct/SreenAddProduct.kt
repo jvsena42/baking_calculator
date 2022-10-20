@@ -121,7 +121,7 @@ private fun Screen(
                         firstLabel = R.string.name_label,
                         secondLabel = R.string.quantity_short_label,
                         firsName = itemSupply.name,
-                        secondName = itemSupply.qut,
+                        secondName = itemSupply.quantity,
                         onClick = {}
                     )
                 }
@@ -249,9 +249,11 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val suppliesMenuList by uiState.suppliesMenuList.collectAsState()
     val isMenuSuppliesExpanded by uiState.isMenuSuppliesExpanded.collectAsState()
     val selectedSupplyItem by uiState.selectedSupplyItem.collectAsState()
+    val selectedSupplyUnit by uiState.selectedSupplyUnit.collectAsState()
     val supplyQnt by uiState.supplyQnt.collectAsState()
     val error by uiState.supplyQntError.collectAsState()
     val isVisible by uiState.isDialogVisible.collectAsState()
+    val isError = !error?.asString().isNullOrEmpty()
 
     if (isVisible) {
         Dialog(
@@ -288,6 +290,8 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         placeholder = { Text(stringResource(R.string.fifty_grams)) },
                         label = { Text(error?.asString() ?: stringResource(R.string.quantity)) },
+                        isError = isError,
+                        trailingIcon = { Text(selectedSupplyUnit) },
                         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
                     )
 
