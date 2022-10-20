@@ -250,6 +250,7 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val isMenuSuppliesExpanded by uiState.isMenuSuppliesExpanded.collectAsState()
     val selectedSupplyItem by uiState.selectedSupplyItem.collectAsState()
     val supplyQnt by uiState.supplyQnt.collectAsState()
+    val error by uiState.supplyQntError.collectAsState()
     val isVisible by uiState.isDialogVisible.collectAsState()
 
     if (isVisible) {
@@ -286,7 +287,7 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
                         onValueChange = { onAction(OnTextChanged(FieldsTexts.SupplyQnt(it))) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         placeholder = { Text(stringResource(R.string.fifty_grams)) },
-                        label = { Text(stringResource(R.string.quantity)) },
+                        label = { Text(error?.asString() ?: stringResource(R.string.quantity)) },
                         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
                     )
 

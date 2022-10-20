@@ -182,7 +182,13 @@ class AddProductViewModel @Inject constructor(
     }
 
     private fun onClickConfirmMenu() {
-        uiState.isDialogVisible.value = false
+
+        if (uiState.supplyQnt.value.isEmpty()) {
+            uiState.supplyQntError.value = UiText.StringResource(R.string.error_quantity)
+            return
+        } else {
+            uiState.supplyQntError.value = null
+        }
 
         val newItem = MenuItemModel(
             id = uiState.selectedSupplyItem.value.id,
@@ -192,6 +198,7 @@ class AddProductViewModel @Inject constructor(
         selectedSuppliesList.add(newItem) // TODO MERGE ITEMS
         uiState.selectedSupplies.value = selectedSuppliesList.toList()
         clearMenuSelection()
+        uiState.isDialogVisible.value = false
     }
 
     private fun onItemSelected(index: Int) {
@@ -291,6 +298,7 @@ class AddProductViewModel @Inject constructor(
         val qntError = MutableStateFlow<UiText?>(null)
         val unitError = MutableStateFlow<UiText?>(null)
         val laborError = MutableStateFlow<UiText?>(null)
+        val supplyQntError = MutableStateFlow<UiText?>(null)
         val variableExpensesError = MutableStateFlow<UiText?>(null)
         val profitMarginError = MutableStateFlow<UiText?>(null)
     }

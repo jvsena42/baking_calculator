@@ -10,8 +10,11 @@ class ValidateEmptyListUseCase @Inject constructor() {
         return if (list.isNotEmpty()) {
             Resource.Success(Unit)
         } else {
-            Resource.Error(UiText.StringResource(
-                R.string.mandatory_field))
+            Resource.Error(
+                UiText.StringResource(
+                    R.string.mandatory_field
+                )
+            )
         }
     }
 }
