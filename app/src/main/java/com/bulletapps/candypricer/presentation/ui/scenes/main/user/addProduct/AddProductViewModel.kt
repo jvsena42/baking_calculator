@@ -117,7 +117,7 @@ class AddProductViewModel @Inject constructor(
             }
             when(supplyResult) {
                 is Resource.Error -> showToast(supplyResult.message)
-                is Resource.Success -> {}
+                is Resource.Success -> Unit
             }
 
             if(
