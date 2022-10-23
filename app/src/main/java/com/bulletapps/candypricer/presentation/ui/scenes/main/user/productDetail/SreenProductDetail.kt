@@ -32,7 +32,6 @@ import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsHorizontal
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
-import com.bulletapps.candypricer.presentation.util.round
 import com.bulletapps.candypricer.presentation.util.toCurrency
 import com.bulletapps.candypricer.presentation.util.toPercentString
 
@@ -130,7 +129,7 @@ private fun Screen(
                         firstLabel = R.string.name_label,
                         secondLabel = R.string.quantity_short_label,
                         firsName = itemSupply.name,
-                        secondName = itemSupply.qut,
+                        secondName = itemSupply.quantity,
                         onClick = {}
                     )
                 }
