@@ -65,9 +65,13 @@ fun String?.formatDouble(): Double {
     return value.replace(",", ".").replace("%", "").toDouble()
 }
 
-fun String?.filterNumbers(): String {
+fun String?.removeNumbers(): String {
     val string = this.orEmpty()
     return string.replace("[^0-9]".toRegex(), "")
+}
+
+fun String.removeLetters(): String {
+    return this.trim().filter { it.isDigit() }
 }
 
 fun Context.navigateUrl(url: String) {

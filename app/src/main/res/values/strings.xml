@@ -57,7 +57,7 @@
     <string name="dont_you_have_an_account">Não tem conta?</string>
     <string name="sign_in"><u>Cadastre-se</u></string>
     <string name="select_a_unit">Selecione uma unidade</string>
-    <string name="error_quantity">Erro: Informe a quantidade</string>
+    <string name="error_quantity">Erro: Informe uma quantidade válida</string>
     <string name="select_a_supply">Selecione um insumo</string>
     <string name="price">Preço</string>
     <string name="labor_price">Mão de obra</string>
@@ -89,4 +89,10 @@
     <string name="no">Não</string>
     <string name="day_month_year">dd/MM/AAAA</string>
     <string name="expiration">Validade</string>
+    <string name="error_name">Erro: Informe o nome</string>
+    <string name="error_unit">Erro: Informe a unidade</string>
+    <string name="error_labor">Erro: Informe a mão de obra</string>
+    <string name="error_variable_expenses">Erro: Informe os gastos variáveis</string>
+    <string name="error_profit_margin">Erro: Informe a margem de lucro</string>
+    <string name="error_price">Erro: Informe um preço válido</string>
 </resources>

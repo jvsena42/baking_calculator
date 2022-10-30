@@ -11,8 +11,7 @@ import com.bulletapps.candypricer.data.response.ProductResponse
 import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.model.MenuItemModel
-import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyListUseCase
-import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.*
 import com.bulletapps.candypricer.domain.usecase.product.CreateProductUseCase
 import com.bulletapps.candypricer.domain.usecase.product.UpdateProductUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
@@ -31,7 +30,13 @@ class AddProductViewModel @Inject constructor(
     private val validateEmptyListUseCase: ValidateEmptyListUseCase,
     private val getUnitsUseCase: GetUnitsUseCase,
     private val createProductUseCase: CreateProductUseCase,
-    private val updateProductUseCase: UpdateProductUseCase
+    private val updateProductUseCase: UpdateProductUseCase,
+    private val validateNameUseCase: ValidateNameUseCase,
+    private val validateQuantityUseCase: ValidateQuantityUseCase,
+    private val validateUnitUseCase: ValidateUnitUseCase,
+    private val validateLaborUseCase: ValidateLaborUseCase,
+    private val validateVariableExpenses: ValidateVariableExpensesUseCase,
+    private val validateProfitMarginUseCase: ValidateProfitMarginUseCase
     ) : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -83,12 +88,12 @@ class AddProductViewModel @Inject constructor(
         viewModelScope.launch {
             uiState.isLoading.value = true
 
-            val nameResult = validateEmptyTextUseCase(text = uiState.name.value)
-            val qntResult = validateEmptyTextUseCase(text = uiState.quantity.value)
-            val unitResult = validateEmptyTextUseCase(text = uiState.selectedUnit.value.name)
-            val laborPriceResult = validateEmptyTextUseCase(text = uiState.laborPrice.value)
-            val variableExpensesResult = validateEmptyTextUseCase(text = uiState.variableExpenses.value)
-            val profitMarginResult = validateEmptyTextUseCase(text = uiState.profitMargin.value)
+            val nameResult = validateNameUseCase(text = uiState.name.value)
+            val qntResult = validateQuantityUseCase(text = uiState.quantity.value)
+            val unitResult = validateUnitUseCase(text = uiState.selectedUnit.value.name)
+            val laborPriceResult = validateLaborUseCase(text = uiState.laborPrice.value)
+            val variableExpensesResult = validateVariableExpenses(text = uiState.variableExpenses.value)
+            val profitMarginResult = validateProfitMarginUseCase(text = uiState.profitMargin.value)
             val supplyResult = validateEmptyListUseCase(list = uiState.selectedSupplies.value)
 
             when(nameResult) {
