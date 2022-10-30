@@ -84,6 +84,7 @@ fun CardTwoItemsWithDetailHorizontal(
             TextWithLabel(stringResource(id = firstLabel), firsName)
             Spacer(modifier = Modifier.weight(1f))
             TextWithLabel(stringResource(id = secondLabel), secondName)
+            Spacer(modifier = Modifier.width(2.dp))
             Text(thirdName)
         }
     }
