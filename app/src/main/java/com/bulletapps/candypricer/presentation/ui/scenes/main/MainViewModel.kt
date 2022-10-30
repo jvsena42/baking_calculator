@@ -36,12 +36,12 @@ class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.
         viewModelScope.sendEvent(navigation)
     }
 
-    sealed class Navigation(val router: String, val shouldPop: Boolean = false) {
+    sealed class Navigation(val router: String, val shouldPop: Boolean = false, val popHome: Boolean = false) {
         object MainMenu : Navigation("main_menu", true)
         object Products : Navigation("products")
         object ProductDetail : Navigation("product_detail")
         object AddProduct : Navigation("add_product")
-        object Supplies : Navigation("supplies")
+        object Supplies : Navigation("supplies", popHome = true)
         object SupplyDetail : Navigation("supply_detail")
         object AddSupply : Navigation("add_supply")
         object Settings : Navigation("settings")

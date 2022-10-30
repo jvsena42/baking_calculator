@@ -121,7 +121,7 @@ private fun Screen(
                         firstLabel = R.string.name_label,
                         secondLabel = R.string.quantity_short_label,
                         firsName = itemSupply.name,
-                        secondName = itemSupply.qut,
+                        secondName = itemSupply.quantity,
                         onClick = {}
                     )
                 }
@@ -149,6 +149,8 @@ private fun Screen(
 @Composable
 private fun MakeFieldQuantity(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val quantity by uiState.quantity.collectAsState()
+    val error by uiState.qntError.collectAsState()
+    val isError = !error?.asString().isNullOrEmpty()
 
     OutlinedTextField(
         value = quantity,
@@ -156,7 +158,8 @@ private fun MakeFieldQuantity(onAction: (ScreenActions) -> Unit, uiState: UIStat
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Quantity(it))) },
         placeholder = { Text(stringResource(R.string.five_hundred)) },
-        label = { Text(stringResource(R.string.quantity)) },
+        label = { Text(error?.asString() ?: stringResource(R.string.quantity)) },
+        isError = isError,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
     )
 }
@@ -164,6 +167,8 @@ private fun MakeFieldQuantity(onAction: (ScreenActions) -> Unit, uiState: UIStat
 @Composable
 private fun MakeFieldProfitMargin(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val profitMargin by uiState.profitMargin.collectAsState()
+    val error by uiState.profitMarginError.collectAsState()
+    val isError = !error?.asString().isNullOrEmpty()
 
     OutlinedTextField(
         value = profitMargin,
@@ -173,7 +178,8 @@ private fun MakeFieldProfitMargin(onAction: (ScreenActions) -> Unit, uiState: UI
             onAction(OnTextChanged(FieldsTexts.ProfitMargin(it)))
         },
         placeholder = { Text(stringResource(R.string.ten_percent)) },
-        label = { Text(stringResource(R.string.profit_margin)) },
+        label = { Text(error?.asString() ?: stringResource(R.string.profit_margin)) },
+        isError = isError,
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
 }
@@ -181,6 +187,8 @@ private fun MakeFieldProfitMargin(onAction: (ScreenActions) -> Unit, uiState: UI
 @Composable
 private fun MakeFieldVariableExpenses(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val variableExpenses by uiState.variableExpenses.collectAsState()
+    val error by uiState.variableExpensesError.collectAsState()
+    val isError = !error?.asString().isNullOrEmpty()
 
     OutlinedTextField(
         value = variableExpenses,
@@ -190,7 +198,8 @@ private fun MakeFieldVariableExpenses(onAction: (ScreenActions) -> Unit, uiState
             onAction(OnTextChanged(FieldsTexts.VariableExpenses(it)))
         },
         placeholder = { Text(stringResource(R.string.ten_percent)) },
-        label = { Text(stringResource(R.string.variable_expenses)) },
+        label = { Text(error?.asString() ?: stringResource(R.string.variable_expenses)) },
+        isError = isError,
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
 }
@@ -198,6 +207,8 @@ private fun MakeFieldVariableExpenses(onAction: (ScreenActions) -> Unit, uiState
 @Composable
 private fun MakeFieldLaborPrice(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val laborPrice by uiState.laborPrice.collectAsState()
+    val error by uiState.laborError.collectAsState()
+    val isError = !error?.asString().isNullOrEmpty()
 
     OutlinedTextField(
         value = laborPrice,
@@ -207,7 +218,8 @@ private fun MakeFieldLaborPrice(onAction: (ScreenActions) -> Unit, uiState: UISt
             onAction(OnTextChanged(FieldsTexts.LaborPrice(it)))
         },
         placeholder = { Text(stringResource(R.string.ten_percent)) },
-        label = { Text(stringResource(R.string.labor_price)) },
+        label = { Text(error?.asString() ?: stringResource(R.string.labor_price)) },
+        isError = isError,
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
 }
@@ -217,13 +229,14 @@ private fun MakeDropdownUnit(onAction: (ScreenActions) -> Unit, uiState: UIState
     val unities by uiState.unities.collectAsState()
     val isExpanded by uiState.isExpanded.collectAsState()
     val selectedUnit by uiState.selectedUnit.collectAsState()
+    val error by uiState.unitError.collectAsState()
 
     DropdownMenuOutlined(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
         expanded = isExpanded,
         items = unities.map { it.name },
         selectedItem = selectedUnit.name,
-        label = stringResource(R.string.select_a_unit),
+        label =  error?.asString() ?: stringResource(R.string.select_a_unit),
         onClick = { onAction(OnChangeExpanded) },
         onItemSelected = { index -> onAction(OnItemSelected(index)) }
     )
@@ -232,13 +245,16 @@ private fun MakeDropdownUnit(onAction: (ScreenActions) -> Unit, uiState: UIState
 @Composable
 private fun MakeFieldName(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val name by uiState.name.collectAsState()
+    val error by uiState.nameError.collectAsState()
+    val isError = !error?.asString().isNullOrEmpty()
 
     OutlinedTextField(
         value = name,
         singleLine = true,
         onValueChange = { onAction(OnTextChanged(FieldsTexts.Name(it))) },
         placeholder = { Text(stringResource(R.string.cocoa_powder)) },
-        label = { Text(stringResource(R.string.name)) },
+        label = { Text(error?.asString() ?: stringResource(R.string.name)) },
+        isError = isError,
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
 }
@@ -249,8 +265,11 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val suppliesMenuList by uiState.suppliesMenuList.collectAsState()
     val isMenuSuppliesExpanded by uiState.isMenuSuppliesExpanded.collectAsState()
     val selectedSupplyItem by uiState.selectedSupplyItem.collectAsState()
+    val selectedSupplyUnit by uiState.selectedSupplyUnit.collectAsState()
     val supplyQnt by uiState.supplyQnt.collectAsState()
+    val error by uiState.supplyQntError.collectAsState()
     val isVisible by uiState.isDialogVisible.collectAsState()
+    val isError = !error?.asString().isNullOrEmpty()
 
     if (isVisible) {
         Dialog(
@@ -286,7 +305,9 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
                         onValueChange = { onAction(OnTextChanged(FieldsTexts.SupplyQnt(it))) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         placeholder = { Text(stringResource(R.string.fifty_grams)) },
-                        label = { Text(stringResource(R.string.quantity)) },
+                        label = { Text(error?.asString() ?: stringResource(R.string.quantity)) },
+                        isError = isError,
+                        trailingIcon = { Text(selectedSupplyUnit) },
                         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
                     )
 

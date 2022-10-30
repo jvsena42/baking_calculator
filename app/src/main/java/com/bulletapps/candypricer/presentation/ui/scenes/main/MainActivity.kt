@@ -91,6 +91,12 @@ class MainActivity : FragmentActivity() {
             val currentScreen = navController.currentBackStackEntry?.destination?.route.orEmpty()
             if (navScreen.shouldPop && currentScreen.isNotEmpty()) {
                 popUpTo(currentScreen) { inclusive = true }
+                return@navigate
+            }
+
+            if (navScreen.popHome) {
+                popUpTo(MainViewModel.Navigation.MainMenu.router) { inclusive = false }
+                return@navigate
             }
         }
     }

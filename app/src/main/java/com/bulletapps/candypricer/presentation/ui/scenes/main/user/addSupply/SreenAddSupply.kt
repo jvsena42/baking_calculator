@@ -115,6 +115,8 @@ private fun DisplayToast(uiState: UIState) {
 @Composable
 private fun MakeFieldName(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val name by uiState.name.collectAsState()
+    val error by uiState.nameError.collectAsState()
+    val isError = !error?.asString().isNullOrEmpty()
 
     OutlinedTextField(
         value = name,
@@ -122,7 +124,8 @@ private fun MakeFieldName(onAction: (ScreenActions) -> Unit, uiState: UIState) {
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         onValueChange = { onAction(ScreenActions.OnTextChanged(FieldsTexts.Name(it))) },
         placeholder = { Text(stringResource(R.string.cocoa_powder)) },
-        label = { Text(stringResource(R.string.name)) },
+        label = { Text(error?.asString() ?: stringResource(R.string.name)) },
+        isError = isError,
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
 }
@@ -130,6 +133,8 @@ private fun MakeFieldName(onAction: (ScreenActions) -> Unit, uiState: UIState) {
 @Composable
 private fun MakeFieldQuantity(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val quantity by uiState.quantity.collectAsState()
+    val error by uiState.qntError.collectAsState()
+    val isError = !error?.asString().isNullOrEmpty()
 
     OutlinedTextField(
         value = quantity,
@@ -137,7 +142,8 @@ private fun MakeFieldQuantity(onAction: (ScreenActions) -> Unit, uiState: UIStat
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
         onValueChange = { onAction(ScreenActions.OnTextChanged(FieldsTexts.Quantity(it))) },
         placeholder = { Text(stringResource(R.string.five_hundred)) },
-        label = { Text(stringResource(R.string.quantity)) },
+        label = { Text(error?.asString() ?: stringResource(R.string.quantity)) },
+        isError = isError,
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
     )
 }
@@ -147,13 +153,14 @@ private fun MakeFieldUnit(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val unities by uiState.unities.collectAsState()
     val isExpanded by uiState.isExpanded.collectAsState()
     val selectedUnit by uiState.selectedUnit.collectAsState()
+    val error by uiState.unitError.collectAsState()
 
     DropdownMenuOutlined(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
         expanded = isExpanded,
         items = unities.map { it.name },
         selectedItem = selectedUnit?.name.orEmpty(),
-        label = stringResource(R.string.select_a_unit),
+        label =  error?.asString() ?: stringResource(R.string.select_a_unit),
         onClick = { onAction(ScreenActions.OnChangeExpanded) },
         onItemSelected = { index -> onAction(ScreenActions.OnItemSelected(index)) }
     )
@@ -162,6 +169,8 @@ private fun MakeFieldUnit(onAction: (ScreenActions) -> Unit, uiState: UIState) {
 @Composable
 private fun MakeFieldPrice(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val price by uiState.price.collectAsState()
+    val error by uiState.priceError.collectAsState()
+    val isError = !error?.asString().isNullOrEmpty()
 
     OutlinedTextField(
         value = price,
@@ -170,7 +179,8 @@ private fun MakeFieldPrice(onAction: (ScreenActions) -> Unit, uiState: UIState) 
         keyboardActions = KeyboardActions { onAction(ScreenActions.OnClickConfirm) },
         onValueChange = { onAction(ScreenActions.OnTextChanged(FieldsTexts.Price(it))) },
         placeholder = { Text(stringResource(R.string.thirty_reals)) },
-        label = { Text(stringResource(R.string.price)) },
+        label = { Text(error?.asString() ?: stringResource(R.string.price)) },
+        isError = isError,
         modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
     )
 }

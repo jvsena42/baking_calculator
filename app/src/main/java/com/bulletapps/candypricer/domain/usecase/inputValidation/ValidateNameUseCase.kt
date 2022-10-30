@@ -5,14 +5,14 @@ import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import javax.inject.Inject
 
-class ValidateEmptyListUseCase @Inject constructor() {
-    suspend operator fun invoke(list: List<Any>): Resource<Unit> {
-        return if (list.isNotEmpty()) {
+class ValidateNameUseCase @Inject constructor() : ValidateEmptyTextUseCase {
+    override suspend fun invoke(text: String): Resource<Unit> {
+        return if (text.isNotEmpty()) {
             Resource.Success(Unit)
         } else {
             Resource.Error(
                 UiText.StringResource(
-                    R.string.mandatory_field
+                    R.string.error_name
                 )
             )
         }

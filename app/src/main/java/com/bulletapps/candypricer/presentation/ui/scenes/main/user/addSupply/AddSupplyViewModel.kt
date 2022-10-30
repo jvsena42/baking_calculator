@@ -11,6 +11,8 @@ import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
+import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.domain.usecase.inputValidation.*
 import com.bulletapps.candypricer.domain.usecase.supply.CreateSupplyUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.UpdateSupplyUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
@@ -26,6 +28,10 @@ class AddSupplyViewModel @Inject constructor(
     private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
     private val createSupplyUseCase: CreateSupplyUseCase,
     private val updateSupplyUseCase: UpdateSupplyUseCase,
+    private val validateNameUseCase: ValidateNameUseCase,
+    private val validateQuantityUseCase: ValidateQuantityUseCase,
+    private val validateUnitUseCase: ValidateUnitUseCase,
+    private val validatePriceUseCase: ValidatePriceUseCase
     ) : ViewModel(), EventFlow<AddSupplyViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
@@ -65,10 +71,10 @@ class AddSupplyViewModel @Inject constructor(
         viewModelScope.launch {
             uiState.isLoading.value = true
 
-            val nameResult = validateEmptyTextUseCase(text = uiState.name.value)
-            val unitResult = validateEmptyTextUseCase(text = uiState.selectedUnit.value?.name.orEmpty())
-            val qntResult = validateEmptyTextUseCase(text = uiState.quantity.value)
-            val priceResult = validateEmptyTextUseCase(text = uiState.price.value)
+            val nameResult = validateNameUseCase(text = uiState.name.value)
+            val unitResult = validateUnitUseCase(text = uiState.selectedUnit.value?.name.orEmpty())
+            val qntResult = validateQuantityUseCase(text = uiState.quantity.value)
+            val priceResult = validatePriceUseCase(text = uiState.price.value)
 
             when(nameResult) {
                 is Resource.Error -> uiState.nameError.value = nameResult.message

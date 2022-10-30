@@ -28,11 +28,10 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.productDetail
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.productDetail.ProductDetailViewModel.ScreenEvent.GoBack
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.productDetail.ProductDetailViewModel.UIState
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
-import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsHorizontal
+import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsWithDetailHorizontal
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
-import com.bulletapps.candypricer.presentation.util.round
 import com.bulletapps.candypricer.presentation.util.toCurrency
 import com.bulletapps.candypricer.presentation.util.toPercentString
 
@@ -57,7 +56,9 @@ private fun EventConsumer(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is GoBack -> activity.onBackPressed()
-                is ProductDetailViewModel.ScreenEvent.NavigateToAddProduct -> sharedViewModel.navigate(MainViewModel.Navigation.AddProduct)
+                is ProductDetailViewModel.ScreenEvent.NavigateToAddProduct -> sharedViewModel.navigate(
+                    MainViewModel.Navigation.AddProduct
+                )
             }
         }
     }
@@ -98,39 +99,87 @@ private fun Screen(
                 item {
                     Spacer(Modifier.height(16.dp))
 
-                    TextWithLabel(stringResource(R.string.quantity_label), product.quantity.toString(), modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), arrangement = Arrangement.SpaceBetween)
-                    TextWithLabel(stringResource(R.string.labor_price), product.laborValue.toPercentString(), modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), arrangement = Arrangement.SpaceBetween)
-                    TextWithLabel(stringResource(R.string.variable_expenses), product.variableExpenses.toPercentString(), modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), arrangement = Arrangement.SpaceBetween)
-                    TextWithLabel(stringResource(R.string.profit_margin), product.profitMargin.toPercentString(), modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), arrangement = Arrangement.SpaceBetween)
+                    TextWithLabel(
+                        stringResource(R.string.quantity_label),
+                        product.quantity.toString(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        arrangement = Arrangement.SpaceBetween
+                    )
+                    TextWithLabel(
+                        stringResource(R.string.labor_price),
+                        product.laborValue.toPercentString(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        arrangement = Arrangement.SpaceBetween
+                    )
+                    TextWithLabel(
+                        stringResource(R.string.variable_expenses),
+                        product.variableExpenses.toPercentString(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        arrangement = Arrangement.SpaceBetween
+                    )
+                    TextWithLabel(
+                        stringResource(R.string.profit_margin),
+                        product.profitMargin.toPercentString(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        arrangement = Arrangement.SpaceBetween
+                    )
 
                     Spacer(Modifier.height(32.dp))
 
                     Card(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
                     ) {
                         Column(
-                            modifier = Modifier.fillMaxWidth().padding(16.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            TextWithLabel(stringResource(R.string.total_cost), product.totalSpendsValue.toCurrency(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+                            TextWithLabel(
+                                stringResource(R.string.total_cost),
+                                product.totalSpendsValue.toCurrency(),
+                                modifier = Modifier.fillMaxWidth(),
+                                arrangement = Arrangement.SpaceBetween
+                            )
                             Spacer(Modifier.height(8.dp))
-                            TextWithLabel(stringResource(R.string.unit_sell_value), product.unitSaleValue.toCurrency(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+                            TextWithLabel(
+                                stringResource(R.string.unit_sell_value),
+                                product.unitSaleValue.toCurrency(),
+                                modifier = Modifier.fillMaxWidth(),
+                                arrangement = Arrangement.SpaceBetween
+                            )
                         }
                     }
 
                     Spacer(Modifier.height(24.dp))
 
-                    Text(stringResource(R.string.supplies), fontWeight = FontWeight.Bold, textAlign = TextAlign.Center , modifier = Modifier.fillMaxWidth())
+                    Text(
+                        stringResource(R.string.supplies),
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
                     Spacer(Modifier.height(8.dp))
                 }
 
                 items(supplyList) { itemSupply ->
-                    CardTwoItemsHorizontal(
+                    CardTwoItemsWithDetailHorizontal(
                         firstLabel = R.string.name_label,
                         secondLabel = R.string.quantity_short_label,
                         firsName = itemSupply.name,
-                        secondName = itemSupply.qut,
+                        secondName = itemSupply.quantity,
+                        thirdName = itemSupply.unit,
                         onClick = {}
                     )
                 }

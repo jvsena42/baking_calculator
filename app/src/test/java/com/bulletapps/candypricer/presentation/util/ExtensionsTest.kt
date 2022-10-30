@@ -26,7 +26,7 @@ class ExtensionsTest {
     @Test
     fun `given input filterNumbers() should display correct result`() {
         val input = "+55 (86) 9 9800-6407"
-        val converted = input.filterNumbers()
+        val converted = input.removeNumbers()
         val expectedResult = "5586998006407"
 
         assertEquals(expectedResult, converted)
@@ -34,7 +34,7 @@ class ExtensionsTest {
     @Test
     fun `given null input filterNumbers() should display correct result`() {
         val input: String? = null
-        val converted = input.filterNumbers()
+        val converted = input.removeNumbers()
         val expectedResult = ""
 
         assertEquals(expectedResult, converted)
