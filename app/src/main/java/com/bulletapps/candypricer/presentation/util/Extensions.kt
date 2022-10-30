@@ -37,7 +37,10 @@ fun Int.isNegative() = this < 0
 fun Boolean?.orFalse() = this ?: false
 
 fun Context.openWhatsapp(phone: String = WHATSAPP_NUMBER, message: String = "Oi!") {
-    val url = "https://api.whatsapp.com/send?phone=$BR_CODE$phone"+"&text=" + URLEncoder.encode(message, "UTF-8")
+    val url = "https://api.whatsapp.com/send?phone=$BR_CODE$phone" + "&text=" + URLEncoder.encode(
+        message,
+        "UTF-8"
+    )
     Intent(Intent.ACTION_VIEW).apply {
         data = Uri.parse(url)
         startActivity(this)
@@ -48,11 +51,11 @@ fun Double?.toCurrency(): String {
     return NumberFormat.getCurrencyInstance(LOCALE_BR).format(this ?: ZERO_DOUBLE)
 }
 
-fun Double?.toPercent() = this.orZero()/ONE_HUNDRED
+fun Double?.toPercent() = this.orZero() / ONE_HUNDRED
 
-fun Double?.fromPercent() = this.orZero()*ONE_HUNDRED
+fun Double?.fromPercent() = this.orZero() * ONE_HUNDRED
 
-fun Double?.toPercentString() = "${(this.orZero()*ONE_HUNDRED).round()}%"
+fun Double?.toPercentString() = "${(this.orZero() * ONE_HUNDRED).round()}%"
 
 fun Double.round(): String {
     val df = DecimalFormat("#.##")
@@ -100,12 +103,19 @@ fun List<UnitResponse>.format(): List<UnitResponse> {
 
 fun UnitResponse?.format() = UnitResponse(this?.id ?: -1, this?.name.formatUnit())
 
-fun List<SupplyResponse>.toItemMenuList(amountQuantitySupply: List<Double>) : List<MenuItemModel> {
+fun List<SupplyResponse>.toItemMenuList(amountQuantitySupply: List<Double>): List<MenuItemModel> {
     if (this.isEmpty()) return emptyList()
     if (this.size != amountQuantitySupply.size) return emptyList()
     val menuList = mutableListOf<MenuItemModel>()
     this.forEachIndexed { index, item ->
-        menuList.add(MenuItemModel(item.id, item.name, amountQuantitySupply[index].round()))
+        menuList.add(
+            MenuItemModel(
+                id = item.id,
+                name = item.name,
+                quantity = amountQuantitySupply[index].round(),
+                unit = item.unit?.name.formatUnit()
+            )
+        )
     }
     return menuList.toList()
 }
