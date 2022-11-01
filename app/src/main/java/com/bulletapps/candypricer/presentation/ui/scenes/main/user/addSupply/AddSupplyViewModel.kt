@@ -25,7 +25,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AddSupplyViewModel @Inject constructor(
     private val getUnitsUseCase: GetUnitsUseCase,
-    private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
     private val createSupplyUseCase: CreateSupplyUseCase,
     private val updateSupplyUseCase: UpdateSupplyUseCase,
     private val validateNameUseCase: ValidateNameUseCase,
@@ -72,7 +71,7 @@ class AddSupplyViewModel @Inject constructor(
             uiState.isLoading.value = true
 
             val nameResult = validateNameUseCase(text = uiState.name.value)
-            val unitResult = validateUnitUseCase(text = uiState.selectedUnit.value?.name.orEmpty())
+            val unitResult = validateUnitUseCase(text = uiState.selectedUnit.value?.label.formatUnit())
             val qntResult = validateQuantityUseCase(text = uiState.quantity.value)
             val priceResult = validatePriceUseCase(text = uiState.price.value)
 
