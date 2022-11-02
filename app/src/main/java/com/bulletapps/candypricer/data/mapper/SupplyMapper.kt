@@ -12,7 +12,7 @@ object SupplyMapper {
         id = this.id.orNegative(),
         name = this.name.orEmpty(),
         quantity = this.quantity.orZero(),
-        value = this.value.orZero(),
+        price = this.value.orZero(),
         unit = this.unit.toUnitModel()
     )
 

@@ -152,14 +152,14 @@ private fun MakeFieldQuantity(onAction: (ScreenActions) -> Unit, uiState: UIStat
 private fun MakeFieldUnit(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val unities by uiState.unities.collectAsState()
     val isExpanded by uiState.isExpanded.collectAsState()
-    val selectedUnit by uiState.selectedUnit.collectAsState()
+    val selectedUnit by uiState.selectedUnitLabel.collectAsState()
     val error by uiState.unitError.collectAsState()
 
     DropdownMenuOutlined(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
         expanded = isExpanded,
-        items = unities.map { it.name },
-        selectedItem = selectedUnit?.name.orEmpty(),
+        items = unities.map { it.label },
+        selectedItem = selectedUnit,
         label =  error?.asString() ?: stringResource(R.string.select_a_unit),
         onClick = { onAction(ScreenActions.OnChangeExpanded) },
         onItemSelected = { index -> onAction(ScreenActions.OnItemSelected(index)) }

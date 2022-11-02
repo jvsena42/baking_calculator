@@ -4,6 +4,6 @@ data class SupplyModel(
     val id: Int,
     val name: String,
     val quantity: Double,
-    val value: Double,
+    val price: Double,
     val unit: UnitModel
 )

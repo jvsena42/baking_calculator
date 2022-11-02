@@ -6,12 +6,8 @@ import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
-import com.bulletapps.candypricer.data.parameters.UpdateSupplyParameters
-import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.domain.model.UnitModel
-import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
-import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.*
 import com.bulletapps.candypricer.domain.usecase.supply.CreateSupplyUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.UpdateSupplyUseCase
@@ -34,6 +30,11 @@ class AddSupplyViewModel @Inject constructor(
     ) : ViewModel(), EventFlow<AddSupplyViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
+    private var selectedUnit = UnitModel(id = NEGATIVE, label = EMPTY_STRING)
+        set(value) {
+            uiState.selectedUnitLabel.value = selectedUnit.label.formatUnit()
+            field = value
+        }
 
     fun setup(supply: SupplyModel?) = viewModelScope.launch {
 
@@ -47,9 +48,9 @@ class AddSupplyViewModel @Inject constructor(
                 toolbarTitle.value = R.string.edit_supply
                 id.value = supply.id
                 name.value = supply.name
-                selectedUnit.value = supply.unit
-                quantity.value = supply.quantity
-                price.value = supply.value
+                selectedUnit = supply.unit
+                quantity.value = supply.quantity.round()
+                price.value = supply.price.round()
             }
         }
     }
@@ -71,7 +72,7 @@ class AddSupplyViewModel @Inject constructor(
             uiState.isLoading.value = true
 
             val nameResult = validateNameUseCase(text = uiState.name.value)
-            val unitResult = validateUnitUseCase(text = uiState.selectedUnit.value?.label.formatUnit())
+            val unitResult = validateUnitUseCase(text = uiState.selectedUnitLabel.value)
             val qntResult = validateQuantityUseCase(text = uiState.quantity.value)
             val priceResult = validatePriceUseCase(text = uiState.price.value)
 
@@ -106,25 +107,24 @@ class AddSupplyViewModel @Inject constructor(
     }
 
     private suspend fun handleEditSupply() {
-        val parameters = UpdateSupplyParameters(
+
+        updateSupplyUseCase(
             id = uiState.id.value.orNegative(),
             name = uiState.name.value,
             quantity = uiState.quantity.value.formatDouble(),
             price = uiState.price.value.formatDouble(),
-            unitId = uiState.selectedUnit.value?.id.orNegative(),
-        )
-        updateSupplyUseCase(
-            parameters
+            unitId = selectedUnit.id,
         ).also { result ->
-            val updatedSupply = SupplyResponse(
-                parameters.id,
-                parameters.name,
-                parameters.quantity,
-                parameters.price,
-                uiState.selectedUnit.value,
-            )
             when (result) {
-                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.UpdateSupply(updatedSupply))
+                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.UpdateSupply(
+                    SupplyModel(
+                        id = uiState.id.value.orNegative(),
+                        name = uiState.name.value,
+                        quantity = uiState.quantity.value.formatDouble(),
+                        price = uiState.price.value.formatDouble(),
+                        unit = selectedUnit,
+                    )
+                ))
                 is Resource.Error -> showToast(result.message)
             }
         }
@@ -136,7 +136,7 @@ class AddSupplyViewModel @Inject constructor(
                 name = uiState.name.value,
                 quantity = uiState.quantity.value.formatDouble(),
                 price = uiState.price.value.formatDouble(),
-                unitId = uiState.selectedUnit.value?.id.orZero(),
+                unitId = selectedUnit.id,
             )
         ).also { result ->
             when (result) {
@@ -148,8 +148,9 @@ class AddSupplyViewModel @Inject constructor(
 
     private fun onItemSelected(index: Int) {
         uiState.isExpanded.value = false
-        uiState.selectedUnit.value = uiState.unities.value[index]
+        selectedUnit = uiState.unities.value[index]
     }
+
 
     private fun onChangeExpanded() {
         uiState.isExpanded.value = !uiState.isExpanded.value
@@ -176,7 +177,7 @@ class AddSupplyViewModel @Inject constructor(
         val isExpanded = MutableStateFlow(false)
         val toolbarTitle = MutableStateFlow(R.string.add_supply)
         val isLoading = MutableStateFlow(false)
-        val selectedUnit = MutableStateFlow<UnitModel?>(null)
+        val selectedUnitLabel = MutableStateFlow("")
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
         val nameError = MutableStateFlow<UiText?>(null)
         val unitError = MutableStateFlow<UiText?>(null)
@@ -193,7 +194,7 @@ class AddSupplyViewModel @Inject constructor(
 
     sealed class ScreenEvent {
         object GoBack : ScreenEvent()
-        data class UpdateSupply(val supply: SupplyResponse) : ScreenEvent()
+        data class UpdateSupply(val supply: SupplyModel) : ScreenEvent()
     }
 }
 
