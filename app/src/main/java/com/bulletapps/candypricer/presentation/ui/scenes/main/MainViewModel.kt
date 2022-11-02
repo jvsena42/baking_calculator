@@ -20,7 +20,6 @@ class MainViewModel @Inject constructor(): ViewModel(), EventFlow<MainViewModel.
     val selectedSupply = MutableStateFlow<SupplyModel?>(null)
     val selectedProduct = MutableStateFlow<ProductResponse?>(null)
 
-
     val menuItems: MutableStateFlow<List<MenuModel>> = MutableStateFlow(emptyList())
 
     init {

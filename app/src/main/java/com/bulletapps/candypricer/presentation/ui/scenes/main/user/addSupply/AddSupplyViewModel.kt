@@ -32,7 +32,7 @@ class AddSupplyViewModel @Inject constructor(
     val uiState = UIState()
     private var selectedUnit = UnitModel(id = NEGATIVE, label = EMPTY_STRING)
         set(value) {
-            uiState.selectedUnitLabel.value = selectedUnit.label.formatUnit()
+            uiState.selectedUnitLabel.value = value.label.formatUnit()
             field = value
         }
 

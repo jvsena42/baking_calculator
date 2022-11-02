@@ -64,7 +64,7 @@ private fun EventConsumer(
 fun Screen(
     uiState: UIState,
     onAction: (ScreenActions) -> Unit,
-    ) {
+) {
 
     CandyPricerTheme {
 
@@ -90,8 +90,14 @@ fun Screen(
 
             Spacer(Modifier.weight(1f))
 
-            OutlinedButtonCustom(text = stringResource(R.string.delete), onClick = { onAction(ScreenActions.OnCLickDelete) })
-            NormalButton(text = stringResource(R.string.edit), onClick = { onAction(ScreenActions.OnCLickEdit) })
+            OutlinedButtonCustom(
+                text = stringResource(R.string.delete),
+                onClick = { onAction(ScreenActions.OnCLickDelete) })
+
+            NormalButton(
+                text = stringResource(R.string.edit),
+                onClick = { onAction(ScreenActions.OnCLickEdit) })
+
             Spacer(Modifier.height(32.dp))
 
             val toastMessage by uiState.textToast.collectAsState()
@@ -102,22 +108,55 @@ fun Screen(
 
 @Composable
 private fun MakeCard(uiState: UIState) {
-    val supply by uiState.supply.collectAsState()
+    val name by uiState.supplyName.collectAsState()
+    val quantity by uiState.supplyQuantity.collectAsState()
+    val unit by uiState.supplyUnitName.collectAsState()
+    val price by uiState.supplyPrice.collectAsState()
 
     Card(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TextWithLabel(stringResource(R.string.name_label), supply.name, modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+            TextWithLabel(
+                stringResource(R.string.name_label),
+                name,
+                modifier = Modifier.fillMaxWidth(),
+                arrangement = Arrangement.SpaceBetween
+            )
+
             Spacer(Modifier.height(8.dp))
-            TextWithLabel(stringResource(R.string.quantity_label), supply.quantity.toString(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+
+            TextWithLabel(
+                stringResource(R.string.quantity_label),
+                quantity,
+                modifier = Modifier.fillMaxWidth(),
+                arrangement = Arrangement.SpaceBetween
+            )
+
             Spacer(Modifier.height(8.dp))
-            TextWithLabel(stringResource(R.string.measure_type_label), supply.unit?.name.formatUnit(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+
+            TextWithLabel(
+                stringResource(R.string.measure_type_label),
+                unit,
+                modifier = Modifier.fillMaxWidth(),
+                arrangement = Arrangement.SpaceBetween
+            )
+
             Spacer(Modifier.height(8.dp))
-            TextWithLabel(stringResource(R.string.cost_label), supply.value.toCurrency(), modifier = Modifier.fillMaxWidth(), arrangement = Arrangement.SpaceBetween)
+
+            TextWithLabel(
+                stringResource(R.string.cost_label),
+                price,
+                modifier = Modifier.fillMaxWidth(),
+                arrangement = Arrangement.SpaceBetween
+            )
         }
     }
 }
