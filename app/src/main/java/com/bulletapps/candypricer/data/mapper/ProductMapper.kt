@@ -23,6 +23,10 @@ fun ProductResponse.toProductModel() = ProductModel(
     totalSaleValue = totalSaleValue.orZero()
 )
 
+fun List<ProductResponse>?.toProductModelList(): List<ProductModel> {
+    return this?.map { it.toProductModel() }.orEmpty()
+}
+
 fun List<SupplyResponse>.toProductSupplyModel(amountQuantitySupply: List<Double>): List<ProductSupplyModel> {
     return this.zip(amountQuantitySupply) { supply, quantity ->
         ProductSupplyModel(

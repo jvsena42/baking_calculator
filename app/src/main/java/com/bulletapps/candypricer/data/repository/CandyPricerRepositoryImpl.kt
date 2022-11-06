@@ -1,11 +1,10 @@
 package com.bulletapps.candypricer.data.repository
 
-import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.datasource.CandyPricerDataSource
+import com.bulletapps.candypricer.data.mapper.SupplyMapper.toSupplyModelList
 import com.bulletapps.candypricer.data.mapper.UnitMapper.toUnitModelList
+import com.bulletapps.candypricer.data.mapper.toProductModelList
 import com.bulletapps.candypricer.data.parameters.*
-import com.bulletapps.candypricer.data.response.ProductResponse
-import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.presentation.util.safeRequest
 import com.bulletapps.candypricer.presentation.util.safeRequest2
 import kotlinx.coroutines.CoroutineDispatcher
@@ -48,8 +47,8 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.createProduct(parameters)
     }
 
-    override suspend fun getProducts(): Resource<List<ProductResponse>> = safeRequest(dispatcher) {
-        dataSource.getProducts()
+    override suspend fun getProducts() = safeRequest2(dispatcher) {
+        dataSource.getProducts().toProductModelList()
     }
 
     override suspend fun updateProduct(parameters: UpdateProductParameters) = safeRequest(dispatcher) {
@@ -65,7 +64,7 @@ class CandyPricerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getSupplies() = safeRequest2(dispatcher) {
-        dataSource.getSupplies()
+        dataSource.getSupplies().toSupplyModelList()
     }
 
     override suspend fun deleteSupply(id: Int) = safeRequest(dispatcher) {

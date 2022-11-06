@@ -3,9 +3,8 @@ package com.bulletapps.candypricer.data.repository
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.parameters.*
 import com.bulletapps.candypricer.data.response.LoginResponse
-import com.bulletapps.candypricer.data.response.ProductResponse
-import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UserResponse
+import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.domain.model.UnitModel
 
@@ -27,7 +26,7 @@ interface CandyPricerRepository {
 
     suspend fun createProduct(parameters: CreateProductParameters): Resource<Unit>
 
-    suspend fun getProducts(): Resource<List<ProductResponse>>
+    suspend fun getProducts(): Result<List<ProductModel>>
 
     suspend fun updateProduct(parameters: UpdateProductParameters): Resource<Unit>
 
