@@ -3,10 +3,7 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.R
-import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
-import com.bulletapps.candypricer.data.parameters.CreateProductParameters
-import com.bulletapps.candypricer.data.parameters.UpdateProductParameters
 import com.bulletapps.candypricer.domain.model.MenuItemModel
 import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.domain.model.SupplyModel
@@ -56,7 +53,7 @@ class AddProductViewModel @Inject constructor(
             uiState.profitMargin.value = it.profitMargin.fromPercent().toString()
             uiState.laborPrice.value = it.laborValue.fromPercent().toString()
             uiState.variableExpenses.value = it.variableExpenses.fromPercent().toString()
-            selectedSuppliesList.addAll(it.supplies.toItemMenuList()
+            selectedSuppliesList.addAll(it.supplies.toItemMenuList())
             uiState.selectedSupplies.value = selectedSuppliesList.toList()
         }
     }
@@ -75,7 +72,7 @@ class AddProductViewModel @Inject constructor(
             onFailure = { showToast(it.message) }
         )
     }
-}
+
 
     private suspend fun getSupplies() {
         getAllSuppliesUseCase().fold(
@@ -312,8 +309,8 @@ class AddProductViewModel @Inject constructor(
                 id = -1,
                 name = "",
                 quantity = ZERO_DOUBLE,
-                value = ZERO_DOUBLE,
-                null
+                price = ZERO_DOUBLE,
+                UnitModel(NEGATIVE, EMPTY_STRING)
             )
         )
         val selectedSupplyUnit = MutableStateFlow(EMPTY_STRING)
