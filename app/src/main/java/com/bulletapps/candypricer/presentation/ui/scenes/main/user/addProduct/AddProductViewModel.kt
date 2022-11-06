@@ -3,6 +3,7 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.domain.model.MenuItemModel
 import com.bulletapps.candypricer.domain.model.ProductModel
@@ -32,11 +33,11 @@ class AddProductViewModel @Inject constructor(
     private val validateLaborUseCase: ValidateLaborUseCase,
     private val validateVariableExpenses: ValidateVariableExpensesUseCase,
     private val validateProfitMarginUseCase: ValidateProfitMarginUseCase
-) : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
+) : ViewModel(), EventFlow<AddProductViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
-//    private val emptySupply =
-//        SupplyModel(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE)
+    private val emptySupply =
+        SupplyModel(id = -1, name = "", quantity = ZERO_DOUBLE, price = ZERO_DOUBLE, UnitModel(NEGATIVE, EMPTY_STRING))
     private val selectedSuppliesList = mutableListOf<MenuItemModel>()
 
     suspend fun setup(product: ProductModel?) {
@@ -76,15 +77,9 @@ class AddProductViewModel @Inject constructor(
 
     private suspend fun getSupplies() {
         getAllSuppliesUseCase().fold(
-
+            onSuccess = { uiState.suppliesMenuList.value = it },
+            onFailure = { showToast(it.message) }
         )
-//        getAllSuppliesUseCase().also {
-//            when (it) {
-//                is Resource.Error -> showToast(it.message)
-//                is Resource.Success -> uiState.suppliesMenuList.value =
-//                    it.data.orEmpty().toMutableList()
-//            }
-//        }
     }
 
     private fun onClickConfirm() {
@@ -93,7 +88,7 @@ class AddProductViewModel @Inject constructor(
 
             val nameResult = validateNameUseCase(text = uiState.name.value)
             val qntResult = validateQuantityUseCase(text = uiState.quantity.value)
-            val unitResult = validateUnitUseCase(text = uiState.selectedUnit.value.name)
+            val unitResult = validateUnitUseCase(text = uiState.selectedUnit.value.label)
             val laborPriceResult = validateLaborUseCase(text = uiState.laborPrice.value)
             val variableExpensesResult =
                 validateVariableExpenses(text = uiState.variableExpenses.value)
@@ -205,7 +200,7 @@ class AddProductViewModel @Inject constructor(
             id = uiState.selectedSupplyItem.value.id,
             name = uiState.selectedSupplyItem.value.name,
             quantity = uiState.supplyQnt.value,
-            unit = uiState.selectedSupplyItem.value.unit.format().name
+            unit = uiState.selectedSupplyItem.value.unit.label
         )
         selectedSuppliesList.add(newItem) // TODO MERGE ITEMS
         uiState.selectedSupplies.value = selectedSuppliesList.toList()
@@ -221,9 +216,8 @@ class AddProductViewModel @Inject constructor(
     private fun onItemMenuSelected(index: Int) {
         uiState.isMenuSuppliesExpanded.value = false
         uiState.selectedSupplyItem.value = uiState.suppliesMenuList.value[index]
-        uiState.selectedSupplyUnit.value = uiState.selectedSupplyItem.value.unit.format().name
+        uiState.selectedSupplyUnit.value = uiState.selectedSupplyItem.value.unit.label
     }
-
     private fun onChangeExpanded() {
         uiState.isExpanded.value = !uiState.isExpanded.value
     }
