@@ -31,7 +31,7 @@ fun ScreenSupplies(
     viewModel: SuppliesViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    sharedViewModel.selectedSupply = null
+    sharedViewModel.resetSupply()
     viewModel.setup()
 
     Screen(
@@ -51,7 +51,7 @@ private fun EventConsumer(
             when (event) {
                 is ScreenEvent.NavigateToAddSupply -> sharedViewModel.navigate(MainViewModel.Navigation.AddSupply)
                 is ScreenEvent.NavigateSupplyDetail -> {
-                    sharedViewModel.selectedSupply = event.supply
+                    sharedViewModel.saveSupply(event.supply)
                     sharedViewModel.navigate(MainViewModel.Navigation.SupplyDetail)
                 }
                 is ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)

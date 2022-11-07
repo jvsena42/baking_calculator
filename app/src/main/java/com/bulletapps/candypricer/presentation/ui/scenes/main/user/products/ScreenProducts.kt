@@ -33,10 +33,8 @@ fun ScreenProducs(
     viewModel: ProductsViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    LaunchedEffect(key1 = Unit) {
-        sharedViewModel.selectedProduct.value = null
-        viewModel.setup()
-    }
+    sharedViewModel.resetProduct()
+    viewModel.setup()
     Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(viewModel, sharedViewModel)
 }
@@ -51,7 +49,7 @@ private fun EventConsumer(
             when (event) {
                 is ScreenEvent.NavigateToAddProduct -> sharedViewModel.navigate(MainViewModel.Navigation.AddProduct)
                 is ScreenEvent.NavigateToProductDetail -> {
-                    sharedViewModel.selectedProduct.value = event.product
+                    sharedViewModel.saveProduct(event.product)
                     sharedViewModel.navigate(MainViewModel.Navigation.ProductDetail)
                 }
                 is ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
