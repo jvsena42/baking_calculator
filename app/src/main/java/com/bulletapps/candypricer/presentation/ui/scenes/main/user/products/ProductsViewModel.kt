@@ -2,9 +2,9 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.products
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
 import com.bulletapps.candypricer.domain.model.ProductModel
+import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.domain.usecase.product.GetAllProductsUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.presentation.util.EventFlow
@@ -18,39 +18,41 @@ class ProductsViewModel @Inject constructor(
     private val getAllProductsUseCase: GetAllProductsUseCase,
     private val getAllSuppliesUseCase: GetAllSuppliesUseCase,
     private val preferencesDataSource: PreferencesDataSource,
-    ) : ViewModel(), EventFlow<ProductsViewModel.ScreenEvent> by EventFlowImpl() {
+) : ViewModel(), EventFlow<ProductsViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = ProductsUIState()
 
     fun setup() = viewModelScope.launch {
+        getAllSuppliesUseCase().fold(
+            onSuccess = { handleSuccess(it) },
+            onFailure = { uiState.onFailure(ScreenActions.OnRetry, ScreenActions.OnLogout) }
+        )
+    }
 
-        val supplyResult = getAllSuppliesUseCase()
-        when(supplyResult) {
-            is Resource.Error -> uiState.onFailure(ScreenActions.OnRetry, ScreenActions.OnLogout)
-            is Resource.Success -> {
-                if (supplyResult.data.isNullOrEmpty()) {
-                    sendEvent(ScreenEvent.NavigateToSupplies)
-                } else {
-                    getProducts()
-                }
-            }
+    private suspend fun handleSuccess(suppliesList: List<SupplyModel>) {
+        if (suppliesList.isEmpty()) {
+            viewModelScope.sendEvent(ScreenEvent.NavigateToSupplies)
+        } else {
+            getProducts()
         }
-
     }
 
     private suspend fun getProducts() {
-        val productsResult = getAllProductsUseCase()
-        when (productsResult) {
-            is Resource.Error -> uiState.onFailure(ScreenActions.OnRetry, ScreenActions.OnLogout)
-            is Resource.Success -> uiState.onSuccess(productsResult.data.orEmpty())
-        }
+        getAllProductsUseCase().fold(
+            onSuccess = { uiState.onSuccess(it) },
+            onFailure = { uiState.onFailure(ScreenActions.OnRetry, ScreenActions.OnLogout) }
+        )
     }
 
-    fun onAction(action: ScreenActions) = when(action) {
+    fun onAction(action: ScreenActions) = when (action) {
         is ScreenActions.OnClickAdd -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddProduct)
-        is ScreenActions.OnClickProduct -> viewModelScope.sendEvent(ScreenEvent.NavigateToProductDetail(action.product))
+        is ScreenActions.OnClickProduct -> viewModelScope.sendEvent(
+            ScreenEvent.NavigateToProductDetail(
+                action.product
+            )
+        )
         is ScreenActions.OnLogout -> onClickLogout()
-        is ScreenActions.OnRetry -> viewModelScope.launch { setup() }
+        is ScreenActions.OnRetry -> setup()
     }
 
     private fun onClickLogout() = viewModelScope.launch {
