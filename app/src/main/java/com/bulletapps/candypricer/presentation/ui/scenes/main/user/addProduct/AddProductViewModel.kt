@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
+import com.bulletapps.candypricer.data.parameters.CreateProductParameters
 import com.bulletapps.candypricer.domain.model.MenuItemModel
 import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.domain.model.SupplyModel
@@ -37,7 +38,13 @@ class AddProductViewModel @Inject constructor(
 
     val uiState = UIState()
     private val emptySupply =
-        SupplyModel(id = -1, name = "", quantity = ZERO_DOUBLE, price = ZERO_DOUBLE, UnitModel(NEGATIVE, EMPTY_STRING))
+        SupplyModel(
+            id = -1,
+            name = "",
+            quantity = ZERO_DOUBLE,
+            price = ZERO_DOUBLE,
+            UnitModel(NEGATIVE, EMPTY_STRING)
+        )
     private val selectedSuppliesList = mutableListOf<MenuItemModel>()
 
     suspend fun setup(product: ProductModel?) {
@@ -140,7 +147,7 @@ class AddProductViewModel @Inject constructor(
     }
 
     private suspend fun handleEditProduct() {
-        val parameters = UpdateProductParameters(
+        updateProductUseCase(
             id = uiState.id.value,
             name = uiState.name.value,
             unitId = uiState.selectedUnit.value.id.orZero(),
@@ -150,9 +157,7 @@ class AddProductViewModel @Inject constructor(
             laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
             variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
             amountQuantitySupply = uiState.selectedSupplies.value.map { it.quantity.formatDouble() }
-        )
-
-        updateProductUseCase(parameters).also { result ->
+        ).also { result ->
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoHome)
                 is Resource.Error -> showToast(result.message)
@@ -161,18 +166,18 @@ class AddProductViewModel @Inject constructor(
     }
 
     private suspend fun handleCreateProduct() {
-        val createProductParameters = CreateProductParameters(
-            name = uiState.name.value,
-            quantity = uiState.quantity.value.formatDouble(),
-            unitId = uiState.selectedUnit.value.id.orZero(),
-            suppliesId = uiState.selectedSupplies.value.map { it.id },
-            profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
-            laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
-            variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
-            amountQuantitySupply = uiState.selectedSupplies.value.map { it.quantity.formatDouble() }
-        )
+
         createProductUseCase(
-            createProductParameters
+            CreateProductParameters(
+                name = uiState.name.value,
+                quantity = uiState.quantity.value.formatDouble(),
+                unitId = uiState.selectedUnit.value.id.orZero(),
+                suppliesId = uiState.selectedSupplies.value.map { it.id },
+                profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
+                laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
+                variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
+                amountQuantitySupply = uiState.selectedSupplies.value.map { it.quantity.formatDouble() }
+            )
         ).also { result ->
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
@@ -218,6 +223,7 @@ class AddProductViewModel @Inject constructor(
         uiState.selectedSupplyItem.value = uiState.suppliesMenuList.value[index]
         uiState.selectedSupplyUnit.value = uiState.selectedSupplyItem.value.unit.label
     }
+
     private fun onChangeExpanded() {
         uiState.isExpanded.value = !uiState.isExpanded.value
     }
