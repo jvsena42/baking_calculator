@@ -27,8 +27,6 @@ import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
 import com.bulletapps.candypricer.presentation.ui.widgets.Toast
-import com.bulletapps.candypricer.presentation.util.formatUnit
-import com.bulletapps.candypricer.presentation.util.toCurrency
 
 @Composable
 fun ScreenSupplyDetail(
@@ -36,7 +34,7 @@ fun ScreenSupplyDetail(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.selectedSupply.value) }
+    viewModel.setup(sharedViewModel.selectedSupply)
     Screen(
         viewModel.uiState,
         viewModel::onAction

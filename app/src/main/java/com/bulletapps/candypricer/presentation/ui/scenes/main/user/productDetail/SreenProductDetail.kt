@@ -40,7 +40,7 @@ fun ScreenProductDetail(
     viewModel: ProductDetailViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.selectedProduct.value) }
+    viewModel.setup(sharedViewModel.selectedProduct)
     val activity = LocalContext.current as MainActivity
     Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(activity, viewModel, sharedViewModel)
