@@ -47,7 +47,7 @@ class AddProductViewModel @Inject constructor(
         )
     private val selectedSuppliesList = mutableListOf<MenuItemModel>()
 
-    suspend fun setup(product: ProductModel?) {
+    fun setup(product: ProductModel?) = viewModelScope.launch {
         getUnits()
         getSupplies()
 

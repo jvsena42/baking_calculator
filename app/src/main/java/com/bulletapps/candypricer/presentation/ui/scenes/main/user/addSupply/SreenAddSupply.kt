@@ -36,7 +36,7 @@ fun ScreenAddSupply(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.selectedSupply.value) }
+    viewModel.setup(sharedViewModel.selectedSupply)
     Screen(
         viewModel.uiState,
         viewModel::onAction
@@ -55,7 +55,7 @@ private fun EventConsumer(
             when (event) {
                 is ScreenEvent.GoBack -> activity.onBackPressed()
                 is ScreenEvent.UpdateSupply -> {
-                    sharedViewModel.selectedSupply.value = event.supply
+                    sharedViewModel.selectedSupply = event.supply
                     activity.onBackPressed()
                 }
             }
@@ -105,6 +105,7 @@ fun Screen(
         }
     }
 }
+
 @Composable
 private fun DisplayToast(uiState: UIState) {
     val toastMessage by uiState.textToast.collectAsState()
@@ -126,7 +127,9 @@ private fun MakeFieldName(onAction: (ScreenActions) -> Unit, uiState: UIState) {
         placeholder = { Text(stringResource(R.string.cocoa_powder)) },
         label = { Text(error?.asString() ?: stringResource(R.string.name)) },
         isError = isError,
-        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
     )
 }
 
@@ -139,12 +142,17 @@ private fun MakeFieldQuantity(onAction: (ScreenActions) -> Unit, uiState: UIStat
     OutlinedTextField(
         value = quantity,
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next
+        ),
         onValueChange = { onAction(ScreenActions.OnTextChanged(FieldsTexts.Quantity(it))) },
         placeholder = { Text(stringResource(R.string.five_hundred)) },
         label = { Text(error?.asString() ?: stringResource(R.string.quantity)) },
         isError = isError,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
     )
 }
 
@@ -156,11 +164,13 @@ private fun MakeFieldUnit(onAction: (ScreenActions) -> Unit, uiState: UIState) {
     val error by uiState.unitError.collectAsState()
 
     DropdownMenuOutlined(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
         expanded = isExpanded,
         items = unities.map { it.label },
         selectedItem = selectedUnit,
-        label =  error?.asString() ?: stringResource(R.string.select_a_unit),
+        label = error?.asString() ?: stringResource(R.string.select_a_unit),
         onClick = { onAction(ScreenActions.OnChangeExpanded) },
         onItemSelected = { index -> onAction(ScreenActions.OnItemSelected(index)) }
     )
@@ -181,7 +191,9 @@ private fun MakeFieldPrice(onAction: (ScreenActions) -> Unit, uiState: UIState) 
         placeholder = { Text(stringResource(R.string.thirty_reals)) },
         label = { Text(error?.asString() ?: stringResource(R.string.price)) },
         isError = isError,
-        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
     )
 }
 
