@@ -24,8 +24,14 @@ class ProductDetailViewModel @Inject constructor(
 
     fun setup(product: ProductModel?) {
         product?.let {
-            uiState.product.value = it
-            uiState.supplyList.value = it.supplies.toItemMenuList(it.amountQuantitySupply)
+            uiState.supplyList.value = it.supplies.toItemMenuList()
+            uiState.quantity.value = it.quantity.round()
+            uiState.laborValue.value = it.laborValue.toPercentString()
+            uiState.variableExpenses.value = it.variableExpenses.toPercentString()
+            uiState.profitMargin.value = it.profitMargin.toPercentString()
+            uiState.totalSpendsValue.value = it.totalSpendsValue.toCurrency()
+            uiState.unitSaleValue.value = it.unitSaleValue.toCurrency()
+            uiState.unit.value = it.unit.label.formatUnit()
         }
     }
 
@@ -35,7 +41,7 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     private fun deleteProduct() = viewModelScope.launch {
-        deleteProductUseCase(uiState.product.value.id).also {
+        deleteProductUseCase(uiState.id.value).also {
             when(it) {
                 is Resource.Error -> showToast(it.message)
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
@@ -60,21 +66,14 @@ class ProductDetailViewModel @Inject constructor(
     class UIState {
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
         val supplyList = MutableStateFlow<List<MenuItemModel>>(emptyList())
-        val product = MutableStateFlow(
-            ProductResponse(-1,
-                "",
-                null,
-                ZERO_DOUBLE,
-                ZERO_DOUBLE,
-                ZERO_DOUBLE,
-                ZERO_DOUBLE,
-                listOf(),
-                ZERO_DOUBLE,
-                ZERO_DOUBLE,
-                ZERO_DOUBLE,
-                emptyList()
-            )
-        )
+        val id = MutableStateFlow(NEGATIVE)
+        val quantity = MutableStateFlow(EMPTY_STRING)
+        val unit = MutableStateFlow(EMPTY_STRING)
+        val laborValue = MutableStateFlow(EMPTY_STRING)
+        val variableExpenses = MutableStateFlow(EMPTY_STRING)
+        val profitMargin = MutableStateFlow(EMPTY_STRING)
+        val totalSpendsValue = MutableStateFlow(EMPTY_STRING)
+        val unitSaleValue = MutableStateFlow(EMPTY_STRING)
     }
 
 }

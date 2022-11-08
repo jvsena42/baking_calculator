@@ -1,7 +1,6 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -16,7 +15,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply.Scr
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ScreenExpired
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.ScreenLogin
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.productDetail.ScreenProductDetail
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ScreenProducs
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ScreenProducts
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.ScreenRegister
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.ScreenSettings
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.ScreenSupplies
@@ -63,7 +62,7 @@ class MainActivity : FragmentActivity() {
             ScreenAddSupply(sharedViewModel = sharedViewModel)
         }
         composable(MainViewModel.Navigation.Products.router) {
-            ScreenProducs(sharedViewModel = sharedViewModel)
+            ScreenProducts(sharedViewModel = sharedViewModel)
         }
         composable(MainViewModel.Navigation.AddProduct.router) {
             ScreenAddProduct(sharedViewModel = sharedViewModel)

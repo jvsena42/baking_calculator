@@ -70,7 +70,13 @@ private fun Screen(
     onAction: (ScreenActions) -> Unit,
 ) {
 
-    val product by uiState.product.collectAsState()
+    val quantity by uiState.quantity.collectAsState()
+    val unit by uiState.unit.collectAsState()
+    val laborValue by uiState.laborValue.collectAsState()
+    val variableExpenses by uiState.variableExpenses.collectAsState()
+    val profitMargin by uiState.profitMargin.collectAsState()
+    val totalSpendsValue by uiState.totalSpendsValue.collectAsState()
+    val unitSaleValue by uiState.unitSaleValue.collectAsState()
     val supplyList by uiState.supplyList.collectAsState()
 
     CandyPricerTheme {
@@ -101,7 +107,15 @@ private fun Screen(
 
                     TextWithLabel(
                         stringResource(R.string.quantity_label),
-                        product.quantity.toString(),
+                        quantity,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        arrangement = Arrangement.SpaceBetween
+                    )
+                    TextWithLabel(
+                        stringResource(R.string.unit_label),
+                        unit,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -109,7 +123,7 @@ private fun Screen(
                     )
                     TextWithLabel(
                         stringResource(R.string.labor_price),
-                        product.laborValue.toPercentString(),
+                        laborValue,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -117,7 +131,7 @@ private fun Screen(
                     )
                     TextWithLabel(
                         stringResource(R.string.variable_expenses),
-                        product.variableExpenses.toPercentString(),
+                        variableExpenses,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -125,7 +139,7 @@ private fun Screen(
                     )
                     TextWithLabel(
                         stringResource(R.string.profit_margin),
-                        product.profitMargin.toPercentString(),
+                        profitMargin,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -147,14 +161,14 @@ private fun Screen(
                         ) {
                             TextWithLabel(
                                 stringResource(R.string.total_cost),
-                                product.totalSpendsValue.toCurrency(),
+                                totalSpendsValue,
                                 modifier = Modifier.fillMaxWidth(),
                                 arrangement = Arrangement.SpaceBetween
                             )
                             Spacer(Modifier.height(8.dp))
                             TextWithLabel(
                                 stringResource(R.string.unit_sell_value),
-                                product.unitSaleValue.toCurrency(),
+                                unitSaleValue,
                                 modifier = Modifier.fillMaxWidth(),
                                 arrangement = Arrangement.SpaceBetween
                             )

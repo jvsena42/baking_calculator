@@ -17,10 +17,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
-import com.bulletapps.candypricer.data.response.ProductResponse
-import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.domain.model.ProductModel
+import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel.ScreenActions
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel.ScreenEvent
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsVertical
 import com.bulletapps.candypricer.presentation.ui.widgets.ScreenErrorRequest
@@ -29,7 +30,7 @@ import com.bulletapps.candypricer.presentation.ui.widgets.TextEmpty
 import com.bulletapps.candypricer.presentation.util.toCurrency
 
 @Composable
-fun ScreenProducs(
+fun ScreenProducts(
     viewModel: ProductsViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
@@ -153,10 +154,10 @@ private fun MakeList(uiState: ProductsUIState, onAction: (ScreenActions) -> Unit
 private fun Preview() {
     Screen(onAction = {}, uiState = ProductsUIState().apply {
         productsList.value = listOf(
-            ProductResponse(
+            ProductModel(
                 id = 0,
                 name = "Brigadeiro",
-                unit = UnitResponse(0, "und"),
+                unit = UnitModel(0, "und"),
                 profitMargin = 100.0,
                 quantity = 20.0,
                 laborValue = 15.0,
@@ -165,7 +166,6 @@ private fun Preview() {
                 totalSaleValue = 3.00,
                 totalSpendsValue = 3.00,
                 supplies = listOf(),
-                amountQuantitySupply = emptyList()
             )
         )
     })
