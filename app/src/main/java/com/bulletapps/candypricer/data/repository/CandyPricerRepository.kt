@@ -7,14 +7,15 @@ import com.bulletapps.candypricer.data.response.UserResponse
 import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.domain.model.UnitModel
+import com.bulletapps.candypricer.domain.model.UserModel
 
 interface CandyPricerRepository {
 
     suspend fun createUser(parameters: CreateUserParameters): Resource<LoginResponse>
 
-    suspend fun getUser(): Resource<UserResponse>
+    suspend fun getUser(): Result<UserModel>
 
-    suspend fun getUsers(): Resource<List<UserResponse>>
+    suspend fun getUsers(): Result<List<UserModel>>
 
     suspend fun updateUser(parameters: UpdateUserParameters): Resource<Unit>
 
