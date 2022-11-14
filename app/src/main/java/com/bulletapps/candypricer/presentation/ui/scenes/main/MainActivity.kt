@@ -31,9 +31,7 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                sharedViewModel.isLoading.value
-            }
+            setKeepOnScreenCondition { sharedViewModel.isLoading.value }
         }
         setContent {
             setNavigation(

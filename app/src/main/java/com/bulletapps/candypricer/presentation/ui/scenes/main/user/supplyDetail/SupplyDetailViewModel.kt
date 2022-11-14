@@ -18,15 +18,10 @@ class SupplyDetailViewModel @Inject constructor(
 ) : ViewModel(), EventFlow<SupplyDetailViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
-    private var supplyId: Int = NEGATIVE
+    private var id: Int = NEGATIVE
 
-    fun setup(supply: SupplyModel?) = viewModelScope.launch {
-        supply?.run {
-            uiState.supplyName.value = name
-            uiState.supplyQuantity.value = quantity.round()
-            uiState.supplyUnitName.value = unit.label.formatUnit()
-            uiState.supplyPrice.value = price.toCurrency()
-        }
+    fun setup(supplyId: Int) = viewModelScope.launch {
+        id = supplyId
     }
 
     fun onAction(action: ScreenActions) = when (action) {
@@ -35,8 +30,8 @@ class SupplyDetailViewModel @Inject constructor(
     }
 
     private fun deleteSupply() = viewModelScope.launch {
-        if (supplyId.isNegative()) return@launch
-        deleteSupplyUseCase(supplyId).also {
+        if (id.isNegative()) return@launch
+        deleteSupplyUseCase(id).also {
             when (it) {
                 is Resource.Error -> showToast(it.message)
                 is Resource.Success -> sendEvent(ScreenEvent.PopScreen)

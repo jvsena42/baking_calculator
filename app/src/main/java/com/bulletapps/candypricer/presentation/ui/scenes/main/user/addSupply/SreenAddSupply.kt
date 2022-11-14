@@ -36,7 +36,7 @@ fun ScreenAddSupply(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    viewModel.setup(sharedViewModel.selectedSupply)
+//    viewModel.setup(sharedViewModel.selectedSupply)
     Screen(
         viewModel.uiState,
         viewModel::onAction

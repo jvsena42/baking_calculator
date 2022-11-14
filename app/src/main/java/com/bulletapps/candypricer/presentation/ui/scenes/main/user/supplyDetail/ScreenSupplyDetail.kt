@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.SupplyUIState
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplyDetail.SupplyDetailViewModel.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
@@ -34,9 +35,9 @@ fun ScreenSupplyDetail(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    viewModel.setup(sharedViewModel.selectedSupply)
+    LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.supplyUIState.id.value) }
     Screen(
-        viewModel.uiState,
+        sharedViewModel.supplyUIState,
         viewModel::onAction
     )
     EventConsumer(activity, viewModel, sharedViewModel)
@@ -60,7 +61,7 @@ private fun EventConsumer(
 
 @Composable
 fun Screen(
-    uiState: UIState,
+    uiState: SupplyUIState,
     onAction: (ScreenActions) -> Unit,
 ) {
 
@@ -105,7 +106,7 @@ fun Screen(
 }
 
 @Composable
-private fun MakeCard(uiState: UIState) {
+private fun MakeCard(uiState: SupplyUIState) {
     val name by uiState.supplyName.collectAsState()
     val quantity by uiState.supplyQuantity.collectAsState()
     val unit by uiState.supplyUnitName.collectAsState()
@@ -163,6 +164,6 @@ private fun MakeCard(uiState: UIState) {
 @Composable
 fun Preview() {
     Screen(
-        onAction = {}, uiState = UIState()
+        onAction = {}, uiState = SupplyUIState()
     )
 }
