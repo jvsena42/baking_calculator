@@ -65,6 +65,7 @@ class MainViewModel @Inject constructor(
         object Supplies : Navigation("supplies", popHome = true)
         object SupplyDetail : Navigation("supply_detail")
         object AddSupply : Navigation("add_supply")
+        object UpdateSupply : Navigation("add_supply")
         object Settings : Navigation("settings")
         object Login : Navigation("login", true)
         object Register : Navigation("register")

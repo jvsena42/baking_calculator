@@ -35,7 +35,7 @@ import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 fun ScreenAddSupply(
     viewModel: AddSupplyViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel,
-    supplyModel: SupplyModel?
+    supplyModel: SupplyModel? = null
 ) {
     val activity = LocalContext.current as MainActivity
     viewModel.setup(supplyModel)

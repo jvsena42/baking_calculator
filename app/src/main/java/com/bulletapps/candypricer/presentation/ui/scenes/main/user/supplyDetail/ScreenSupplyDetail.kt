@@ -54,7 +54,7 @@ private fun EventConsumer(
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is ScreenEvent.NavigateToAddSupply -> sharedViewModel.navigate(MainViewModel.Navigation.AddSupply)
+                is ScreenEvent.NavigateToAddSupply -> sharedViewModel.navigate(MainViewModel.Navigation.UpdateSupply)
                 is ScreenEvent.PopScreen -> activity.onBackPressed()
             }
         }
