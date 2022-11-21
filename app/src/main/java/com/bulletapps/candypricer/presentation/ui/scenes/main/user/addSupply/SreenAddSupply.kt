@@ -55,7 +55,6 @@ private fun EventConsumer(
             when (event) {
                 is ScreenEvent.GoBack -> activity.onBackPressed()
                 is ScreenEvent.UpdateSupply -> {
-                    sharedViewModel.saveSupply(event.supply)
                     activity.onBackPressed()
                 }
             }

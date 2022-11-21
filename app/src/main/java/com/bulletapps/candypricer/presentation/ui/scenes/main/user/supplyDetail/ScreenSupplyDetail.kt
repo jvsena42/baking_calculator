@@ -19,10 +19,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.SupplyUIState
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplyDetail.SupplyDetailViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplyDetail.SupplyDetailViewModel.ScreenActions
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplyDetail.SupplyDetailViewModel.ScreenEvent
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
@@ -32,12 +33,13 @@ import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 @Composable
 fun ScreenSupplyDetail(
     viewModel: SupplyDetailViewModel = hiltViewModel(),
-    sharedViewModel: MainViewModel
+    sharedViewModel: MainViewModel,
+    supplyModel: SupplyModel?
 ) {
     val activity = LocalContext.current as MainActivity
-    LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.supplyUIState.id.value) }
+    viewModel.setup(supplyModel)
     Screen(
-        sharedViewModel.supplyUIState,
+        viewModel.uiState,
         viewModel::onAction
     )
     EventConsumer(activity, viewModel, sharedViewModel)
@@ -61,7 +63,7 @@ private fun EventConsumer(
 
 @Composable
 fun Screen(
-    uiState: SupplyUIState,
+    uiState: SupplyDetailViewModel.UIState,
     onAction: (ScreenActions) -> Unit,
 ) {
 
@@ -106,7 +108,7 @@ fun Screen(
 }
 
 @Composable
-private fun MakeCard(uiState: SupplyUIState) {
+private fun MakeCard(uiState: SupplyDetailViewModel.UIState) {
     val name by uiState.supplyName.collectAsState()
     val quantity by uiState.supplyQuantity.collectAsState()
     val unit by uiState.supplyUnitName.collectAsState()
@@ -164,6 +166,6 @@ private fun MakeCard(uiState: SupplyUIState) {
 @Composable
 fun Preview() {
     Screen(
-        onAction = {}, uiState = SupplyUIState()
+        onAction = {}, uiState = SupplyDetailViewModel.UIState()
     )
 }

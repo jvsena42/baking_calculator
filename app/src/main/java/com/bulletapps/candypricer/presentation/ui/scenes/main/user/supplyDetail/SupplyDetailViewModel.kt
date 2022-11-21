@@ -20,8 +20,14 @@ class SupplyDetailViewModel @Inject constructor(
     val uiState = UIState()
     private var id: Int = NEGATIVE
 
-    fun setup(supplyId: Int) = viewModelScope.launch {
-        id = supplyId
+    fun setup(supplyModel: SupplyModel?) = viewModelScope.launch {
+        supplyModel?.run {
+            uiState.supplyName.value = supplyModel.name
+            uiState.supplyQuantity.value = supplyModel.quantity.round()
+            uiState.supplyUnitName.value = supplyModel.unit.label.formatUnit()
+            uiState.supplyPrice.value = supplyModel.price.toCurrency()
+        }
+
     }
 
     fun onAction(action: ScreenActions) = when (action) {

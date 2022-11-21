@@ -2,10 +2,10 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
 import com.bulletapps.candypricer.domain.model.MenuModel
 import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.domain.model.SupplyModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.SupplyUIState
 import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -14,10 +14,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor() : ViewModel(),
+class MainViewModel @Inject constructor(
+    private val preferencesDataSource: PreferencesDataSource,
+    ) : ViewModel(),
     EventFlow<MainViewModel.Navigation> by EventFlowImpl() {
 
-    val supplyUIState = SupplyUIState()
+    var supplyModel: SupplyModel? = null
 
     val isLoading = MutableStateFlow(true)
     var selectedProduct: ProductModel? = null
@@ -38,20 +40,13 @@ class MainViewModel @Inject constructor() : ViewModel(),
         viewModelScope.sendEvent(navigation)
     }
 
-    fun saveSupply(supplyModel: SupplyModel) = supplyModel.run {
-        supplyUIState.id.value = id
-        supplyUIState.supplyName.value = name
-        supplyUIState.supplyQuantity.value = quantity.round()
-        supplyUIState.supplyUnitName.value = unit.label.formatUnit()
-        supplyUIState.supplyPrice.value = price.toCurrency()
+    fun logout() = viewModelScope.launch {
+        preferencesDataSource.clearPref()
+        navigate(Navigation.Login)
     }
 
     fun saveProduct(productModel: ProductModel) {
         selectedProduct = productModel
-    }
-
-    fun resetSupply() {
-        supplyUIState.id.value = NEGATIVE
     }
 
     fun resetProduct() {

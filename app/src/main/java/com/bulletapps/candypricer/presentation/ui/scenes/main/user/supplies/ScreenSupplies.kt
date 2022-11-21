@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.SuppliesViewModel.ScreenActions
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.SuppliesViewModel.ScreenEvent
@@ -29,32 +30,29 @@ import com.bulletapps.candypricer.presentation.ui.widgets.TextEmpty
 @Composable
 fun ScreenSupplies(
     viewModel: SuppliesViewModel = hiltViewModel(),
-    sharedViewModel: MainViewModel
+    sharedViewModel: MainViewModel,
+    navigateSupplyDetail: (SupplyModel) -> Unit,
+    navigateAddSupply: () -> Unit,
+    navigateLogout: () -> Unit,
 ) {
-    sharedViewModel.resetSupply()
     viewModel.setup()
-
-    Screen(
-        viewModel.uiState,
-        viewModel::onAction
-    )
-    EventConsumer(viewModel, sharedViewModel)
+    Screen(viewModel.uiState, viewModel::onAction)
+    EventConsumer(viewModel, navigateSupplyDetail, navigateAddSupply, navigateLogout)
 }
 
 @Composable
 private fun EventConsumer(
     viewModel: SuppliesViewModel,
-    sharedViewModel: MainViewModel
+    navigateSupplyDetail: (SupplyModel) -> Unit,
+    navigateAddSupply: () -> Unit,
+    navigateLogout: () -> Unit,
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is ScreenEvent.NavigateToAddSupply -> sharedViewModel.navigate(MainViewModel.Navigation.AddSupply)
-                is ScreenEvent.NavigateSupplyDetail -> {
-                    sharedViewModel.saveSupply(event.supply)
-                    sharedViewModel.navigate(MainViewModel.Navigation.SupplyDetail)
-                }
-                is ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
+                is ScreenEvent.NavigateToAddSupply -> navigateAddSupply.invoke()
+                is ScreenEvent.NavigateSupplyDetail -> navigateSupplyDetail.invoke(event.supply)
+                is ScreenEvent.Login -> navigateLogout.invoke()
             }
         }
     }

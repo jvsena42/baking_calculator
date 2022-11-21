@@ -46,7 +46,7 @@ class MainActivity : FragmentActivity() {
     private fun navigationBuilder(builder: NavGraphBuilder) = builder.apply {
         composable(MainViewModel.Navigation.MainMenu.router) {
             ScreenMenu(sharedViewModel = sharedViewModel)
-        } 
+        }
         composable(MainViewModel.Navigation.Login.router) {
             ScreenLogin(sharedViewModel = sharedViewModel)
         }
@@ -54,7 +54,15 @@ class MainActivity : FragmentActivity() {
             ScreenRegister(sharedViewModel = sharedViewModel)
         }
         composable(MainViewModel.Navigation.Supplies.router) {
-            ScreenSupplies(sharedViewModel = sharedViewModel)
+            ScreenSupplies(
+                sharedViewModel = sharedViewModel,
+                navigateSupplyDetail = { supply ->
+                    sharedViewModel.supplyModel = supply
+                    sharedViewModel.navigate(MainViewModel.Navigation.SupplyDetail)
+                },
+                navigateAddSupply = { sharedViewModel.navigate(MainViewModel.Navigation.AddSupply) },
+                navigateLogout = sharedViewModel::logout
+            )
         }
         composable(MainViewModel.Navigation.AddSupply.router) {
             ScreenAddSupply(sharedViewModel = sharedViewModel)
@@ -75,7 +83,10 @@ class MainActivity : FragmentActivity() {
             ScreenExpired(sharedViewModel = sharedViewModel)
         }
         composable(MainViewModel.Navigation.SupplyDetail.router) {
-            ScreenSupplyDetail(sharedViewModel = sharedViewModel)
+            ScreenSupplyDetail(
+                sharedViewModel = sharedViewModel,
+                supplyModel = sharedViewModel.supplyModel
+            )
         }
         composable(MainViewModel.Navigation.ProductDetail.router) {
             ScreenProductDetail(sharedViewModel = sharedViewModel)
