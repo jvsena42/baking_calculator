@@ -65,7 +65,10 @@ class MainActivity : FragmentActivity() {
             )
         }
         composable(MainViewModel.Navigation.AddSupply.router) {
-            ScreenAddSupply(sharedViewModel = sharedViewModel)
+            ScreenAddSupply(
+                sharedViewModel = sharedViewModel,
+                supplyModel = sharedViewModel.supplyModel
+            )
         }
         composable(MainViewModel.Navigation.Products.router) {
             ScreenProducts(sharedViewModel = sharedViewModel)

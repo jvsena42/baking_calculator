@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply.AddSupplyViewModel.*
@@ -33,10 +34,11 @@ import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 @Composable
 fun ScreenAddSupply(
     viewModel: AddSupplyViewModel = hiltViewModel(),
-    sharedViewModel: MainViewModel
+    sharedViewModel: MainViewModel,
+    supplyModel: SupplyModel?
 ) {
     val activity = LocalContext.current as MainActivity
-//    viewModel.setup(sharedViewModel.selectedSupply)
+    viewModel.setup(supplyModel)
     Screen(
         viewModel.uiState,
         viewModel::onAction
