@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.productDetail.ProductDetailViewModel.ScreenActions
@@ -32,33 +33,31 @@ import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsWithDetail
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 import com.bulletapps.candypricer.presentation.ui.widgets.TextWithLabel
-import com.bulletapps.candypricer.presentation.util.toCurrency
-import com.bulletapps.candypricer.presentation.util.toPercentString
 
 @Composable
 fun ScreenProductDetail(
     viewModel: ProductDetailViewModel = hiltViewModel(),
-    sharedViewModel: MainViewModel
+    sharedViewModel: MainViewModel,
+    productModel: ProductModel?,
+    navigateUpdateProduct: () -> Unit
 ) {
-    viewModel.setup(sharedViewModel.selectedProduct)
+    viewModel.setup(productModel)
     val activity = LocalContext.current as MainActivity
     Screen(viewModel.uiState, viewModel::onAction)
-    EventConsumer(activity, viewModel, sharedViewModel)
+    EventConsumer(activity, viewModel, navigateUpdateProduct)
 }
 
 @Composable
 private fun EventConsumer(
     activity: MainActivity,
     viewModel: ProductDetailViewModel,
-    sharedViewModel: MainViewModel
+    navigateUpdateProduct: () -> Unit
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is GoBack -> activity.onBackPressed()
-                is ProductDetailViewModel.ScreenEvent.NavigateToAddProduct -> sharedViewModel.navigate(
-                    MainViewModel.Navigation.AddProduct
-                )
+                is ProductDetailViewModel.ScreenEvent.NavigateUpdateProduct -> navigateUpdateProduct.invoke()
             }
         }
     }

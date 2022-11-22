@@ -20,6 +20,7 @@ class MainViewModel @Inject constructor(
     EventFlow<MainViewModel.Navigation> by EventFlowImpl() {
 
     var supplyModel: SupplyModel? = null
+    var productModel: ProductModel? = null
 
     val isLoading = MutableStateFlow(true)
     var selectedProduct: ProductModel? = null
@@ -62,6 +63,7 @@ class MainViewModel @Inject constructor(
         object Products : Navigation("products")
         object ProductDetail : Navigation("product_detail")
         object AddProduct : Navigation("add_product")
+        object UpdateProduct : Navigation("add_product")
         object Supplies : Navigation("supplies", popHome = true)
         object SupplyDetail : Navigation("supply_detail")
         object AddSupply : Navigation("add_supply")

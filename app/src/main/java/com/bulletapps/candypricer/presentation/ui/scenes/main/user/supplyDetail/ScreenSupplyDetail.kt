@@ -34,7 +34,8 @@ import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 fun ScreenSupplyDetail(
     viewModel: SupplyDetailViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel,
-    supplyModel: SupplyModel?
+    supplyModel: SupplyModel?,
+    navigateUpdateSupply: () -> Unit
 ) {
     val activity = LocalContext.current as MainActivity
     viewModel.setup(supplyModel)
@@ -42,19 +43,20 @@ fun ScreenSupplyDetail(
         viewModel.uiState,
         viewModel::onAction
     )
-    EventConsumer(activity, viewModel, sharedViewModel)
+    EventConsumer(activity, viewModel, sharedViewModel, navigateUpdateSupply)
 }
 
 @Composable
 private fun EventConsumer(
     activity: MainActivity,
     viewModel: SupplyDetailViewModel,
-    sharedViewModel: MainViewModel
+    sharedViewModel: MainViewModel,
+    navigateUpdateSupply: () -> Unit
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is ScreenEvent.NavigateToAddSupply -> sharedViewModel.navigate(MainViewModel.Navigation.UpdateSupply)
+                is ScreenEvent.NavigateUpdateSupply -> navigateUpdateSupply.invoke()
                 is ScreenEvent.PopScreen -> activity.onBackPressed()
             }
         }

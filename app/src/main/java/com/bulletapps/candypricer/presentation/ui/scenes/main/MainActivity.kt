@@ -74,10 +74,25 @@ class MainActivity : FragmentActivity() {
             )
         }
         composable(MainViewModel.Navigation.Products.router) {
-            ScreenProducts(sharedViewModel = sharedViewModel)
+            ScreenProducts(
+                sharedViewModel = sharedViewModel,
+                navigateProductDetail = { product ->
+                    sharedViewModel.productModel = product
+                    sharedViewModel.navigate(MainViewModel.Navigation.ProductDetail)
+                },
+                navigateAddProduct = { sharedViewModel.navigate(MainViewModel.Navigation.AddProduct) },
+                navigateSupplies = { sharedViewModel.navigate(MainViewModel.Navigation.Supplies) },
+                navigateLogout = sharedViewModel::logout
+            )
         }
         composable(MainViewModel.Navigation.AddProduct.router) {
             ScreenAddProduct(sharedViewModel = sharedViewModel)
+        }
+        composable(MainViewModel.Navigation.UpdateProduct.router) {
+            ScreenAddProduct(
+                sharedViewModel = sharedViewModel,
+                productModel = sharedViewModel.productModel
+            )
         }
         composable(MainViewModel.Navigation.Settings.router) {
             ScreenSettings(sharedViewModel = sharedViewModel)
@@ -91,11 +106,16 @@ class MainActivity : FragmentActivity() {
         composable(MainViewModel.Navigation.SupplyDetail.router) {
             ScreenSupplyDetail(
                 sharedViewModel = sharedViewModel,
-                supplyModel = sharedViewModel.supplyModel
+                supplyModel = sharedViewModel.supplyModel,
+                navigateUpdateSupply = { sharedViewModel.navigate(MainViewModel.Navigation.UpdateSupply) }
             )
         }
         composable(MainViewModel.Navigation.ProductDetail.router) {
-            ScreenProductDetail(sharedViewModel = sharedViewModel)
+            ScreenProductDetail(
+                sharedViewModel = sharedViewModel,
+                productModel = sharedViewModel.productModel,
+                navigateUpdateProduct = { sharedViewModel.navigate(MainViewModel.Navigation.UpdateProduct) }
+            )
         }
     }
 

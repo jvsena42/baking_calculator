@@ -31,7 +31,7 @@ class SupplyDetailViewModel @Inject constructor(
     }
 
     fun onAction(action: ScreenActions) = when (action) {
-        ScreenActions.OnCLickEdit -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddSupply)
+        ScreenActions.OnCLickEdit -> viewModelScope.sendEvent(ScreenEvent.NavigateUpdateSupply)
         ScreenActions.OnCLickDelete -> deleteSupply()
     }
 
@@ -56,7 +56,7 @@ class SupplyDetailViewModel @Inject constructor(
 
 
     sealed class ScreenEvent {
-        object NavigateToAddSupply : ScreenEvent()
+        object NavigateUpdateSupply : ScreenEvent()
         object PopScreen : ScreenEvent()
     }
 

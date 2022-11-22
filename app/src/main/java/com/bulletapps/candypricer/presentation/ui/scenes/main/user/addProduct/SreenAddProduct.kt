@@ -22,6 +22,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
@@ -35,10 +36,11 @@ import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 @Composable
 fun ScreenAddProduct(
     viewModel: AddProductViewModel = hiltViewModel(),
-    sharedViewModel: MainViewModel
+    sharedViewModel: MainViewModel,
+    productModel: ProductModel? = null
 ) {
     val activity = LocalContext.current as MainActivity
-    viewModel.setup(sharedViewModel.selectedProduct)
+    viewModel.setup(productModel)
     Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(activity, viewModel, sharedViewModel)
 }

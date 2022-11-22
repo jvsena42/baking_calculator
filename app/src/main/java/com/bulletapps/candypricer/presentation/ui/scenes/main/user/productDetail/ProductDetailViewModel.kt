@@ -4,11 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
-import com.bulletapps.candypricer.data.response.ProductResponse
 import com.bulletapps.candypricer.domain.model.MenuItemModel
 import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.domain.usecase.product.DeleteProductUseCase
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
 import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +35,7 @@ class ProductDetailViewModel @Inject constructor(
 
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnClickDelete -> deleteProduct()
-        is ScreenActions.OnClickEdit -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddProduct)
+        is ScreenActions.OnClickEdit -> viewModelScope.sendEvent(ScreenEvent.NavigateUpdateProduct)
     }
 
     private fun deleteProduct() = viewModelScope.launch {
@@ -60,7 +58,7 @@ class ProductDetailViewModel @Inject constructor(
 
     sealed class ScreenEvent {
         object GoBack : ScreenEvent()
-        object NavigateToAddProduct : ScreenEvent()
+        object NavigateUpdateProduct : ScreenEvent()
     }
 
     class UIState {
