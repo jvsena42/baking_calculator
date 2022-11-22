@@ -61,6 +61,7 @@ class AddProductViewModel @Inject constructor(
             uiState.profitMargin.value = it.profitMargin.fromPercent().toString()
             uiState.laborPrice.value = it.laborValue.fromPercent().toString()
             uiState.variableExpenses.value = it.variableExpenses.fromPercent().toString()
+            selectedSuppliesList.clear()
             selectedSuppliesList.addAll(it.supplies.toItemMenuList())
             uiState.selectedSupplies.value = selectedSuppliesList.toList()
         }
