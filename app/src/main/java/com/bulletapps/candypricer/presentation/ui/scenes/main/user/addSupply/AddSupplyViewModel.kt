@@ -30,6 +30,7 @@ class AddSupplyViewModel @Inject constructor(
     ) : ViewModel(), EventFlow<AddSupplyViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
+    private var isUpdate = false
     private var selectedUnit = UnitModel(id = NEGATIVE, label = EMPTY_STRING)
         set(value) {
             uiState.selectedUnitLabel.value = value.label.formatUnit()
@@ -42,8 +43,8 @@ class AddSupplyViewModel @Inject constructor(
             onSuccess = { uiState.unities.value = it},
             onFailure = { showToast(uiState.textToast.value) }
         )
-
         supply?.let { supply ->
+            isUpdate = true
             uiState.run {
                 toolbarTitle.value = R.string.edit_supply
                 id.value = supply.id
@@ -101,13 +102,12 @@ class AddSupplyViewModel @Inject constructor(
                 && qntResult is Resource.Success
                 && priceResult is Resource.Success
             ) {
-                if (uiState.id.value.isNegative()) handleCreateSupply() else handleEditSupply()
+                if (isUpdate) handleEditSupply() else handleCreateSupply()
             }
         }
     }
 
     private suspend fun handleEditSupply() {
-
         updateSupplyUseCase(
             id = uiState.id.value.orNegative(),
             name = uiState.name.value,
@@ -116,7 +116,7 @@ class AddSupplyViewModel @Inject constructor(
             unitId = selectedUnit.id,
         ).also { result ->
             when (result) {
-                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.UpdateSupply(
+                is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.PopSupplyDetail(
                     SupplyModel(
                         id = uiState.id.value.orNegative(),
                         name = uiState.name.value,
@@ -194,7 +194,7 @@ class AddSupplyViewModel @Inject constructor(
 
     sealed class ScreenEvent {
         object GoBack : ScreenEvent()
-        data class UpdateSupply(val supply: SupplyModel) : ScreenEvent()
+        data class PopSupplyDetail(val supply: SupplyModel) : ScreenEvent()
     }
 }
 

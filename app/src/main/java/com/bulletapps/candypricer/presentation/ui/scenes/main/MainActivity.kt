@@ -7,6 +7,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.activity
 import androidx.navigation.compose.composable
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ScreenClients
 import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.ScreenMenu
@@ -65,12 +66,18 @@ class MainActivity : FragmentActivity() {
             )
         }
         composable(MainViewModel.Navigation.AddSupply.router) {
-            ScreenAddSupply(sharedViewModel = sharedViewModel)
+            ScreenAddSupply(
+                sharedViewModel = sharedViewModel
+            )
         }
         composable(MainViewModel.Navigation.UpdateSupply.router) {
             ScreenAddSupply(
                 sharedViewModel = sharedViewModel,
-                supplyModel = sharedViewModel.supplyModel
+                supplyModel = sharedViewModel.supplyModel,
+                popToSupplyDetail = { supplyModel ->
+                    sharedViewModel.supplyModel = supplyModel
+                    onBackPressed()
+                }
             )
         }
         composable(MainViewModel.Navigation.Products.router) {

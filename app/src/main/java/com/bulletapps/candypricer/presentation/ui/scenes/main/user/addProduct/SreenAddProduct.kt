@@ -54,7 +54,7 @@ private fun EventConsumer(
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                ScreenEvent.GoBack -> activity.onBackPressed()
+                ScreenEvent.GoBack -> activity.onBackPressed() //TODO UPDATE PRODUCT
                 ScreenEvent.GoHome -> sharedViewModel.navigate(MainViewModel.Navigation.MainMenu)
             }
         }
