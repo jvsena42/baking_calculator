@@ -1,16 +1,16 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies
 
-import com.bulletapps.candypricer.data.response.SupplyResponse
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.SuppliesViewModel.*
+import com.bulletapps.candypricer.domain.model.SupplyModel
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.SuppliesViewModel.ScreenActions
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class SuppliesUIState(
     val screenState: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState.Loading),
-    val suppliesList: MutableStateFlow<List<SupplyResponse>> = MutableStateFlow(emptyList()),
+    val suppliesList: MutableStateFlow<List<SupplyModel>> = MutableStateFlow(emptyList()),
     val isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
 ) {
 
-    fun onSuccess(supplies: List<SupplyResponse>) {
+    fun onSuccess(supplies: List<SupplyModel>) {
         suppliesList.value = supplies.sortedBy { it.name }
         isLoading.value = false
         screenState.value = ScreenState.ShowScreen

@@ -11,14 +11,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
-import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
+import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.SuppliesViewModel.ScreenActions
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.SuppliesViewModel.ScreenEvent
@@ -31,33 +30,29 @@ import com.bulletapps.candypricer.presentation.ui.widgets.TextEmpty
 @Composable
 fun ScreenSupplies(
     viewModel: SuppliesViewModel = hiltViewModel(),
-    sharedViewModel: MainViewModel
+    sharedViewModel: MainViewModel,
+    navigateSupplyDetail: (SupplyModel) -> Unit,
+    navigateAddSupply: () -> Unit,
+    navigateLogout: () -> Unit,
 ) {
-    LaunchedEffect(key1 = Unit) {
-        sharedViewModel.selectedSupply.value = null
-        viewModel.setup()
-    }
-    Screen(
-        viewModel.uiState,
-        viewModel::onAction
-    )
-    EventConsumer(viewModel, sharedViewModel)
+    viewModel.setup()
+    Screen(viewModel.uiState, viewModel::onAction)
+    EventConsumer(viewModel, navigateSupplyDetail, navigateAddSupply, navigateLogout)
 }
 
 @Composable
 private fun EventConsumer(
     viewModel: SuppliesViewModel,
-    sharedViewModel: MainViewModel
+    navigateSupplyDetail: (SupplyModel) -> Unit,
+    navigateAddSupply: () -> Unit,
+    navigateLogout: () -> Unit,
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is ScreenEvent.NavigateToAddSupply -> sharedViewModel.navigate(MainViewModel.Navigation.AddSupply)
-                is ScreenEvent.NavigateSupplyDetail -> {
-                    sharedViewModel.selectedSupply.value = event.supply
-                    sharedViewModel.navigate(MainViewModel.Navigation.SupplyDetail)
-                }
-                is ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
+                is ScreenEvent.NavigateToAddSupply -> navigateAddSupply.invoke()
+                is ScreenEvent.NavigateSupplyDetail -> navigateSupplyDetail.invoke(event.supply)
+                is ScreenEvent.Login -> navigateLogout.invoke()
             }
         }
     }
@@ -67,15 +62,15 @@ private fun EventConsumer(
 fun Screen(
     uiState: SuppliesUIState,
     onAction: (ScreenActions) -> Unit,
-    ) {
+) {
 
     val screenState = uiState.screenState.collectAsState().value
 
     CandyPricerTheme {
-        when(screenState) {
+        when (screenState) {
             is SuppliesUIState.ScreenState.Failure -> ErrorScreen(onAction)
-            SuppliesUIState.ScreenState.Loading -> ScreenLoading()
-            SuppliesUIState.ScreenState.ShowScreen -> ScreenContent(onAction, uiState)
+            is SuppliesUIState.ScreenState.Loading -> ScreenLoading()
+            is SuppliesUIState.ScreenState.ShowScreen -> ScreenContent(onAction, uiState)
         }
     }
 }
@@ -123,7 +118,9 @@ private fun MakeList(uiState: SuppliesUIState, onAction: (ScreenActions) -> Unit
         TextEmpty(stringResource(R.string.add_supply_and_start_pricing))
     } else {
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
             content = {
                 items(list.size) { index ->

@@ -6,17 +6,15 @@ import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateProductParameters
-import com.bulletapps.candypricer.data.parameters.UpdateProductParameters
-import com.bulletapps.candypricer.data.response.ProductResponse
-import com.bulletapps.candypricer.data.response.SupplyResponse
-import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.model.MenuItemModel
+import com.bulletapps.candypricer.domain.model.ProductModel
+import com.bulletapps.candypricer.domain.model.SupplyModel
+import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.domain.usecase.inputValidation.*
 import com.bulletapps.candypricer.domain.usecase.product.CreateProductUseCase
 import com.bulletapps.candypricer.domain.usecase.product.UpdateProductUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.ScreenEvent
 import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +24,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AddProductViewModel @Inject constructor(
     private val getAllSuppliesUseCase: GetAllSuppliesUseCase,
-    private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
     private val validateEmptyListUseCase: ValidateEmptyListUseCase,
     private val getUnitsUseCase: GetUnitsUseCase,
     private val createProductUseCase: CreateProductUseCase,
@@ -37,13 +34,20 @@ class AddProductViewModel @Inject constructor(
     private val validateLaborUseCase: ValidateLaborUseCase,
     private val validateVariableExpenses: ValidateVariableExpensesUseCase,
     private val validateProfitMarginUseCase: ValidateProfitMarginUseCase
-    ) : ViewModel(), EventFlow<ScreenEvent> by EventFlowImpl() {
+) : ViewModel(), EventFlow<AddProductViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
-    private val emptySupply = SupplyResponse(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE, null)
-    private val selectedSuppliesList =  mutableListOf<MenuItemModel>()
+    private val emptySupply =
+        SupplyModel(
+            id = -1,
+            name = "",
+            quantity = ZERO_DOUBLE,
+            price = ZERO_DOUBLE,
+            UnitModel(NEGATIVE, EMPTY_STRING)
+        )
+    private val selectedSuppliesList = mutableListOf<MenuItemModel>()
 
-    suspend fun setup(product: ProductResponse?) {
+    fun setup(product: ProductModel?) = viewModelScope.launch {
         getUnits()
         getSupplies()
 
@@ -52,36 +56,38 @@ class AddProductViewModel @Inject constructor(
             uiState.toolbarTitle.value = R.string.edit_product
             uiState.id.value = it.id
             uiState.name.value = it.name
-            uiState.selectedUnit.value = it.unit.format()
+            uiState.selectedUnit.value = it.unit
             uiState.quantity.value = it.quantity.toString()
             uiState.profitMargin.value = it.profitMargin.fromPercent().toString()
             uiState.laborPrice.value = it.laborValue.fromPercent().toString()
             uiState.variableExpenses.value = it.variableExpenses.fromPercent().toString()
-            selectedSuppliesList.addAll(it.supplies.toItemMenuList(it.amountQuantitySupply))
+            selectedSuppliesList.clear()
+            selectedSuppliesList.addAll(it.supplies.toItemMenuList())
             uiState.selectedSupplies.value = selectedSuppliesList.toList()
         }
     }
 
     private fun showToast(message: UiText?) {
-        message?.let{ uiState.textToast.value = it }
+        message?.let { uiState.textToast.value = it }
+    }
+
+    private fun showToast(message: String?) {
+        message?.let { uiState.textToast.value = UiText.DynamicString(message) }
     }
 
     private suspend fun getUnits() {
-        getUnitsUseCase().also {
-            when (it) {
-                is Resource.Success -> uiState.unities.value = it.data.orEmpty().format()
-                is Resource.Error -> showToast(uiState.textToast.value)
-            }
-        }
+        getUnitsUseCase().fold(
+            onSuccess = { uiState.unities.value = it },
+            onFailure = { showToast(it.message) }
+        )
     }
 
+
     private suspend fun getSupplies() {
-        getAllSuppliesUseCase().also {
-            when (it) {
-                is Resource.Error -> showToast(it.message)
-                is Resource.Success -> uiState.suppliesMenuList.value = it.data.orEmpty().toMutableList()
-            }
-        }
+        getAllSuppliesUseCase().fold(
+            onSuccess = { uiState.suppliesMenuList.value = it },
+            onFailure = { showToast(it.message) }
+        )
     }
 
     private fun onClickConfirm() {
@@ -90,42 +96,44 @@ class AddProductViewModel @Inject constructor(
 
             val nameResult = validateNameUseCase(text = uiState.name.value)
             val qntResult = validateQuantityUseCase(text = uiState.quantity.value)
-            val unitResult = validateUnitUseCase(text = uiState.selectedUnit.value.name)
+            val unitResult = validateUnitUseCase(text = uiState.selectedUnit.value.label)
             val laborPriceResult = validateLaborUseCase(text = uiState.laborPrice.value)
-            val variableExpensesResult = validateVariableExpenses(text = uiState.variableExpenses.value)
+            val variableExpensesResult =
+                validateVariableExpenses(text = uiState.variableExpenses.value)
             val profitMarginResult = validateProfitMarginUseCase(text = uiState.profitMargin.value)
             val supplyResult = validateEmptyListUseCase(list = uiState.selectedSupplies.value)
 
-            when(nameResult) {
+            when (nameResult) {
                 is Resource.Error -> uiState.nameError.value = nameResult.message
                 is Resource.Success -> uiState.nameError.value = null
             }
-            when(qntResult) {
+            when (qntResult) {
                 is Resource.Error -> uiState.qntError.value = qntResult.message
                 is Resource.Success -> uiState.qntError.value = null
             }
-            when(unitResult) {
+            when (unitResult) {
                 is Resource.Error -> uiState.unitError.value = unitResult.message
                 is Resource.Success -> uiState.unitError.value = null
             }
-            when(laborPriceResult) {
+            when (laborPriceResult) {
                 is Resource.Error -> uiState.laborError.value = laborPriceResult.message
                 is Resource.Success -> uiState.laborError.value = null
             }
-            when(variableExpensesResult) {
-                is Resource.Error -> uiState.variableExpensesError.value = variableExpensesResult.message
+            when (variableExpensesResult) {
+                is Resource.Error -> uiState.variableExpensesError.value =
+                    variableExpensesResult.message
                 is Resource.Success -> uiState.variableExpensesError.value = null
             }
-            when(profitMarginResult) {
+            when (profitMarginResult) {
                 is Resource.Error -> uiState.profitMarginError.value = profitMarginResult.message
                 is Resource.Success -> uiState.profitMarginError.value = null
             }
-            when(supplyResult) {
+            when (supplyResult) {
                 is Resource.Error -> showToast(supplyResult.message)
                 is Resource.Success -> Unit
             }
 
-            if(
+            if (
                 nameResult is Resource.Success
                 && unitResult is Resource.Success
                 && qntResult is Resource.Success
@@ -140,7 +148,7 @@ class AddProductViewModel @Inject constructor(
     }
 
     private suspend fun handleEditProduct() {
-        val parameters = UpdateProductParameters(
+        updateProductUseCase(
             id = uiState.id.value,
             name = uiState.name.value,
             unitId = uiState.selectedUnit.value.id.orZero(),
@@ -150,9 +158,7 @@ class AddProductViewModel @Inject constructor(
             laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
             variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
             amountQuantitySupply = uiState.selectedSupplies.value.map { it.quantity.formatDouble() }
-        )
-
-        updateProductUseCase(parameters).also { result ->
+        ).also { result ->
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoHome)
                 is Resource.Error -> showToast(result.message)
@@ -161,18 +167,18 @@ class AddProductViewModel @Inject constructor(
     }
 
     private suspend fun handleCreateProduct() {
-        val createProductParameters = CreateProductParameters(
-            name = uiState.name.value,
-            quantity = uiState.quantity.value.formatDouble(),
-            unitId = uiState.selectedUnit.value.id.orZero(),
-            suppliesId = uiState.selectedSupplies.value.map { it.id },
-            profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
-            laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
-            variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
-            amountQuantitySupply = uiState.selectedSupplies.value.map { it.quantity.formatDouble() }
-        )
+
         createProductUseCase(
-            createProductParameters
+            CreateProductParameters(
+                name = uiState.name.value,
+                quantity = uiState.quantity.value.formatDouble(),
+                unitId = uiState.selectedUnit.value.id.orZero(),
+                suppliesId = uiState.selectedSupplies.value.map { it.id },
+                profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
+                laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
+                variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
+                amountQuantitySupply = uiState.selectedSupplies.value.map { it.quantity.formatDouble() }
+            )
         ).also { result ->
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoBack)
@@ -200,7 +206,7 @@ class AddProductViewModel @Inject constructor(
             id = uiState.selectedSupplyItem.value.id,
             name = uiState.selectedSupplyItem.value.name,
             quantity = uiState.supplyQnt.value,
-            unit = uiState.selectedSupplyItem.value.unit.format().name
+            unit = uiState.selectedSupplyItem.value.unit.label
         )
         selectedSuppliesList.add(newItem) // TODO MERGE ITEMS
         uiState.selectedSupplies.value = selectedSuppliesList.toList()
@@ -216,12 +222,13 @@ class AddProductViewModel @Inject constructor(
     private fun onItemMenuSelected(index: Int) {
         uiState.isMenuSuppliesExpanded.value = false
         uiState.selectedSupplyItem.value = uiState.suppliesMenuList.value[index]
-        uiState.selectedSupplyUnit.value = uiState.selectedSupplyItem.value.unit.format().name
+        uiState.selectedSupplyUnit.value = uiState.selectedSupplyItem.value.unit.label
     }
 
     private fun onChangeExpanded() {
         uiState.isExpanded.value = !uiState.isExpanded.value
     }
+
     private fun onChangeExpandedMenu() {
         uiState.isMenuSuppliesExpanded.value = !uiState.isMenuSuppliesExpanded.value
     }
@@ -229,11 +236,12 @@ class AddProductViewModel @Inject constructor(
     private fun onShowDialog() {
         uiState.isDialogVisible.value = true
     }
+
     private fun onDismissDialog() {
         uiState.isDialogVisible.value = false
     }
 
-    private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
+    private fun onTextChanged(fieldsTexts: FieldsTexts) = when (fieldsTexts) {
         is FieldsTexts.Name -> uiState.name.value = fieldsTexts.text
         is FieldsTexts.LaborPrice -> uiState.laborPrice.value = fieldsTexts.text
         is FieldsTexts.ProfitMargin -> uiState.profitMargin.value = fieldsTexts.text
@@ -251,7 +259,7 @@ class AddProductViewModel @Inject constructor(
         data class SupplyQnt(val text: String) : FieldsTexts()
     }
 
-    fun onAction(action: ScreenActions) = when(action) {
+    fun onAction(action: ScreenActions) = when (action) {
         is ScreenActions.OnChangeExpanded -> onChangeExpanded()
         is ScreenActions.OnClickConfirm -> onClickConfirm()
         is ScreenActions.OnItemSelected -> onItemSelected(action.index)
@@ -275,9 +283,9 @@ class AddProductViewModel @Inject constructor(
         data class OnItemSelected(val index: Int) : ScreenActions()
         data class OnItemMenuSelected(val index: Int) : ScreenActions()
         object OnClickConfirmMenu : ScreenActions()
-        object OnChangeExpandedMenu: ScreenActions()
-        object OnClickAddSupply: ScreenActions()
-        object OnDismissDialog: ScreenActions()
+        object OnChangeExpandedMenu : ScreenActions()
+        object OnClickAddSupply : ScreenActions()
+        object OnDismissDialog : ScreenActions()
 
     }
 
@@ -289,15 +297,23 @@ class AddProductViewModel @Inject constructor(
         val profitMargin = MutableStateFlow("")
         val variableExpenses = MutableStateFlow("")
         val price = MutableStateFlow("")
-        val unities = MutableStateFlow<List<UnitResponse>>(listOf())
+        val unities = MutableStateFlow<List<UnitModel>>(listOf())
         val isExpanded = MutableStateFlow(false)
         val isCreation = MutableStateFlow(true)
         val toolbarTitle = MutableStateFlow(R.string.add_product)
-        val selectedUnit = MutableStateFlow(UnitResponse(0, ""))
+        val selectedUnit = MutableStateFlow(UnitModel(0, ""))
         val selectedSupplies = MutableStateFlow(listOf<MenuItemModel>())
-        val suppliesMenuList = MutableStateFlow(listOf<SupplyResponse>())
+        val suppliesMenuList = MutableStateFlow(listOf<SupplyModel>())
         val isMenuSuppliesExpanded = MutableStateFlow(false)
-        val selectedSupplyItem = MutableStateFlow(SupplyResponse(id = -1, name = "", quantity = ZERO_DOUBLE, value = ZERO_DOUBLE, null))
+        val selectedSupplyItem = MutableStateFlow(
+            SupplyModel(
+                id = -1,
+                name = "",
+                quantity = ZERO_DOUBLE,
+                price = ZERO_DOUBLE,
+                UnitModel(NEGATIVE, EMPTY_STRING)
+            )
+        )
         val selectedSupplyUnit = MutableStateFlow(EMPTY_STRING)
         val supplyQnt = MutableStateFlow("")
         val isDialogVisible = MutableStateFlow(false)

@@ -22,6 +22,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.AddProductViewModel.*
@@ -35,10 +36,11 @@ import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
 @Composable
 fun ScreenAddProduct(
     viewModel: AddProductViewModel = hiltViewModel(),
-    sharedViewModel: MainViewModel
+    sharedViewModel: MainViewModel,
+    productModel: ProductModel? = null
 ) {
     val activity = LocalContext.current as MainActivity
-    LaunchedEffect(key1 = Unit) { viewModel.setup(sharedViewModel.selectedProduct.value) }
+    viewModel.setup(productModel)
     Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(activity, viewModel, sharedViewModel)
 }
@@ -52,7 +54,7 @@ private fun EventConsumer(
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                ScreenEvent.GoBack -> activity.onBackPressed()
+                ScreenEvent.GoBack -> activity.onBackPressed() //TODO UPDATE PRODUCT
                 ScreenEvent.GoHome -> sharedViewModel.navigate(MainViewModel.Navigation.MainMenu)
             }
         }
@@ -234,8 +236,8 @@ private fun MakeDropdownUnit(onAction: (ScreenActions) -> Unit, uiState: UIState
     DropdownMenuOutlined(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
         expanded = isExpanded,
-        items = unities.map { it.name },
-        selectedItem = selectedUnit.name,
+        items = unities.map { it.label },
+        selectedItem = selectedUnit.label,
         label =  error?.asString() ?: stringResource(R.string.select_a_unit),
         onClick = { onAction(OnChangeExpanded) },
         onItemSelected = { index -> onAction(OnItemSelected(index)) }

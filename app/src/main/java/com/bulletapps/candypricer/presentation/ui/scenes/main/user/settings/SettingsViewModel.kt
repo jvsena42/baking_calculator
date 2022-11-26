@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.BuildConfig
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
+import com.bulletapps.candypricer.domain.model.UserModel
 import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ExpiredViewModel
 import com.bulletapps.candypricer.presentation.util.*
@@ -23,15 +24,17 @@ class SettingsViewModel @Inject constructor(
     val uiState = UIState()
 
     fun setup() = viewModelScope.launch {
-        val result = getUserUseCase()
+        getUserUseCase().fold(
+            onSuccess = { handleSuccess(it) },
+            onFailure = {  } //TODO Implement error screen
+        )
+    }
 
-        if (result is Resource.Success) {
-            val user = result.data
-            uiState.name.value = user?.name.orEmpty()
-            uiState.email.value = user?.email.orEmpty()
-            uiState.phone.value =  user?.phone.formatPhone()
-            uiState.expirationDate.value = user?.expirationDate?.toDate()?.formatToDayMonthYear().orEmpty()
-        }
+    private fun handleSuccess(user: UserModel) {
+        uiState.name.value = user.name
+        uiState.email.value = user.email
+        uiState.phone.value =  user.phone.formatPhone()
+        uiState.expirationDate.value = user.expirationDate.toDate().formatToDayMonthYear()
     }
 
     fun onAction(action: ScreenActions) = when(action) {

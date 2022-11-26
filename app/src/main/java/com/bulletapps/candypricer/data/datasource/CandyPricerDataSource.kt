@@ -2,8 +2,6 @@ package com.bulletapps.candypricer.data.datasource
 
 import com.bulletapps.candypricer.data.parameters.*
 import com.bulletapps.candypricer.data.response.*
-import retrofit2.Response
-import retrofit2.http.*
 
 interface CandyPricerDataSource {
 

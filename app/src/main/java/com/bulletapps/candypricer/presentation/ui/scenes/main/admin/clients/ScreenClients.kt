@@ -23,6 +23,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.data.response.UserResponse
+import com.bulletapps.candypricer.domain.model.UserModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ClientsViewModel.ScreenActions
@@ -119,7 +120,7 @@ private fun ClientsList(
                     thirdName = user.expirationDate.toDate().formatToDayMonthYear(),
                     leftBTLabel = R.string.change_expiring_date,
                     rightBTLabel = R.string.send_message,
-                    onClickLeft = { onAction(ScreenActions.OnClickChangeExpirationDate(user)) },
+                    onClickLeft = { onAction(ScreenActions.OnClickChangeExpirationDate(user.id)) },
                     onClickRight = { onAction(ScreenActions.OnClickMessage(user.phone)) }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -180,28 +181,7 @@ private fun MakeDialog(onAction: (ScreenActions) -> Unit, uiState: UIState) {
         }
     }
 }
-/*
-@Composable
-fun BuildCalendar(
-    uiState: UIState,
-    onAction: (ScreenActions) -> Unit
-) {
-    val isDialogVisible by uiState.isDialogVisible.collectAsState()
-    val expirationDateTime by uiState.expirationDateTime.collectAsState()
 
-    val datePickerDialog = DatePicker()
-    datePickerDialog.builder.apply {
-        selectedDate = expirationDateTime
-        onDateSelect = { result -> onAction(ScreenActions.OnConfirmDate(result)) }
-        onCancel = { onAction(ScreenActions.OnDismissDialog) }
-        onDismiss = { onAction(ScreenActions.OnDismissDialog) }
-    }
-
-    if (isDialogVisible) {
-        val activity = LocalContext.current as MainActivity
-        datePickerDialog.show(activity.supportFragmentManager)
-    }
-}*/
 
 @Preview(showBackground = true)
 @Composable
@@ -210,7 +190,7 @@ private fun Preview() {
         onAction = {},
         uiState = UIState().apply {
             clients.value = listOf(
-                UserResponse(
+                UserModel(
                     id = 1,
                     name = "Maria Júlia",
                     expirationDate = "123456",

@@ -7,6 +7,7 @@ import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateUserParameters
 import com.bulletapps.candypricer.data.parameters.UpdateExpirationDateParameters
 import com.bulletapps.candypricer.data.response.UserResponse
+import com.bulletapps.candypricer.domain.model.UserModel
 import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
 import com.bulletapps.candypricer.domain.usecase.user.UpdateExpirationDateUseCase
 import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
@@ -28,12 +29,10 @@ class ClientsViewModel @Inject constructor(
     val uiState = UIState()
 
     suspend fun setup() {
-        getUsersUseCase().also {
-            when (it) {
-                is Resource.Error -> {}
-                is Resource.Success -> uiState.clients.value = it.data.orEmpty().sortedBy { it2 -> it2.name }
-            }
-        }
+        getUsersUseCase().fold(
+            onSuccess = { uiState.clients.value = it.sortedBy { it2 -> it2.name } },
+            onFailure = { showToast(it.message) }
+        )
     }
 
     private fun onClickMessage(phone: String) {
@@ -41,11 +40,10 @@ class ClientsViewModel @Inject constructor(
     }
 
     private fun changeExpirationDate() = viewModelScope.launch {
-        val selectedUser = uiState.selectedUser.value
+        val selectedUserId = uiState.selectedUserId.value
         val currentDate = uiState.date.value
-        if (!selectedUser.id.isNegative() && currentDate.isNotEmpty()) {
-            val formattedDate = currentDate.toDate(DAY_MONTH_YEAR_CLEAR_FORMAT).format(BACKEND_FORMAT)
-            updateExpirationDateUseCase(selectedUser.id, UpdateExpirationDateParameters(formattedDate)).also {
+        if (selectedUserId.isPositive() && currentDate.isNotEmpty()) {
+            updateExpirationDateUseCase(selectedUserId, currentDate).also {
                 when(it) {
                     is Resource.Error -> showToast(it.message)
                     is Resource.Success -> setup()
@@ -60,15 +58,19 @@ class ClientsViewModel @Inject constructor(
         message?.let{ uiState.textToast.value = it }
     }
 
-    private fun onShowDialog(selectedUser: UserResponse) {
-        uiState.selectedUser.value = selectedUser
+    private fun showToast(message: String?) {
+        message?.let{ uiState.textToast.value = UiText.DynamicString(it) }
+    }
+
+    private fun onShowDialog(selectedUserId: Int) {
+        uiState.selectedUserId.value = selectedUserId
         uiState.isDialogVisible.value = true
     }
 
     private fun onDismissDialog() {
         uiState.isDialogVisible.value = false
-        uiState.date.value = ""
-        uiState.selectedUser.value = UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "", isActive = true)
+        uiState.date.value = EMPTY_STRING
+        uiState.selectedUserId.value = NEGATIVE
     }
 
     private fun onTextChanged(fieldsTexts: FieldsTexts) = when(fieldsTexts) {
@@ -82,7 +84,7 @@ class ClientsViewModel @Inject constructor(
     fun onAction(action: ScreenActions) = when(action) {
         is ScreenActions.OnTextChanged -> onTextChanged(action.fieldsTexts)
         is ScreenActions.OnClickMessage -> onClickMessage(action.phone)
-        is ScreenActions.OnClickChangeExpirationDate -> onShowDialog(action.user)
+        is ScreenActions.OnClickChangeExpirationDate -> onShowDialog(action.userId)
         is ScreenActions.OnDismissDialog -> onDismissDialog()
         is ScreenActions.OnConfirmDate -> changeExpirationDate()
     }
@@ -94,7 +96,7 @@ class ClientsViewModel @Inject constructor(
 
     sealed class ScreenActions {
         data class OnClickMessage(val phone: String) : ScreenActions()
-        data class OnClickChangeExpirationDate(val user: UserResponse) : ScreenActions()
+        data class OnClickChangeExpirationDate(val userId: Int) : ScreenActions()
         object OnConfirmDate : ScreenActions()
         object OnDismissDialog : ScreenActions()
         data class OnTextChanged(val fieldsTexts: FieldsTexts) : ScreenActions()
@@ -103,8 +105,8 @@ class ClientsViewModel @Inject constructor(
     class UIState {
         val date = MutableStateFlow("")
         val isDialogVisible = MutableStateFlow(false)
-        val selectedUser = MutableStateFlow(UserResponse(id = NEGATIVE, name = "", email = "", phone = "", isAdmin = false, expirationDate = "", isActive = true))
-        val clients = MutableStateFlow<List<UserResponse>>(listOf())
+        val selectedUserId = MutableStateFlow(NEGATIVE)
+        val clients = MutableStateFlow<List<UserModel>>(listOf())
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
 }

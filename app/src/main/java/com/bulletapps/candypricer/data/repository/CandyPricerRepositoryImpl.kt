@@ -1,10 +1,14 @@
 package com.bulletapps.candypricer.data.repository
 
-import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.datasource.CandyPricerDataSource
+import com.bulletapps.candypricer.data.mapper.SupplyMapper.toSupplyModelList
+import com.bulletapps.candypricer.data.mapper.UnitMapper.toUnitModelList
+import com.bulletapps.candypricer.data.mapper.toProductModelList
+import com.bulletapps.candypricer.data.mapper.toUserModel
+import com.bulletapps.candypricer.data.mapper.toUserModelList
 import com.bulletapps.candypricer.data.parameters.*
-import com.bulletapps.candypricer.data.response.*
 import com.bulletapps.candypricer.presentation.util.safeRequest
+import com.bulletapps.candypricer.presentation.util.safeRequest2
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -17,12 +21,12 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.createUser(parameters)
     }
 
-    override suspend fun getUser() = safeRequest(dispatcher) {
-        dataSource.getUser()
+    override suspend fun getUser() = safeRequest2(dispatcher) {
+        dataSource.getUser().toUserModel()
     }
 
-    override suspend fun getUsers() = safeRequest(dispatcher) {
-        dataSource.getUsers()
+    override suspend fun getUsers() = safeRequest2(dispatcher) {
+        dataSource.getUsers().toUserModelList()
     }
 
     override suspend fun updateUser(parameters: UpdateUserParameters) = safeRequest(dispatcher) {
@@ -45,8 +49,8 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.createProduct(parameters)
     }
 
-    override suspend fun getProducts(): Resource<List<ProductResponse>> = safeRequest(dispatcher) {
-        dataSource.getProducts()
+    override suspend fun getProducts() = safeRequest2(dispatcher) {
+        dataSource.getProducts().toProductModelList()
     }
 
     override suspend fun updateProduct(parameters: UpdateProductParameters) = safeRequest(dispatcher) {
@@ -61,8 +65,8 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.createSupply(parameters)
     }
 
-    override suspend fun getSupplies(): Resource<List<SupplyResponse>> = safeRequest(dispatcher) {
-        dataSource.getSupplies()
+    override suspend fun getSupplies() = safeRequest2(dispatcher) {
+        dataSource.getSupplies().toSupplyModelList()
     }
 
     override suspend fun deleteSupply(id: Int) = safeRequest(dispatcher) {
@@ -77,7 +81,7 @@ class CandyPricerRepositoryImpl @Inject constructor(
         dataSource.createUnit(parameters)
     }
 
-    override suspend fun getUnits() = safeRequest(dispatcher) {
-        dataSource.getUnits()
+    override suspend fun getUnits() = safeRequest2(dispatcher) {
+        dataSource.getUnits().toUnitModelList()
     }
 }

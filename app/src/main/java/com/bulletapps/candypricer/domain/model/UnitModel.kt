@@ -1,6 +1,6 @@
 package com.bulletapps.candypricer.domain.model
 
 data class UnitModel(
-    val id: String,
+    val id: Int,
     val label: String
 )

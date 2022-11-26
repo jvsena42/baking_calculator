@@ -5,16 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
-import com.bulletapps.candypricer.domain.model.User
 import com.bulletapps.candypricer.domain.usecase.user.DeleteUserUseCase
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.SettingsViewModel
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import com.bulletapps.candypricer.presentation.util.WHATSAPP_NUMBER
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel

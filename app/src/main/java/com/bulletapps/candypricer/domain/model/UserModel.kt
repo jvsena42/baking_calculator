@@ -1,21 +1,21 @@
-package com.bulletapps.candypricer.data.response
+package com.bulletapps.candypricer.domain.model
 
 import com.google.gson.annotations.SerializedName
 
-data class UserResponse(
+data class UserModel(
     @SerializedName("id")
-    val id: Int?,
+    val id: Int,
     @SerializedName("name")
-    val name: String?,
+    val name: String,
     @SerializedName("phone")
-    val phone: String?,
+    val phone: String,
     @SerializedName("email")
-    val email: String?,
+    val email: String,
     @SerializedName("admin")
-    val isAdmin: Boolean?,
+    val isAdmin: Boolean,
     @SerializedName("expiration_date")
-    val expirationDate: String?,
+    val expirationDate: String,
     @SerializedName("active")
-    val isActive: Boolean?,
+    val isActive: Boolean,
 )
 

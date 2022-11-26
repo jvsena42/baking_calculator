@@ -17,10 +17,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
-import com.bulletapps.candypricer.data.response.ProductResponse
-import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.domain.model.ProductModel
+import com.bulletapps.candypricer.domain.model.SupplyModel
+import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel.ScreenActions
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel.ScreenEvent
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.CardTwoItemsVertical
 import com.bulletapps.candypricer.presentation.ui.widgets.ScreenErrorRequest
@@ -29,33 +31,43 @@ import com.bulletapps.candypricer.presentation.ui.widgets.TextEmpty
 import com.bulletapps.candypricer.presentation.util.toCurrency
 
 @Composable
-fun ScreenProducs(
+fun ScreenProducts(
     viewModel: ProductsViewModel = hiltViewModel(),
-    sharedViewModel: MainViewModel
+    sharedViewModel: MainViewModel,
+    navigateProductDetail: (ProductModel) -> Unit,
+    navigateAddProduct: () -> Unit,
+    navigateSupplies: () -> Unit,
+    navigateLogout: () -> Unit,
 ) {
-    LaunchedEffect(key1 = Unit) {
-        sharedViewModel.selectedProduct.value = null
-        viewModel.setup()
-    }
+    viewModel.setup()
     Screen(viewModel.uiState, viewModel::onAction)
-    EventConsumer(viewModel, sharedViewModel)
+
+    EventConsumer(
+        viewModel,
+        sharedViewModel,
+        navigateProductDetail,
+        navigateAddProduct,
+        navigateSupplies,
+        navigateLogout
+    )
 }
 
 @Composable
 private fun EventConsumer(
     viewModel: ProductsViewModel,
-    sharedViewModel: MainViewModel
+    sharedViewModel: MainViewModel,
+    navigateProductDetail: (ProductModel) -> Unit,
+    navigateAddProduct: () -> Unit,
+    navigateSupplies: () -> Unit,
+    navigateLogout: () -> Unit
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is ScreenEvent.NavigateToAddProduct -> sharedViewModel.navigate(MainViewModel.Navigation.AddProduct)
-                is ScreenEvent.NavigateToProductDetail -> {
-                    sharedViewModel.selectedProduct.value = event.product
-                    sharedViewModel.navigate(MainViewModel.Navigation.ProductDetail)
-                }
-                is ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
-                is ScreenEvent.NavigateToSupplies -> sharedViewModel.navigate(MainViewModel.Navigation.Supplies)
+                is ScreenEvent.NavigateToAddProduct -> navigateAddProduct.invoke()
+                is ScreenEvent.NavigateToProductDetail -> navigateProductDetail.invoke(event.product)
+                is ScreenEvent.Login -> navigateLogout.invoke()
+                is ScreenEvent.NavigateToSupplies -> navigateSupplies.invoke()
             }
         }
     }
@@ -65,12 +77,10 @@ private fun EventConsumer(
 fun Screen(
     uiState: ProductsUIState,
     onAction: (ScreenActions) -> Unit,
-    ) {
-
+) {
     val screenState = uiState.screenState.collectAsState().value
-
     CandyPricerTheme {
-        when(screenState) {
+        when (screenState) {
             is ProductsUIState.ScreenState.Failure -> ErrorScreen(onAction)
             is ProductsUIState.ScreenState.Loading -> ScreenLoading()
             is ProductsUIState.ScreenState.ShowScreen -> ScreenProducts(onAction, uiState)
@@ -125,7 +135,7 @@ private fun ScreenProducts(
 }
 
 @Composable
-private fun MakeList(uiState: ProductsUIState, onAction: (ScreenActions) -> Unit,) {
+private fun MakeList(uiState: ProductsUIState, onAction: (ScreenActions) -> Unit) {
     val list by uiState.productsList.collectAsState()
 
     if (list.isEmpty()) {
@@ -155,10 +165,10 @@ private fun MakeList(uiState: ProductsUIState, onAction: (ScreenActions) -> Unit
 private fun Preview() {
     Screen(onAction = {}, uiState = ProductsUIState().apply {
         productsList.value = listOf(
-            ProductResponse(
+            ProductModel(
                 id = 0,
                 name = "Brigadeiro",
-                unit = UnitResponse(0, "und"),
+                unit = UnitModel(0, "und"),
                 profitMargin = 100.0,
                 quantity = 20.0,
                 laborValue = 15.0,
@@ -167,7 +177,6 @@ private fun Preview() {
                 totalSaleValue = 3.00,
                 totalSpendsValue = 3.00,
                 supplies = listOf(),
-                amountQuantitySupply = emptyList()
             )
         )
     })

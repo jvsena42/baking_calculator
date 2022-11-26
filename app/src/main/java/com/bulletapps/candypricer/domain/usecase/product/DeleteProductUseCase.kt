@@ -6,5 +6,6 @@ import javax.inject.Inject
 class DeleteProductUseCase @Inject constructor(
     private val repository: CandyPricerRepository
 ) {
+    // TODO VALIDATE NEGATIVE VALUE
     suspend operator fun invoke(supplyId: Int) = repository.deleteProduct(supplyId)
 }

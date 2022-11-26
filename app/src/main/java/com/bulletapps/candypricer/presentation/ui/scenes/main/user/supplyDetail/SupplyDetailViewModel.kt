@@ -4,10 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
-import com.bulletapps.candypricer.data.response.SupplyResponse
-import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.domain.usecase.supply.DeleteSupplyUseCase
-import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,19 +18,27 @@ class SupplyDetailViewModel @Inject constructor(
 ) : ViewModel(), EventFlow<SupplyDetailViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
+    private var id: Int = NEGATIVE
 
-    suspend fun setup(supply: SupplyResponse?) {
-        supply?.let{ uiState.supply.value = it }
+    fun setup(supplyModel: SupplyModel?) = viewModelScope.launch {
+        supplyModel?.run {
+            uiState.supplyName.value = supplyModel.name
+            uiState.supplyQuantity.value = supplyModel.quantity.round()
+            uiState.supplyUnitName.value = supplyModel.unit.label.formatUnit()
+            uiState.supplyPrice.value = supplyModel.price.toCurrency()
+        }
+
     }
 
-    fun onAction(action: ScreenActions) = when(action) {
-        ScreenActions.OnCLickEdit -> viewModelScope.sendEvent(ScreenEvent.NavigateToAddSupply)
+    fun onAction(action: ScreenActions) = when (action) {
+        ScreenActions.OnCLickEdit -> viewModelScope.sendEvent(ScreenEvent.NavigateUpdateSupply)
         ScreenActions.OnCLickDelete -> deleteSupply()
     }
 
     private fun deleteSupply() = viewModelScope.launch {
-        deleteSupplyUseCase(uiState.supply.value.id.orNegative()).also {
-            when(it) {
+        if (id.isNegative()) return@launch
+        deleteSupplyUseCase(id).also {
+            when (it) {
                 is Resource.Error -> showToast(it.message)
                 is Resource.Success -> sendEvent(ScreenEvent.PopScreen)
             }
@@ -40,7 +46,7 @@ class SupplyDetailViewModel @Inject constructor(
     }
 
     private fun showToast(message: UiText?) {
-        message?.let{ uiState.textToast.value = it }
+        message?.let { uiState.textToast.value = it }
     }
 
     sealed class ScreenActions {
@@ -50,13 +56,15 @@ class SupplyDetailViewModel @Inject constructor(
 
 
     sealed class ScreenEvent {
-        object NavigateToAddSupply : ScreenEvent()
+        object NavigateUpdateSupply : ScreenEvent()
         object PopScreen : ScreenEvent()
     }
 
     class UIState {
-        val supply = MutableStateFlow(SupplyResponse(0,"", ZERO_DOUBLE, ZERO_DOUBLE, UnitResponse(
-            ZERO,"")))
+        val supplyName = MutableStateFlow("")
+        val supplyQuantity = MutableStateFlow("")
+        val supplyUnitName = MutableStateFlow("")
+        val supplyPrice = MutableStateFlow("")
         val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
 }

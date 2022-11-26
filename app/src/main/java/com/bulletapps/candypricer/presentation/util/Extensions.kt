@@ -5,9 +5,10 @@ import android.content.Intent
 import android.icu.text.NumberFormat
 import android.net.Uri
 import android.telephony.PhoneNumberUtils
-import com.bulletapps.candypricer.data.response.SupplyResponse
 import com.bulletapps.candypricer.data.response.UnitResponse
 import com.bulletapps.candypricer.domain.model.MenuItemModel
+import com.bulletapps.candypricer.domain.model.ProductSupplyModel
+import com.bulletapps.candypricer.domain.model.SupplyModel
 import java.math.RoundingMode
 import java.net.URLEncoder
 import java.text.DecimalFormat
@@ -32,7 +33,8 @@ fun Int?.orNegative() = this ?: NEGATIVE
 fun Double?.orZero() = this ?: ZERO_DOUBLE
 fun Float?.orZero() = this ?: ZERO_FLOAT
 
-fun Int.isNegative() = this < 0
+fun Int?.isNegative() = this.orZero() < 0
+fun Int?.isPositive() = this.orZero() > 0
 
 fun Boolean?.orFalse() = this ?: false
 
@@ -58,8 +60,9 @@ fun Double?.fromPercent() = this.orZero() * ONE_HUNDRED
 fun Double?.toPercentString() = "${(this.orZero() * ONE_HUNDRED).round()}%"
 
 fun Double.round(): String {
-    val df = DecimalFormat("#.##")
-    df.roundingMode = RoundingMode.DOWN
+    val df = DecimalFormat("#.##").apply {
+        roundingMode = RoundingMode.DOWN
+    }
     return df.format(this)
 }
 
@@ -103,19 +106,12 @@ fun List<UnitResponse>.format(): List<UnitResponse> {
 
 fun UnitResponse?.format() = UnitResponse(this?.id ?: -1, this?.name.formatUnit())
 
-fun List<SupplyResponse>.toItemMenuList(amountQuantitySupply: List<Double>): List<MenuItemModel> {
+fun List<ProductSupplyModel>.toItemMenuList(): List<MenuItemModel> {
     if (this.isEmpty()) return emptyList()
-    if (this.size != amountQuantitySupply.size) return emptyList()
-    val menuList = mutableListOf<MenuItemModel>()
-    this.forEachIndexed { index, item ->
-        menuList.add(
-            MenuItemModel(
-                id = item.id,
-                name = item.name,
-                quantity = amountQuantitySupply[index].round(),
-                unit = item.unit?.name.formatUnit()
-            )
-        )
-    }
-    return menuList.toList()
+    return map { MenuItemModel(
+        id = it.supply.id,
+        name = it.supply.name,
+        quantity = it.quantity.round(),
+        unit = it.supply.unit.label
+    ) }.toList()
 }

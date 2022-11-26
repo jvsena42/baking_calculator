@@ -2,15 +2,20 @@ package com.bulletapps.candypricer.data.repository
 
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.parameters.*
-import com.bulletapps.candypricer.data.response.*
+import com.bulletapps.candypricer.data.response.LoginResponse
+import com.bulletapps.candypricer.data.response.UserResponse
+import com.bulletapps.candypricer.domain.model.ProductModel
+import com.bulletapps.candypricer.domain.model.SupplyModel
+import com.bulletapps.candypricer.domain.model.UnitModel
+import com.bulletapps.candypricer.domain.model.UserModel
 
 interface CandyPricerRepository {
 
     suspend fun createUser(parameters: CreateUserParameters): Resource<LoginResponse>
 
-    suspend fun getUser(): Resource<UserResponse>
+    suspend fun getUser(): Result<UserModel>
 
-    suspend fun getUsers(): Resource<List<UserResponse>>
+    suspend fun getUsers(): Result<List<UserModel>>
 
     suspend fun updateUser(parameters: UpdateUserParameters): Resource<Unit>
 
@@ -22,7 +27,7 @@ interface CandyPricerRepository {
 
     suspend fun createProduct(parameters: CreateProductParameters): Resource<Unit>
 
-    suspend fun getProducts(): Resource<List<ProductResponse>>
+    suspend fun getProducts(): Result<List<ProductModel>>
 
     suspend fun updateProduct(parameters: UpdateProductParameters): Resource<Unit>
 
@@ -30,7 +35,7 @@ interface CandyPricerRepository {
 
     suspend fun createSupply(parameters: CreateSupplyParameters): Resource<Unit>
 
-    suspend fun getSupplies(): Resource<List<SupplyResponse>>
+    suspend fun getSupplies(): Result<List<SupplyModel>>
 
     suspend fun deleteSupply(id: Int): Resource<Unit>
 
@@ -38,5 +43,5 @@ interface CandyPricerRepository {
 
     suspend fun createUnit(parameters: CreateUnitParameters): Resource<Unit>
 
-    suspend fun getUnits(): Resource<List<UnitResponse>>
+    suspend fun getUnits(): Result<List<UnitModel>>
 }

@@ -1,13 +1,13 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.activity
 import androidx.navigation.compose.composable
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ScreenClients
 import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.ScreenMenu
@@ -16,7 +16,7 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply.Scr
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ScreenExpired
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.ScreenLogin
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.productDetail.ScreenProductDetail
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ScreenProducs
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ScreenProducts
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.register.ScreenRegister
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings.ScreenSettings
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.supplies.ScreenSupplies
@@ -32,9 +32,7 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                sharedViewModel.isLoading.value
-            }
+            setKeepOnScreenCondition { sharedViewModel.isLoading.value }
         }
         setContent {
             setNavigation(
@@ -49,7 +47,7 @@ class MainActivity : FragmentActivity() {
     private fun navigationBuilder(builder: NavGraphBuilder) = builder.apply {
         composable(MainViewModel.Navigation.MainMenu.router) {
             ScreenMenu(sharedViewModel = sharedViewModel)
-        } 
+        }
         composable(MainViewModel.Navigation.Login.router) {
             ScreenLogin(sharedViewModel = sharedViewModel)
         }
@@ -57,16 +55,51 @@ class MainActivity : FragmentActivity() {
             ScreenRegister(sharedViewModel = sharedViewModel)
         }
         composable(MainViewModel.Navigation.Supplies.router) {
-            ScreenSupplies(sharedViewModel = sharedViewModel)
+            ScreenSupplies(
+                sharedViewModel = sharedViewModel,
+                navigateSupplyDetail = { supply ->
+                    sharedViewModel.supplyModel = supply
+                    sharedViewModel.navigate(MainViewModel.Navigation.SupplyDetail)
+                },
+                navigateAddSupply = { sharedViewModel.navigate(MainViewModel.Navigation.AddSupply) },
+                navigateLogout = sharedViewModel::logout
+            )
         }
         composable(MainViewModel.Navigation.AddSupply.router) {
-            ScreenAddSupply(sharedViewModel = sharedViewModel)
+            ScreenAddSupply(
+                sharedViewModel = sharedViewModel
+            )
+        }
+        composable(MainViewModel.Navigation.UpdateSupply.router) {
+            ScreenAddSupply(
+                sharedViewModel = sharedViewModel,
+                supplyModel = sharedViewModel.supplyModel,
+                popToSupplyDetail = { supplyModel ->
+                    sharedViewModel.supplyModel = supplyModel
+                    onBackPressed()
+                }
+            )
         }
         composable(MainViewModel.Navigation.Products.router) {
-            ScreenProducs(sharedViewModel = sharedViewModel)
+            ScreenProducts(
+                sharedViewModel = sharedViewModel,
+                navigateProductDetail = { product ->
+                    sharedViewModel.productModel = product
+                    sharedViewModel.navigate(MainViewModel.Navigation.ProductDetail)
+                },
+                navigateAddProduct = { sharedViewModel.navigate(MainViewModel.Navigation.AddProduct) },
+                navigateSupplies = { sharedViewModel.navigate(MainViewModel.Navigation.Supplies) },
+                navigateLogout = sharedViewModel::logout
+            )
         }
         composable(MainViewModel.Navigation.AddProduct.router) {
             ScreenAddProduct(sharedViewModel = sharedViewModel)
+        }
+        composable(MainViewModel.Navigation.UpdateProduct.router) {
+            ScreenAddProduct(
+                sharedViewModel = sharedViewModel,
+                productModel = sharedViewModel.productModel
+            )
         }
         composable(MainViewModel.Navigation.Settings.router) {
             ScreenSettings(sharedViewModel = sharedViewModel)
@@ -78,10 +111,18 @@ class MainActivity : FragmentActivity() {
             ScreenExpired(sharedViewModel = sharedViewModel)
         }
         composable(MainViewModel.Navigation.SupplyDetail.router) {
-            ScreenSupplyDetail(sharedViewModel = sharedViewModel)
+            ScreenSupplyDetail(
+                sharedViewModel = sharedViewModel,
+                supplyModel = sharedViewModel.supplyModel,
+                navigateUpdateSupply = { sharedViewModel.navigate(MainViewModel.Navigation.UpdateSupply) }
+            )
         }
         composable(MainViewModel.Navigation.ProductDetail.router) {
-            ScreenProductDetail(sharedViewModel = sharedViewModel)
+            ScreenProductDetail(
+                sharedViewModel = sharedViewModel,
+                productModel = sharedViewModel.productModel,
+                navigateUpdateProduct = { sharedViewModel.navigate(MainViewModel.Navigation.UpdateProduct) }
+            )
         }
     }
 
