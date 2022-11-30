@@ -1,6 +1,6 @@
 package com.bulletapps.candypricer.data.repository
 
-import com.bulletapps.candypricer.data.datasource.CandyPricerDataSource
+import com.bulletapps.candypricer.data.datasource.remote.CandyPricerDataSource
 import com.bulletapps.candypricer.data.mapper.SupplyMapper.toSupplyModelList
 import com.bulletapps.candypricer.data.mapper.UnitMapper.toUnitModelList
 import com.bulletapps.candypricer.data.mapper.toProductModelList

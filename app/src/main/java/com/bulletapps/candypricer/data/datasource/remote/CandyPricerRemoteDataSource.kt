@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.data.datasource
+package com.bulletapps.candypricer.data.datasource.remote
 
 import com.bulletapps.candypricer.data.api.CandyPricerApi
 import com.bulletapps.candypricer.data.parameters.*

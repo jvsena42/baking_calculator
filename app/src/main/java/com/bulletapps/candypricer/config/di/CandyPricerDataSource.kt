@@ -1,10 +1,11 @@
 package com.bulletapps.candypricer.config.di
 
 import android.content.Context
+import com.bulletapps.candypricer.config.db.UnitsDAO
 import com.bulletapps.candypricer.data.api.CandyPricerApi
-import com.bulletapps.candypricer.data.datasource.CandyPricerDataSource
-import com.bulletapps.candypricer.data.datasource.CandyPricerRemoteDataSource
-import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
+import com.bulletapps.candypricer.data.datasource.remote.CandyPricerDataSource
+import com.bulletapps.candypricer.data.datasource.remote.CandyPricerRemoteDataSource
+import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

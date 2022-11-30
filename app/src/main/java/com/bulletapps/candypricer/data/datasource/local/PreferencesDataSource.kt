@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.data.datasource
+package com.bulletapps.candypricer.data.datasource.local
 
 import android.content.SharedPreferences
 

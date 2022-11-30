@@ -2,7 +2,7 @@ package com.bulletapps.candypricer.config.di
 
 import com.bulletapps.candypricer.BuildConfig
 import com.bulletapps.candypricer.data.api.CandyPricerApi
-import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
+import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.data.service.OkHttpInterceptor
 import com.google.gson.GsonBuilder
 import dagger.Module

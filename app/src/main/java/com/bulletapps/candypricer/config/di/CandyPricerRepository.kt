@@ -1,6 +1,6 @@
 package com.bulletapps.candypricer.config.di
 
-import com.bulletapps.candypricer.data.datasource.CandyPricerDataSource
+import com.bulletapps.candypricer.data.datasource.remote.CandyPricerDataSource
 import com.bulletapps.candypricer.data.repository.CandyPricerRepository
 import com.bulletapps.candypricer.data.repository.CandyPricerRepositoryImpl
 import dagger.Module
@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class SupplyCandyPricerRepository {
+class CandyPricerRepository {
 
     @Singleton
     @Provides
