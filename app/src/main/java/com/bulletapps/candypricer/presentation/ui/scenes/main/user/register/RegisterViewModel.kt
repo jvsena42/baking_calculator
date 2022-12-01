@@ -12,6 +12,7 @@ import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseC
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyTextUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidatePasswordConfirmationUseCase
+import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.domain.usecase.user.CreateUserUseCase
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
@@ -29,6 +30,7 @@ class RegisterViewModel @Inject constructor(
     private val validatePswConfUseCase: ValidatePasswordConfirmationUseCase,
     private val validateEmptyTextUseCase: ValidateEmptyTextUseCase,
     private val createUserUseCase: CreateUserUseCase,
+    private val getUnitsUseCase: GetUnitsUseCase,
     private val preferencesDataSource: PreferencesDataSource
 ) : ViewModel(), EventFlow<RegisterViewModel.ScreenEvent> by EventFlowImpl() {
 
@@ -98,8 +100,9 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    private fun handleSuccess(loginResponse: LoginResponse) {
+    private fun handleSuccess(loginResponse: LoginResponse) = viewModelScope.launch {
         preferencesDataSource.setPref(ACCESS_TOKEN, loginResponse.accessToken)
+        getUnitsUseCase(true)
         viewModelScope.sendEvent(ScreenEvent.MainScreen)
     }
 
