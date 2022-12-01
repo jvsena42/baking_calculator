@@ -2,7 +2,6 @@ package com.bulletapps.candypricer.data.datasource.local
 
 import com.bulletapps.candypricer.config.db.UnitsDAO
 import com.bulletapps.candypricer.data.entities.UnitEntity
-import com.bulletapps.candypricer.data.response.UnitResponse
 import javax.inject.Inject
 
 class CandyPricerLocalDataSource @Inject constructor(
@@ -13,4 +12,6 @@ class CandyPricerLocalDataSource @Inject constructor(
     override suspend fun updateUnits(units: List<UnitEntity>) = unitsDAO.updateUnits(units)
 
     override suspend fun getUnits(): List<UnitEntity>? = unitsDAO.getUnits()
+
+    override suspend fun deleteUnits() = unitsDAO.deleteUnits()
 }

@@ -10,7 +10,6 @@ import com.bulletapps.candypricer.data.mapper.toProductModelList
 import com.bulletapps.candypricer.data.mapper.toUserModel
 import com.bulletapps.candypricer.data.mapper.toUserModelList
 import com.bulletapps.candypricer.data.parameters.*
-import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.presentation.util.safeRequest
 import com.bulletapps.candypricer.presentation.util.safeRequest2
 import kotlinx.coroutines.CoroutineDispatcher
@@ -107,4 +106,8 @@ class CandyPricerRepositoryImpl @Inject constructor(
                 localDataSource.getUnits().toUnitModel()
             }
         }
+
+    override suspend fun deleteUnits() = safeRequest2(dispatcher) {
+        localDataSource.deleteUnits()
+    }
 }

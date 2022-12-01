@@ -44,4 +44,6 @@ interface CandyPricerRepository {
     suspend fun createUnit(parameters: CreateUnitParameters): Resource<Unit>
 
     suspend fun getUnits(isRefresh: Boolean = false): Result<List<UnitModel>>
+
+    suspend fun deleteUnits(): Result<Unit>
 }

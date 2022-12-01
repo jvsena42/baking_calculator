@@ -12,6 +12,9 @@ interface UnitsDAO {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateUnits(units: List<UnitEntity>)
 
-    @Query("SELECT * from units")
+    @Query("SELECT * FROM units")
     suspend fun getUnits(): List<UnitEntity>?
+
+    @Query("DELETE FROM units")
+    suspend fun deleteUnits()
 }
