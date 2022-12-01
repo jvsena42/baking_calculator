@@ -3,6 +3,8 @@ package com.bulletapps.candypricer.config.di
 import android.content.Context
 import com.bulletapps.candypricer.config.db.UnitsDAO
 import com.bulletapps.candypricer.data.api.CandyPricerApi
+import com.bulletapps.candypricer.data.datasource.local.CandyPricerLocalDataSource
+import com.bulletapps.candypricer.data.datasource.local.LocalDataSource
 import com.bulletapps.candypricer.data.datasource.remote.CandyPricerDataSource
 import com.bulletapps.candypricer.data.datasource.remote.CandyPricerRemoteDataSource
 import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
@@ -23,6 +25,12 @@ class SupplyCandyPricerDataSource {
     @Provides
     fun providesCandyPricerRemoteDataSource(api: CandyPricerApi): CandyPricerDataSource {
         return CandyPricerRemoteDataSource(api)
+    }
+
+    @Singleton
+    @Provides
+    fun providesCandyPricerLocalDataSource(unitsDAO: UnitsDAO): LocalDataSource {
+        return CandyPricerLocalDataSource(unitsDAO)
     }
 
     @Singleton

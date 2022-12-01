@@ -1,9 +1,9 @@
 package com.bulletapps.candypricer.data.datasource.local
 
-import com.bulletapps.candypricer.data.response.UnitResponse
+import com.bulletapps.candypricer.data.entities.UnitEntity
 
 interface LocalDataSource {
-    suspend fun getUnits(): List<UnitResponse>
-
-    suspend fun updateUnits(units: List<UnitResponse>)
+    suspend fun createUnits(units: List<UnitEntity>)
+    suspend fun updateUnits(units: List<UnitEntity>)
+    suspend fun getUnits(): List<UnitEntity>?
 }

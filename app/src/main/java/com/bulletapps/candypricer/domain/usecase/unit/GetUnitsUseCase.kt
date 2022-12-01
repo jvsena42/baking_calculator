@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetUnitsUseCase @Inject constructor(
     private val repository: CandyPricerRepository
 ) {
-    suspend operator fun invoke() = repository.getUnits()
+    suspend operator fun invoke(isRefresh: Boolean = false) = repository.getUnits(isRefresh)
 }
