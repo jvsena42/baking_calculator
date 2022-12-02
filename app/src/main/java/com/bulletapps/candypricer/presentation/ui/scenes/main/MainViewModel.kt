@@ -2,11 +2,13 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
 import com.bulletapps.candypricer.domain.model.MenuModel
 import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.domain.model.SupplyModel
-import com.bulletapps.candypricer.presentation.util.*
+import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
+import com.bulletapps.candypricer.domain.usecase.user.LogoutUseCase
+import com.bulletapps.candypricer.presentation.util.EventFlow
+import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val preferencesDataSource: PreferencesDataSource,
+    private val logoutUseCase: LogoutUseCase,
+    private val getUnitsUseCase: GetUnitsUseCase,
     ) : ViewModel(),
     EventFlow<MainViewModel.Navigation> by EventFlowImpl() {
 
@@ -23,8 +26,6 @@ class MainViewModel @Inject constructor(
     var productModel: ProductModel? = null
 
     val isLoading = MutableStateFlow(true)
-    var selectedProduct: ProductModel? = null
-        private set
 
     val menuItems: MutableStateFlow<List<MenuModel>> = MutableStateFlow(emptyList())
 
@@ -33,6 +34,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun setIsLoading() = viewModelScope.launch {
+        getUnitsUseCase.invoke(isRefresh = true)
         delay(2000L)
         isLoading.value = false
     }
@@ -42,16 +44,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launch {
-        preferencesDataSource.clearPref()
+        logoutUseCase.invoke()
         navigate(Navigation.Login)
-    }
-
-    fun saveProduct(productModel: ProductModel) {
-        selectedProduct = productModel
-    }
-
-    fun resetProduct() {
-        selectedProduct = null
     }
 
     sealed class Navigation(

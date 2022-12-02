@@ -1,5 +1,6 @@
 package com.bulletapps.candypricer.config.di
 
+import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.data.repository.CandyPricerRepository
 import com.bulletapps.candypricer.domain.usecase.inputValidation.*
 import com.bulletapps.candypricer.domain.usecase.supply.CreateSupplyUseCase
@@ -41,6 +42,15 @@ class UseCaseModule {
     @Provides
     fun providesUpdateUserUseCase(repository: CandyPricerRepository) : UpdateUserUseCase {
         return UpdateUserUseCase(repository)
+    }
+
+    @Singleton
+    @Provides
+    fun providesLogoutUseCase(
+        repository: CandyPricerRepository,
+        preferencesDataSource: PreferencesDataSource
+    ): LogoutUseCase {
+        return LogoutUseCase(repository, preferencesDataSource)
     }
 
     @Singleton

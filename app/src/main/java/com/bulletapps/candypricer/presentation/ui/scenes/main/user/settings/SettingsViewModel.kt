@@ -3,16 +3,13 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.BuildConfig
-import com.bulletapps.candypricer.config.Resource
-import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
+import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.domain.model.UserModel
 import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ExpiredViewModel
 import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel

@@ -4,11 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
-import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
+import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.data.parameters.LoginParameters
 import com.bulletapps.candypricer.data.response.LoginResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
+import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.domain.usecase.user.LoginUseCase
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val submitEmailUseCase: SubmitEmailUseCase,
     private val submitPasswordUseCase: SubmitPasswordUseCase,
+    private val getUnitsUseCase: GetUnitsUseCase,
     private val loginUseCase: LoginUseCase,
     private val preferencesDataSource: PreferencesDataSource
 ) : ViewModel(), EventFlow<LoginViewModel.ScreenEvent> by EventFlowImpl() {
@@ -69,8 +71,9 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun handleSuccess(loginResponse: LoginResponse) {
+    private fun handleSuccess(loginResponse: LoginResponse) = viewModelScope.launch {
         preferencesDataSource.setPref(ACCESS_TOKEN, loginResponse.accessToken)
+        getUnitsUseCase(isRefresh = true)
         viewModelScope.sendEvent(ScreenEvent.MainScreen)
     }
 

@@ -2,7 +2,7 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.products
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bulletapps.candypricer.data.datasource.PreferencesDataSource
+import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.domain.usecase.product.GetAllProductsUseCase
