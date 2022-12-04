@@ -30,6 +30,7 @@ class ProductDetailViewModel @Inject constructor(
             uiState.totalSpendsValue.value = it.totalSpendsValue.toCurrency()
             uiState.unitSaleValue.value = it.unitSaleValue.toCurrency()
             uiState.unit.value = it.unit.label.formatUnit()
+            uiState.id.value = it.id
         }
     }
 
