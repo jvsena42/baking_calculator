@@ -10,7 +10,7 @@ interface UserDAO {
     suspend fun createUser(user: UserEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateUnits(user: UserEntity)
+    suspend fun updateUser(user: UserEntity)
 
     @Query("SELECT * FROM user LIMIT 1")
     suspend fun getUser(): UserEntity?
