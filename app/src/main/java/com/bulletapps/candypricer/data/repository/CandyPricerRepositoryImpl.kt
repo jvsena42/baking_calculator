@@ -7,9 +7,12 @@ import com.bulletapps.candypricer.data.mapper.UnitMapper.toUnitEntity
 import com.bulletapps.candypricer.data.mapper.UnitMapper.toUnitModel
 import com.bulletapps.candypricer.data.mapper.UnitMapper.toUnitModelList
 import com.bulletapps.candypricer.data.mapper.toProductModelList
+import com.bulletapps.candypricer.data.mapper.toUserEntity
 import com.bulletapps.candypricer.data.mapper.toUserModel
 import com.bulletapps.candypricer.data.mapper.toUserModelList
 import com.bulletapps.candypricer.data.parameters.*
+import com.bulletapps.candypricer.domain.model.UserModel
+import com.bulletapps.candypricer.presentation.util.isNegative
 import com.bulletapps.candypricer.presentation.util.safeRequest
 import com.bulletapps.candypricer.presentation.util.safeRequest2
 import kotlinx.coroutines.CoroutineDispatcher
@@ -25,8 +28,19 @@ class CandyPricerRepositoryImpl @Inject constructor(
         remoteDataSource.createUser(parameters)
     }
 
-    override suspend fun getUser() = safeRequest2(dispatcher) {
-        remoteDataSource.getUser().toUserModel()
+    override suspend fun getUser(isRefresh: Boolean) = safeRequest2(dispatcher) {
+        return@safeRequest2 if (isRefresh) {
+            remoteDataSource.getUser().toUserModel().also { userModel ->
+                if (userModel.id.isNegative()) return@also
+
+                localDataSource.getUser()?.let {
+                    localDataSource.updateUser(userModel.toUserEntity())
+                } ?: localDataSource.createUser(userModel.toUserEntity())
+            }
+
+        } else {
+            localDataSource.getUser().toUserModel()
+        }
     }
 
     override suspend fun getUsers() = safeRequest2(dispatcher) {

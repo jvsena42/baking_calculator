@@ -13,7 +13,7 @@ interface CandyPricerRepository {
 
     suspend fun createUser(parameters: CreateUserParameters): Resource<LoginResponse>
 
-    suspend fun getUser(): Result<UserModel>
+    suspend fun getUser(isRefresh: Boolean): Result<UserModel>
 
     suspend fun getUsers(): Result<List<UserModel>>
 
