@@ -2,6 +2,7 @@ package com.bulletapps.candypricer.config.di
 
 import android.content.Context
 import com.bulletapps.candypricer.config.db.UnitsDAO
+import com.bulletapps.candypricer.config.db.UserDAO
 import com.bulletapps.candypricer.data.api.CandyPricerApi
 import com.bulletapps.candypricer.data.datasource.local.CandyPricerLocalDataSource
 import com.bulletapps.candypricer.data.datasource.local.LocalDataSource
@@ -29,13 +30,21 @@ class SupplyCandyPricerDataSource {
 
     @Singleton
     @Provides
-    fun providesCandyPricerLocalDataSource(unitsDAO: UnitsDAO): LocalDataSource {
-        return CandyPricerLocalDataSource(unitsDAO)
+    fun providesCandyPricerLocalDataSource(
+        unitsDAO: UnitsDAO,
+        userDAO: UserDAO
+    ): LocalDataSource {
+        return CandyPricerLocalDataSource(unitsDAO, userDAO)
     }
 
     @Singleton
     @Provides
     fun providesCandyPricerPreferencesDataSource(@ApplicationContext appContext: Context): PreferencesDataSource {
-        return PreferencesDataSource(appContext.getSharedPreferences(USER_PREFERENCES, Context.MODE_PRIVATE))
+        return PreferencesDataSource(
+            appContext.getSharedPreferences(
+                USER_PREFERENCES,
+                Context.MODE_PRIVATE
+            )
+        )
     }
 }
