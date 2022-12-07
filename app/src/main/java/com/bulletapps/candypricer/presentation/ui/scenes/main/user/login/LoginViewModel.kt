@@ -6,11 +6,10 @@ import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.data.parameters.LoginParameters
-import com.bulletapps.candypricer.data.response.LoginResponse
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
-import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
 import com.bulletapps.candypricer.domain.usecase.user.LoginUseCase
+import com.bulletapps.candypricer.presentation.util.EMPTY_STRING
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import com.bulletapps.candypricer.presentation.util.PreferencesKeys.ACCESS_TOKEN
@@ -23,7 +22,6 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val submitEmailUseCase: SubmitEmailUseCase,
     private val submitPasswordUseCase: SubmitPasswordUseCase,
-    private val getUnitsUseCase: GetUnitsUseCase,
     private val loginUseCase: LoginUseCase,
     private val preferencesDataSource: PreferencesDataSource
 ) : ViewModel(), EventFlow<LoginViewModel.ScreenEvent> by EventFlowImpl() {
@@ -31,7 +29,7 @@ class LoginViewModel @Inject constructor(
     val uiState = UIState()
 
     fun checkToken() = viewModelScope.launch {
-        val token = preferencesDataSource.getPref(ACCESS_TOKEN , "")
+        val token = preferencesDataSource.getPref(ACCESS_TOKEN , EMPTY_STRING)
         if (token.isNotEmpty()) viewModelScope.sendEvent(ScreenEvent.MainScreen)
     }
 
@@ -63,18 +61,12 @@ class LoginViewModel @Inject constructor(
                     )
                 ).also { result ->
                     when (result) {
-                        is Resource.Success -> handleSuccess(result.data!!)
+                        is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.MainScreen)
                         is Resource.Error -> showToast(result.message)
                     }
                 }
             }
         }
-    }
-
-    private fun handleSuccess(loginResponse: LoginResponse) = viewModelScope.launch {
-        preferencesDataSource.setPref(ACCESS_TOKEN, loginResponse.accessToken)
-        getUnitsUseCase(isRefresh = true)
-        viewModelScope.sendEvent(ScreenEvent.MainScreen)
     }
 
     private fun showToast(message: UiText?) {

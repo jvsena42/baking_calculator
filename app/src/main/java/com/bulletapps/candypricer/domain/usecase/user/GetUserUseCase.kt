@@ -5,5 +5,5 @@ import javax.inject.Inject
 
 class GetUserUseCase @Inject constructor(private val repository: CandyPricerRepository) {
 
-    suspend operator fun invoke() =  repository.getUser()
+    suspend operator fun invoke(isRefresh: Boolean = false) =  repository.getUser(isRefresh)
 }
