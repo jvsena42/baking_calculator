@@ -7,7 +7,7 @@ import com.bulletapps.candypricer.data.entities.UserEntity
 
 @Database(
     entities = [UnitEntity::class, UserEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class CandyPricerDatabase : RoomDatabase() {
