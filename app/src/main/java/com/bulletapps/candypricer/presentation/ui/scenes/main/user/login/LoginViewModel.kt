@@ -8,6 +8,7 @@ import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.data.parameters.LoginParameters
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitEmailUseCase
 import com.bulletapps.candypricer.domain.usecase.inputValidation.SubmitPasswordUseCase
+import com.bulletapps.candypricer.domain.usecase.user.IsUserLoggedUseCase
 import com.bulletapps.candypricer.domain.usecase.user.LoginUseCase
 import com.bulletapps.candypricer.presentation.util.EMPTY_STRING
 import com.bulletapps.candypricer.presentation.util.EventFlow
@@ -23,14 +24,14 @@ class LoginViewModel @Inject constructor(
     private val submitEmailUseCase: SubmitEmailUseCase,
     private val submitPasswordUseCase: SubmitPasswordUseCase,
     private val loginUseCase: LoginUseCase,
-    private val preferencesDataSource: PreferencesDataSource
-) : ViewModel(), EventFlow<LoginViewModel.ScreenEvent> by EventFlowImpl() {
+    private val userLoggedUseCase: IsUserLoggedUseCase
+    ) : ViewModel(), EventFlow<LoginViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
-    fun checkToken() = viewModelScope.launch {
-        val token = preferencesDataSource.getPref(ACCESS_TOKEN , EMPTY_STRING)
-        if (token.isNotEmpty()) viewModelScope.sendEvent(ScreenEvent.MainScreen)
+    fun setUp() = viewModelScope.launch {
+        val isLogged = userLoggedUseCase.invoke()
+        if (isLogged) viewModelScope.sendEvent(ScreenEvent.MainScreen)
     }
 
     private fun onClickConfirm() {
