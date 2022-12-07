@@ -12,6 +12,7 @@ import com.bulletapps.candypricer.data.mapper.toUserEntity
 import com.bulletapps.candypricer.data.mapper.toUserModel
 import com.bulletapps.candypricer.data.mapper.toUserModelList
 import com.bulletapps.candypricer.data.parameters.*
+import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.domain.model.UserModel
 import com.bulletapps.candypricer.presentation.util.isNegative
 import com.bulletapps.candypricer.presentation.util.safeRequest
@@ -33,16 +34,19 @@ class CandyPricerRepositoryImpl @Inject constructor(
     override suspend fun getUser(isRefresh: Boolean) = safeRequest2(dispatcher) {
         return@safeRequest2 if (isRefresh) {
             remoteDataSource.getUser().toUserModel().also { userModel ->
-                if (userModel.id.isNegative()) return@also
-
-                localDataSource.getUser()?.let {
-                    localDataSource.updateUser(userModel.toUserEntity())
-                } ?: localDataSource.createUser(userModel.toUserEntity())
+                updateUserLocalDataSource(userModel)
             }
-
         } else {
             localDataSource.getUser().toUserModel()
         }
+    }
+
+    private suspend fun updateUserLocalDataSource(userModel: UserModel) {
+        if (userModel.id.isNegative()) return
+
+        localDataSource.getUser()?.let {
+            localDataSource.updateUser(userModel.toUserEntity())
+        } ?: localDataSource.createUser(userModel.toUserEntity())
     }
 
     override suspend fun getUsers() = safeRequest2(dispatcher) {
@@ -116,18 +120,24 @@ class CandyPricerRepositoryImpl @Inject constructor(
         safeRequest2(dispatcher) {
             return@safeRequest2 if (isRefresh) {
                 remoteDataSource.getUnits().toUnitModelList().also { remoteUnits ->
-                    localDataSource.getUnits().let { units ->
-                        if (units.isNullOrEmpty()) {
-                            localDataSource.createUnits(remoteUnits.toUnitEntity())
-                        } else {
-                            localDataSource.updateUnits(remoteUnits.toUnitEntity())
-                        }
-                    }
+                    updateUnitsLocalDataSource(remoteUnits)
                 }
             } else {
                 localDataSource.getUnits().toUnitModel()
             }
         }
+
+    private suspend fun updateUnitsLocalDataSource(remoteUnits: List<UnitModel>) {
+        if (remoteUnits.isEmpty()) return
+
+        localDataSource.getUnits().let { units ->
+            if (units.isNullOrEmpty()) {
+                localDataSource.createUnits(remoteUnits.toUnitEntity())
+            } else {
+                localDataSource.updateUnits(remoteUnits.toUnitEntity())
+            }
+        }
+    }
 
     override suspend fun deleteUnits() = safeRequest2(dispatcher) {
         localDataSource.deleteUnits()
