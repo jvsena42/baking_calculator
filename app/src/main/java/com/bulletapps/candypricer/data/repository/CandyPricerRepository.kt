@@ -25,6 +25,8 @@ interface CandyPricerRepository {
 
     suspend fun login(parameters: LoginParameters): Resource<LoginResponse>
 
+    suspend fun logout(): Result<Unit>
+
     suspend fun createProduct(parameters: CreateProductParameters): Resource<Unit>
 
     suspend fun getProducts(): Result<List<ProductModel>>

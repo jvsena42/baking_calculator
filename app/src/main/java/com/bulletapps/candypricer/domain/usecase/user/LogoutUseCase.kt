@@ -10,7 +10,6 @@ class LogoutUseCase @Inject constructor(
     ) {
 
     suspend operator fun invoke() {
-        repository.deleteUnits()
-        preferencesDataSource.clearPref()
+        repository.logout()
     }
 }

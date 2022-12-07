@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.data.repository
 
 import com.bulletapps.candypricer.data.datasource.local.LocalDataSource
+import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.data.datasource.remote.CandyPricerDataSource
 import com.bulletapps.candypricer.data.mapper.SupplyMapper.toSupplyModelList
 import com.bulletapps.candypricer.data.mapper.UnitMapper.toUnitEntity
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class CandyPricerRepositoryImpl @Inject constructor(
     private val remoteDataSource: CandyPricerDataSource,
     private val localDataSource: LocalDataSource,
+    private val preferencesDataSource: PreferencesDataSource,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : CandyPricerRepository {
     override suspend fun createUser(parameters: CreateUserParameters) = safeRequest(dispatcher) {
@@ -62,6 +64,12 @@ class CandyPricerRepositoryImpl @Inject constructor(
 
     override suspend fun login(parameters: LoginParameters) = safeRequest(dispatcher) {
         remoteDataSource.login(parameters)
+    }
+
+    override suspend fun logout(): Result<Unit> = safeRequest2(dispatcher) {
+        localDataSource.deleteUser()
+        localDataSource.deleteUnits()
+        preferencesDataSource.clearPref()
     }
 
     override suspend fun createProduct(parameters: CreateProductParameters) =
