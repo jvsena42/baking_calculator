@@ -3,9 +3,9 @@ package com.bulletapps.candypricer.presentation.ui.scenes.main.user.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.BuildConfig
-import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.domain.model.UserModel
 import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
+import com.bulletapps.candypricer.domain.usecase.user.LogoutUseCase
 import com.bulletapps.candypricer.presentation.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val preferencesDataSource: PreferencesDataSource,
+    private val logoutUseCase: LogoutUseCase,
     private val getUserUseCase: GetUserUseCase,
     ) : ViewModel(), EventFlow<SettingsViewModel.ScreenEvent> by EventFlowImpl() {
 
@@ -45,7 +45,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun onClickLogout() = viewModelScope.launch {
-        preferencesDataSource.clearPref()
+        logoutUseCase()
         sendEvent(ScreenEvent.Login)
     }
 
