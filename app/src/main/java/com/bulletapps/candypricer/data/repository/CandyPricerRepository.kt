@@ -13,7 +13,7 @@ interface CandyPricerRepository {
 
     suspend fun createUser(parameters: CreateUserParameters): Resource<LoginResponse>
 
-    suspend fun getUser(): Result<UserModel>
+    suspend fun getUser(isRefresh: Boolean): Result<UserModel>
 
     suspend fun getUsers(): Result<List<UserModel>>
 
@@ -24,6 +24,8 @@ interface CandyPricerRepository {
     suspend fun deleteUser(): Resource<Unit>
 
     suspend fun login(parameters: LoginParameters): Resource<LoginResponse>
+
+    suspend fun logout(): Result<Unit>
 
     suspend fun createProduct(parameters: CreateProductParameters): Resource<Unit>
 

@@ -36,7 +36,7 @@ fun ScreenLogin(
     viewModel: LoginViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
-    LaunchedEffect(key1 = Unit) { viewModel.checkToken() }
+    LaunchedEffect(key1 = Unit) { viewModel.setUp() }
     Screen(viewModel.uiState, viewModel::onAction)
     EventConsumer(viewModel, sharedViewModel)
 }

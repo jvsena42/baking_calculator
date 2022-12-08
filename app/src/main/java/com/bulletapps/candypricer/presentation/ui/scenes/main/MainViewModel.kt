@@ -6,6 +6,7 @@ import com.bulletapps.candypricer.domain.model.MenuModel
 import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
+import com.bulletapps.candypricer.domain.usecase.user.GetUserUseCase
 import com.bulletapps.candypricer.domain.usecase.user.LogoutUseCase
 import com.bulletapps.candypricer.presentation.util.EventFlow
 import com.bulletapps.candypricer.presentation.util.EventFlowImpl
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
     private val getUnitsUseCase: GetUnitsUseCase,
+    private val getUserUseCase: GetUserUseCase
     ) : ViewModel(),
     EventFlow<MainViewModel.Navigation> by EventFlowImpl() {
 
@@ -34,7 +36,8 @@ class MainViewModel @Inject constructor(
     }
 
     private fun setIsLoading() = viewModelScope.launch {
-        getUnitsUseCase.invoke(isRefresh = true)
+        getUnitsUseCase(isRefresh = true)
+        getUserUseCase(isRefresh = true)
         delay(2000L)
         isLoading.value = false
     }

@@ -1,6 +1,7 @@
 package com.bulletapps.candypricer.config.di
 
 import com.bulletapps.candypricer.data.datasource.local.LocalDataSource
+import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.data.datasource.remote.CandyPricerDataSource
 import com.bulletapps.candypricer.data.repository.CandyPricerRepository
 import com.bulletapps.candypricer.data.repository.CandyPricerRepositoryImpl
@@ -18,8 +19,9 @@ class CandyPricerRepository {
     @Provides
     fun providesCandyPricerRepository(
         remoteDataSource: CandyPricerDataSource,
-        localDataSource: LocalDataSource
+        localDataSource: LocalDataSource,
+        preferencesDataSource: PreferencesDataSource
     ): CandyPricerRepository {
-        return CandyPricerRepositoryImpl(remoteDataSource, localDataSource)
+        return CandyPricerRepositoryImpl(remoteDataSource, localDataSource, preferencesDataSource)
     }
 }

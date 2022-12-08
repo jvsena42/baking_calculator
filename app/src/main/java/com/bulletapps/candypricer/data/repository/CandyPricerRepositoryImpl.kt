@@ -1,15 +1,20 @@
 package com.bulletapps.candypricer.data.repository
 
 import com.bulletapps.candypricer.data.datasource.local.LocalDataSource
+import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.data.datasource.remote.CandyPricerDataSource
 import com.bulletapps.candypricer.data.mapper.SupplyMapper.toSupplyModelList
 import com.bulletapps.candypricer.data.mapper.UnitMapper.toUnitEntity
 import com.bulletapps.candypricer.data.mapper.UnitMapper.toUnitModel
 import com.bulletapps.candypricer.data.mapper.UnitMapper.toUnitModelList
 import com.bulletapps.candypricer.data.mapper.toProductModelList
+import com.bulletapps.candypricer.data.mapper.toUserEntity
 import com.bulletapps.candypricer.data.mapper.toUserModel
 import com.bulletapps.candypricer.data.mapper.toUserModelList
 import com.bulletapps.candypricer.data.parameters.*
+import com.bulletapps.candypricer.domain.model.UnitModel
+import com.bulletapps.candypricer.domain.model.UserModel
+import com.bulletapps.candypricer.presentation.util.isNegative
 import com.bulletapps.candypricer.presentation.util.safeRequest
 import com.bulletapps.candypricer.presentation.util.safeRequest2
 import kotlinx.coroutines.CoroutineDispatcher
@@ -19,14 +24,29 @@ import javax.inject.Inject
 class CandyPricerRepositoryImpl @Inject constructor(
     private val remoteDataSource: CandyPricerDataSource,
     private val localDataSource: LocalDataSource,
+    private val preferencesDataSource: PreferencesDataSource,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : CandyPricerRepository {
     override suspend fun createUser(parameters: CreateUserParameters) = safeRequest(dispatcher) {
         remoteDataSource.createUser(parameters)
     }
 
-    override suspend fun getUser() = safeRequest2(dispatcher) {
-        remoteDataSource.getUser().toUserModel()
+    override suspend fun getUser(isRefresh: Boolean) = safeRequest2(dispatcher) {
+        return@safeRequest2 if (isRefresh) {
+            remoteDataSource.getUser().toUserModel().also { userModel ->
+                updateUserLocalDataSource(userModel)
+            }
+        } else {
+            localDataSource.getUser().toUserModel()
+        }
+    }
+
+    private suspend fun updateUserLocalDataSource(userModel: UserModel) {
+        if (userModel.id.isNegative()) return
+
+        localDataSource.getUser()?.let {
+            localDataSource.updateUser(userModel.toUserEntity())
+        } ?: localDataSource.createUser(userModel.toUserEntity())
     }
 
     override suspend fun getUsers() = safeRequest2(dispatcher) {
@@ -48,6 +68,12 @@ class CandyPricerRepositoryImpl @Inject constructor(
 
     override suspend fun login(parameters: LoginParameters) = safeRequest(dispatcher) {
         remoteDataSource.login(parameters)
+    }
+
+    override suspend fun logout(): Result<Unit> = safeRequest2(dispatcher) {
+        localDataSource.deleteUser()
+        localDataSource.deleteUnits()
+        preferencesDataSource.clearPref()
     }
 
     override suspend fun createProduct(parameters: CreateProductParameters) =
@@ -94,18 +120,24 @@ class CandyPricerRepositoryImpl @Inject constructor(
         safeRequest2(dispatcher) {
             return@safeRequest2 if (isRefresh) {
                 remoteDataSource.getUnits().toUnitModelList().also { remoteUnits ->
-                    localDataSource.getUnits().let { units ->
-                        if (units.isNullOrEmpty()) {
-                            localDataSource.createUnits(remoteUnits.toUnitEntity())
-                        } else {
-                            localDataSource.updateUnits(remoteUnits.toUnitEntity())
-                        }
-                    }
+                    updateUnitsLocalDataSource(remoteUnits)
                 }
             } else {
                 localDataSource.getUnits().toUnitModel()
             }
         }
+
+    private suspend fun updateUnitsLocalDataSource(remoteUnits: List<UnitModel>) {
+        if (remoteUnits.isEmpty()) return
+
+        localDataSource.getUnits().let { units ->
+            if (units.isNullOrEmpty()) {
+                localDataSource.createUnits(remoteUnits.toUnitEntity())
+            } else {
+                localDataSource.updateUnits(remoteUnits.toUnitEntity())
+            }
+        }
+    }
 
     override suspend fun deleteUnits() = safeRequest2(dispatcher) {
         localDataSource.deleteUnits()
