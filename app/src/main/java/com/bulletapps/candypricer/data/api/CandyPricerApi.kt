@@ -17,23 +17,27 @@ interface CandyPricerApi {
     suspend fun updateUser(
         @Body parameters: UpdateUserParameters
     )
+    @DELETE("/user")
+    suspend fun deleteUser()
 
-    @PUT("/admin/{id}")
+    @POST("/user/login")
+    suspend fun login(
+        @Body parameters: LoginParameters
+    ): LoginResponse
+
+    @PUT("/admin/user/{id}")
     suspend fun updateExpirationDate(
         @Path("id") id: Int,
         @Body parameters: UpdateExpirationDateParameters
     )
 
-    @DELETE("/user")
-    suspend fun deleteUser()
-
     @GET("/admin/users")
     suspend fun getUsers(): List<UserResponse>
 
-    @POST("/login")
-    suspend fun login(
-        @Body parameters: LoginParameters
-    ): LoginResponse
+    @DELETE("/admin/user/{id}")
+    suspend fun deleteUserAdmin(
+        @Path("id") id: Int
+    )
 
     @POST("/product")
     suspend fun createProduct(
