@@ -109,8 +109,8 @@ fun UnitResponse?.format() = UnitResponse(this?.id ?: -1, this?.name.formatUnit(
 fun List<ProductSupplyModel>.toItemMenuList(): List<MenuItemModel> {
     if (this.isEmpty()) return emptyList()
     return map { MenuItemModel(
-        id = it.supply.id,
-        name = it.supply.name,
+        id = it.supplyId,
+        name = it.name,
         quantity = it.quantity.round(),
         unit = it.supply.unit.label
     ) }.toList()

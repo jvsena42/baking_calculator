@@ -8,7 +8,7 @@ data class CreateProductParameters(
     @SerializedName("quantity")
     var quantity: Double,
     @SerializedName("supply_amount")
-    val amountQuantitySupply: List<SupplyAmountParameters>,
+    val suppliesAmount: List<SupplyAmountParameters>,
     @SerializedName("profit_margin")
     var profitMargin: Double,
     @SerializedName("labor_work")

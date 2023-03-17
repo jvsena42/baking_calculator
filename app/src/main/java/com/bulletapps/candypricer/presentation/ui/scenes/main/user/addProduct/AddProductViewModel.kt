@@ -6,6 +6,8 @@ import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateProductParameters
+import com.bulletapps.candypricer.data.parameters.SupplyAmountParameters
+import com.bulletapps.candypricer.data.parameters.UpdateProductParameters
 import com.bulletapps.candypricer.domain.model.MenuItemModel
 import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.domain.model.SupplyModel
@@ -153,11 +155,15 @@ class AddProductViewModel @Inject constructor(
             name = uiState.name.value,
             unitId = uiState.selectedUnit.value.id.orZero(),
             quantity = uiState.quantity.value.formatDouble(),
-            suppliesId = uiState.selectedSupplies.value.map { it.id },
+            suppliesAmount = uiState.selectedSupplies.value.map {
+                UpdateProductParameters.SupplyAmount(
+                    it.id,
+                    it.quantity.formatDouble()
+                )
+            },
             profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
             laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
             variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
-            amountQuantitySupply = uiState.selectedSupplies.value.map { it.quantity.formatDouble() }
         ).also { result ->
             when (result) {
                 is Resource.Success -> viewModelScope.sendEvent(ScreenEvent.GoHome)
@@ -173,11 +179,15 @@ class AddProductViewModel @Inject constructor(
                 name = uiState.name.value,
                 quantity = uiState.quantity.value.formatDouble(),
                 unitId = uiState.selectedUnit.value.id.orZero(),
-                suppliesId = uiState.selectedSupplies.value.map { it.id },
+                suppliesAmount = uiState.selectedSupplies.value.map {
+                    SupplyAmountParameters(
+                        supplyId = it.id,
+                        quantity = it.quantity.formatDouble()
+                    )
+                },
                 profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
                 laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
                 variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),
-                amountQuantitySupply = uiState.selectedSupplies.value.map { it.quantity.formatDouble() }
             )
         ).also { result ->
             when (result) {
