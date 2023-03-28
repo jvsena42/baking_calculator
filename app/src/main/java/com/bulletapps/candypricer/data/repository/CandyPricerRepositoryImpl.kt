@@ -70,7 +70,9 @@ class CandyPricerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun login(parameters: LoginParameters) = safeRequest(dispatcher) {
-        remoteDataSource.login(parameters)
+        remoteDataSource.login(parameters).also { loginResponse ->
+            updateUserLocalDataSource(loginResponse.user.toUserModel())
+        }
     }
 
     override suspend fun logout(): Result<Unit> = safeRequest2(dispatcher) {
