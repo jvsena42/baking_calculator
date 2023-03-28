@@ -9,8 +9,6 @@ interface CandyPricerDataSource {
 
     suspend fun getUser(): UserResponse
 
-    suspend fun updateUser(parameters: UpdateUserParameters)
-
     suspend fun updateExpirationDate(id: Int, parameters: UpdateExpirationDateParameters)
 
     suspend fun deleteUser()

@@ -13,10 +13,6 @@ interface CandyPricerApi {
     @GET("/user")
     suspend fun getUser(): UserResponse
 
-    @PUT("/user")
-    suspend fun updateUser(
-        @Body parameters: UpdateUserParameters
-    )
     @DELETE("/user")
     suspend fun deleteUser()
 
@@ -26,7 +22,7 @@ interface CandyPricerApi {
     ): LoginResponse
 
     @PUT("/admin/user/{id}")
-    suspend fun updateExpirationDate(
+    suspend fun updateExpirationDate( //TODO ATUALIZAR
         @Path("id") id: Int,
         @Body parameters: UpdateExpirationDateParameters
     )

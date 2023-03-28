@@ -11,7 +11,14 @@ import com.bulletapps.candypricer.data.mapper.toProductModelList
 import com.bulletapps.candypricer.data.mapper.toUserEntity
 import com.bulletapps.candypricer.data.mapper.toUserModel
 import com.bulletapps.candypricer.data.mapper.toUserModelList
-import com.bulletapps.candypricer.data.parameters.*
+import com.bulletapps.candypricer.data.parameters.CreateProductParameters
+import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
+import com.bulletapps.candypricer.data.parameters.CreateUnitParameters
+import com.bulletapps.candypricer.data.parameters.CreateUserParameters
+import com.bulletapps.candypricer.data.parameters.LoginParameters
+import com.bulletapps.candypricer.data.parameters.UpdateExpirationDateParameters
+import com.bulletapps.candypricer.data.parameters.UpdateProductParameters
+import com.bulletapps.candypricer.data.parameters.UpdateSupplyParameters
 import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.domain.model.UserModel
 import com.bulletapps.candypricer.presentation.util.isNegative
@@ -51,10 +58,6 @@ class CandyPricerRepositoryImpl @Inject constructor(
 
     override suspend fun getUsers() = safeRequest2(dispatcher) {
         remoteDataSource.getUsers().toUserModelList()
-    }
-
-    override suspend fun updateUser(parameters: UpdateUserParameters) = safeRequest(dispatcher) {
-        remoteDataSource.updateUser(parameters)
     }
 
     override suspend fun updateExpirationDate(id: Int, parameters: UpdateExpirationDateParameters) =
