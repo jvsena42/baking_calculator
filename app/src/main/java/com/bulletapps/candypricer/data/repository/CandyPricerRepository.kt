@@ -17,7 +17,7 @@ interface CandyPricerRepository {
 
     suspend fun getUsers(): Result<List<UserModel>>
 
-    suspend fun updateExpirationDate(id:Int, parameters: UpdateExpirationDateParameters): Resource<Unit>
+    suspend fun updateExpirationDate(id:Int, expirationDate: String): Resource<Unit>
 
     suspend fun deleteUser(): Resource<Unit>
 

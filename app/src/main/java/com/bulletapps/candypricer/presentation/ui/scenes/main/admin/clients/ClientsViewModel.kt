@@ -4,17 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
-import com.bulletapps.candypricer.data.parameters.CreateUserParameters
-import com.bulletapps.candypricer.data.parameters.UpdateExpirationDateParameters
-import com.bulletapps.candypricer.data.response.UserResponse
 import com.bulletapps.candypricer.domain.model.UserModel
 import com.bulletapps.candypricer.domain.usecase.user.GetUsersUseCase
 import com.bulletapps.candypricer.domain.usecase.user.UpdateExpirationDateUseCase
-import com.bulletapps.candypricer.presentation.ui.widgets.DatePicker
 import com.bulletapps.candypricer.presentation.util.*
-import com.bulletapps.candypricer.presentation.util.DateConstant.BACKEND_FORMAT
-import com.bulletapps.candypricer.presentation.util.DateConstant.DAY_MONTH_YEAR_CLEAR_FORMAT
-import com.bulletapps.candypricer.presentation.util.DateConstant.DAY_MONTH_YEAR_FORMAT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

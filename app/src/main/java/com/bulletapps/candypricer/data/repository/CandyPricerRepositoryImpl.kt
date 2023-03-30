@@ -16,7 +16,6 @@ import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
 import com.bulletapps.candypricer.data.parameters.CreateUnitParameters
 import com.bulletapps.candypricer.data.parameters.CreateUserParameters
 import com.bulletapps.candypricer.data.parameters.LoginParameters
-import com.bulletapps.candypricer.data.parameters.UpdateExpirationDateParameters
 import com.bulletapps.candypricer.data.parameters.UpdateProductParameters
 import com.bulletapps.candypricer.data.parameters.UpdateSupplyParameters
 import com.bulletapps.candypricer.domain.model.UnitModel
@@ -60,9 +59,9 @@ class CandyPricerRepositoryImpl @Inject constructor(
         remoteDataSource.getUsers().toUserModelList()
     }
 
-    override suspend fun updateExpirationDate(id: Int, parameters: UpdateExpirationDateParameters) =
+    override suspend fun updateExpirationDate(id: Int, expirationDate: String) =
         safeRequest(dispatcher) {
-            remoteDataSource.updateExpirationDate(id, parameters)
+            remoteDataSource.updateExpirationDate(id, expirationDate)
         }
 
     override suspend fun deleteUser() = safeRequest(dispatcher) {
