@@ -39,12 +39,6 @@ class UseCaseModule {
 
     @Singleton
     @Provides
-    fun providesUpdateUserUseCase(repository: CandyPricerRepository) : UpdateUserUseCase {
-        return UpdateUserUseCase(repository)
-    }
-
-    @Singleton
-    @Provides
     fun providesLogoutUseCase(
         repository: CandyPricerRepository
     ): LogoutUseCase {

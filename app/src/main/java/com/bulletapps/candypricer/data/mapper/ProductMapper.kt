@@ -1,5 +1,6 @@
 package com.bulletapps.candypricer.data.mapper
 
+import com.bulletapps.candypricer.data.mapper.SupplyMapper.toSupplyModel
 import com.bulletapps.candypricer.data.mapper.UnitMapper.toUnitModel
 import com.bulletapps.candypricer.data.response.ProductResponse
 import com.bulletapps.candypricer.data.response.SupplyAmountResponse
@@ -27,9 +28,8 @@ fun List<ProductResponse>?.toProductModelList(): List<ProductModel> {
 }
 
 fun SupplyAmountResponse.toProductSupplyModel() = ProductSupplyModel(
-    supplyId = this.supply.id.orZero(),
-    name = this.supply.name.orEmpty(),
-    quantity = this.quantity
+    quantity = this.quantity,
+    supply = this.supply.toSupplyModel()
 )
 
 fun List<SupplyAmountResponse>?.toProductSupplyModel(): List<ProductSupplyModel> {
