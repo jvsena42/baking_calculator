@@ -3,8 +3,17 @@ package com.bulletapps.candypricer.domain.model
 import com.google.gson.annotations.SerializedName
 
 data class ErrorModel(
-    @SerializedName("user_message")
-    var userMessage: String? = "",
-    @SerializedName("dev_message")
-    var devMessage: String? = "",
+    @SerializedName("code")
+    var code: String? = "",
+    @SerializedName("message")
+    var message: String? = "",
+    @SerializedName("validationError")
+    var errorList: List<FieldError>? = emptyList(),
+)
+
+data class FieldError(
+    @SerializedName("field")
+    var field: String? = "",
+    @SerializedName("displayMessage")
+    var message: String? = "",
 )
