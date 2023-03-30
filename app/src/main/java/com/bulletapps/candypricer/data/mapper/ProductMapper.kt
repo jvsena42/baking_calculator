@@ -27,8 +27,8 @@ fun List<ProductResponse>?.toProductModelList(): List<ProductModel> {
 }
 
 fun SupplyAmountResponse.toProductSupplyModel() = ProductSupplyModel(
-    supplyId = this.supplyId,
-    name = this.name,
+    supplyId = this.supply.id.orZero(),
+    name = this.supply.name.orEmpty(),
     quantity = this.quantity
 )
 
