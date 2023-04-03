@@ -2,6 +2,8 @@ package com.bulletapps.candypricer.data.api
 
 import com.bulletapps.candypricer.data.parameters.*
 import com.bulletapps.candypricer.data.response.*
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.*
 
 interface CandyPricerApi {
@@ -14,7 +16,7 @@ interface CandyPricerApi {
     suspend fun getUser(): UserResponse
 
     @DELETE("/user")
-    suspend fun deleteUser()
+    suspend fun deleteUser(): Response<ResponseBody>
 
     @POST("/user/login")
     suspend fun login(
