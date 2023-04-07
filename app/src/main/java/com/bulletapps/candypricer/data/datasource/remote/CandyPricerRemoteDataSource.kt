@@ -23,27 +23,37 @@ class CandyPricerRemoteDataSource @Inject constructor(private val api: CandyPric
 
     override suspend fun login(parameters: LoginParameters): LoginResponse = api.login(parameters)
 
-    override suspend fun createProduct(parameters: CreateProductParameters) = api.createProduct(parameters)
+    override suspend fun createProduct(parameters: CreateProductParameters) {
+        if (!api.createProduct(parameters).isSuccessful) throw Exception()
+    }
 
     override suspend fun getProducts(): List<ProductResponse> = api.getProducts()
 
-    override suspend fun updateProduct(parameters: UpdateProductParameters) = api.updateProduct(parameters)
+    override suspend fun updateProduct(parameters: UpdateProductParameters) {
+        if (!api.updateProduct(parameters).isSuccessful) throw Exception()
+    }
 
     override suspend fun deleteProduct(id: Int) {
         if(!api.deleteProduct(id).isSuccessful) throw Exception()
     }
 
-    override suspend fun createSupply(parameters: CreateSupplyParameters) = api.createSupply(parameters)
+    override suspend fun createSupply(parameters: CreateSupplyParameters) {
+        if (!api.createSupply(parameters).isSuccessful) throw Exception()
+    }
 
     override suspend fun getSupplies(): List<SupplyResponse> = api.getSupplies()
 
-    override suspend fun updateSupply(parameters: UpdateSupplyParameters) = api.updateSupply(parameters)
+    override suspend fun updateSupply(parameters: UpdateSupplyParameters) {
+        if (!api.updateSupply(parameters).isSuccessful) throw Exception()
+    }
 
     override suspend fun deleteSupply(id: Int) {
         if(!api.deleteSupply(id).isSuccessful) throw Exception()
     }
 
-    override suspend fun createUnit(parameters: CreateUnitParameters) = api.createUnit(parameters)
+    override suspend fun createUnit(parameters: CreateUnitParameters) {
+        if (!api.createUnit(parameters).isSuccessful) throw Exception()
+    }
 
     override suspend fun getUnits(): List<UnitResponse> = api.getUnits()
 }

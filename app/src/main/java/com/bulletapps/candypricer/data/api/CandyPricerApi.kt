@@ -27,7 +27,7 @@ interface CandyPricerApi {
     suspend fun updateExpirationDate(
         @Path("id") id: Int,
         @Query("expiration_date") expirationDate: String
-    )
+    ): Response<ResponseBody>
 
     @GET("/admin/users")
     suspend fun getUsers(): List<UserResponse>
@@ -40,7 +40,7 @@ interface CandyPricerApi {
     @POST("/product")
     suspend fun createProduct(
         @Body parameters: CreateProductParameters
-    )
+    ): Response<ResponseBody>
 
     @GET("/product")
     suspend fun getProducts(): List<ProductResponse>
@@ -48,7 +48,7 @@ interface CandyPricerApi {
     @PUT("/product")
     suspend fun updateProduct(
         @Body parameters: UpdateProductParameters
-    )
+    ): Response<ResponseBody>
 
     @DELETE("/product/{id}")
     suspend fun deleteProduct(
@@ -58,7 +58,7 @@ interface CandyPricerApi {
     @POST("/supply")
     suspend fun createSupply(
         @Body parameters: CreateSupplyParameters
-    )
+    ): Response<ResponseBody>
 
     @GET("/supply")
     suspend fun getSupplies(): List<SupplyResponse>
@@ -66,7 +66,7 @@ interface CandyPricerApi {
     @PUT("/supply")
     suspend fun updateSupply(
         @Body parameters: UpdateSupplyParameters
-    )
+    ): Response<ResponseBody>
 
     @DELETE("/supply/{id}")
     suspend fun deleteSupply(
@@ -76,7 +76,7 @@ interface CandyPricerApi {
     @POST("/unit")
     suspend fun createUnit(
         @Body parameters: CreateUnitParameters
-    )
+    ): Response<ResponseBody>
 
     @GET("/unit")
     suspend fun getUnits(): List<UnitResponse>
