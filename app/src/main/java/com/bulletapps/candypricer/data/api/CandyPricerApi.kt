@@ -35,7 +35,7 @@ interface CandyPricerApi {
     @DELETE("/admin/user/{id}")
     suspend fun deleteUserAdmin(
         @Path("id") id: Int
-    )
+    ): Response<ResponseBody>
 
     @POST("/product")
     suspend fun createProduct(
@@ -53,7 +53,7 @@ interface CandyPricerApi {
     @DELETE("/product/{id}")
     suspend fun deleteProduct(
         @Path("id") id: Int
-    )
+    ): Response<ResponseBody>
 
     @POST("/supply")
     suspend fun createSupply(
@@ -71,7 +71,7 @@ interface CandyPricerApi {
     @DELETE("/supply/{id}")
     suspend fun deleteSupply(
         @Path("id") id: Int
-    )
+    ): Response<ResponseBody>
 
     @POST("/unit")
     suspend fun createUnit(

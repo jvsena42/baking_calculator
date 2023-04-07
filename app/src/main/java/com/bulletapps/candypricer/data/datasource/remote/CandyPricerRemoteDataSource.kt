@@ -29,7 +29,9 @@ class CandyPricerRemoteDataSource @Inject constructor(private val api: CandyPric
 
     override suspend fun updateProduct(parameters: UpdateProductParameters) = api.updateProduct(parameters)
 
-    override suspend fun deleteProduct(id: Int) = api.deleteProduct(id)
+    override suspend fun deleteProduct(id: Int) {
+        if(!api.deleteProduct(id).isSuccessful) throw Exception()
+    }
 
     override suspend fun createSupply(parameters: CreateSupplyParameters) = api.createSupply(parameters)
 
@@ -37,7 +39,9 @@ class CandyPricerRemoteDataSource @Inject constructor(private val api: CandyPric
 
     override suspend fun updateSupply(parameters: UpdateSupplyParameters) = api.updateSupply(parameters)
 
-    override suspend fun deleteSupply(id: Int) = api.deleteSupply(id)
+    override suspend fun deleteSupply(id: Int) {
+        if(!api.deleteSupply(id).isSuccessful) throw Exception()
+    }
 
     override suspend fun createUnit(parameters: CreateUnitParameters) = api.createUnit(parameters)
 
