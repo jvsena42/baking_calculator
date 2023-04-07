@@ -11,8 +11,8 @@ data class ProductResponse(
     @SerializedName("labor_work") val laborValue: Double?,
     @SerializedName("variable_expenses") val variableExpenses: Double?,
     @SerializedName("unit") val unit: UnitResponse?,
-    @SerializedName("total_spends_value") val totalSpendsValue: Double?,
-    @SerializedName("unit_sale_value") val unitSaleValue: Double?,
-    @SerializedName("total_sale_value") val totalSaleValue: Double?,
+    @SerializedName("total_expenses_price") val totalSpendsValue: Double?,
+    @SerializedName("unit_sale_price") val unitSaleValue: Double?,
+    @SerializedName("total_sale_price") val totalSaleValue: Double?,
 )
 

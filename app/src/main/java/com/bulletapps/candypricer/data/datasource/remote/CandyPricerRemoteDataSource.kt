@@ -11,7 +11,9 @@ class CandyPricerRemoteDataSource @Inject constructor(private val api: CandyPric
 
     override suspend fun getUser() = api.getUser()
 
-    override suspend fun updateExpirationDate(id: Int, expirationDate: String) = api.updateExpirationDate(id, expirationDate)
+    override suspend fun updateExpirationDate(id: Int, expirationDate: String) {
+        api.updateExpirationDate(id, expirationDate)
+    }
 
     override suspend fun deleteUser() {
         if (!api.deleteUser().isSuccessful) throw Exception()

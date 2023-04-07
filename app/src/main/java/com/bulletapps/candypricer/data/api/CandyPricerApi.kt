@@ -23,7 +23,7 @@ interface CandyPricerApi {
         @Body parameters: LoginParameters
     ): LoginResponse
 
-    @PUT("/admin/user/{id}")
+    @PUT("/admin/users/{id}")
     suspend fun updateExpirationDate(
         @Path("id") id: Int,
         @Query("expiration_date") expirationDate: String
