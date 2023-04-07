@@ -45,8 +45,9 @@ interface CandyPricerApi {
     @GET("/product")
     suspend fun getProducts(): List<ProductResponse>
 
-    @PUT("/product")
+    @PUT("/product/{id}")
     suspend fun updateProduct(
+        @Path("id") id: Int,
         @Body parameters: UpdateProductParameters
     ): Response<ResponseBody>
 

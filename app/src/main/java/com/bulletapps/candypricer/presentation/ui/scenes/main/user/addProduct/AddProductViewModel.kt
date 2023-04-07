@@ -7,17 +7,32 @@ import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.config.UiText
 import com.bulletapps.candypricer.data.parameters.CreateProductParameters
 import com.bulletapps.candypricer.data.parameters.SupplyAmountParameters
-import com.bulletapps.candypricer.data.parameters.UpdateProductParameters
 import com.bulletapps.candypricer.domain.model.MenuItemModel
 import com.bulletapps.candypricer.domain.model.ProductModel
 import com.bulletapps.candypricer.domain.model.SupplyModel
 import com.bulletapps.candypricer.domain.model.UnitModel
-import com.bulletapps.candypricer.domain.usecase.inputValidation.*
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateEmptyListUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateLaborUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateNameUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateProfitMarginUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateQuantityUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateUnitUseCase
+import com.bulletapps.candypricer.domain.usecase.inputValidation.ValidateVariableExpensesUseCase
 import com.bulletapps.candypricer.domain.usecase.product.CreateProductUseCase
 import com.bulletapps.candypricer.domain.usecase.product.UpdateProductUseCase
 import com.bulletapps.candypricer.domain.usecase.supply.GetAllSuppliesUseCase
 import com.bulletapps.candypricer.domain.usecase.unit.GetUnitsUseCase
-import com.bulletapps.candypricer.presentation.util.*
+import com.bulletapps.candypricer.presentation.util.EMPTY_STRING
+import com.bulletapps.candypricer.presentation.util.EventFlow
+import com.bulletapps.candypricer.presentation.util.EventFlowImpl
+import com.bulletapps.candypricer.presentation.util.NEGATIVE
+import com.bulletapps.candypricer.presentation.util.ZERO_DOUBLE
+import com.bulletapps.candypricer.presentation.util.formatDouble
+import com.bulletapps.candypricer.presentation.util.fromPercent
+import com.bulletapps.candypricer.presentation.util.isNegative
+import com.bulletapps.candypricer.presentation.util.orZero
+import com.bulletapps.candypricer.presentation.util.toItemMenuList
+import com.bulletapps.candypricer.presentation.util.toPercent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -155,12 +170,6 @@ class AddProductViewModel @Inject constructor(
             name = uiState.name.value,
             unitId = uiState.selectedUnit.value.id.orZero(),
             quantity = uiState.quantity.value.formatDouble(),
-            suppliesAmount = uiState.selectedSupplies.value.map {
-                UpdateProductParameters.SupplyAmount(
-                    it.id,
-                    it.quantity.formatDouble()
-                )
-            },
             profitMargin = uiState.profitMargin.value.formatDouble().toPercent(),
             laborValue = uiState.laborPrice.value.formatDouble().toPercent(),
             variableExpenses = uiState.variableExpenses.value.formatDouble().toPercent(),

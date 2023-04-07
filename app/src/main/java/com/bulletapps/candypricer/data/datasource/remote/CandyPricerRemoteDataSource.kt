@@ -29,8 +29,8 @@ class CandyPricerRemoteDataSource @Inject constructor(private val api: CandyPric
 
     override suspend fun getProducts(): List<ProductResponse> = api.getProducts()
 
-    override suspend fun updateProduct(parameters: UpdateProductParameters) {
-        if (!api.updateProduct(parameters).isSuccessful) throw Exception()
+    override suspend fun updateProduct(id: Int, parameters: UpdateProductParameters) {
+        if (!api.updateProduct(id, parameters).isSuccessful) throw Exception()
     }
 
     override suspend fun deleteProduct(id: Int) {

@@ -1,5 +1,6 @@
 package com.bulletapps.candypricer.data.repository
 
+import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.datasource.local.LocalDataSource
 import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.data.datasource.remote.CandyPricerDataSource
@@ -89,9 +90,12 @@ class CandyPricerRepositoryImpl @Inject constructor(
         remoteDataSource.getProducts().toProductModelList()
     }
 
-    override suspend fun updateProduct(parameters: UpdateProductParameters) =
+    override suspend fun updateProduct(
+        id: Int,
+        parameters: UpdateProductParameters
+    ): Resource<Unit> =
         safeRequest(dispatcher) {
-            remoteDataSource.updateProduct(parameters)
+            remoteDataSource.updateProduct(id, parameters)
         }
 
     override suspend fun deleteProduct(id: Int) = safeRequest(dispatcher) {

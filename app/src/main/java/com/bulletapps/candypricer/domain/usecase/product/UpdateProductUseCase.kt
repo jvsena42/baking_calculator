@@ -13,17 +13,15 @@ class UpdateProductUseCase @Inject constructor(
         name: String,
         unitId: Int,
         quantity: Double,
-        suppliesAmount: List<UpdateProductParameters.SupplyAmount>,
         profitMargin: Double,
         laborValue: Double,
         variableExpenses: Double,
     ) = repository.updateProduct(
+        id = id,
         UpdateProductParameters(
-            id = id,
             name = name,
             unitId = unitId,
             quantity = quantity,
-            supplies = suppliesAmount,
             profitMargin = profitMargin,
             laborValue = laborValue,
             variableExpenses = variableExpenses,
