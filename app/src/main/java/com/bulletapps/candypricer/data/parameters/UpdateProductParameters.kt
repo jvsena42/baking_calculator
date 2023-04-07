@@ -1,6 +1,5 @@
 package com.bulletapps.candypricer.data.parameters
 
-import com.bulletapps.candypricer.data.response.SupplyAmountResponse
 import com.google.gson.annotations.SerializedName
 
 data class UpdateProductParameters(
