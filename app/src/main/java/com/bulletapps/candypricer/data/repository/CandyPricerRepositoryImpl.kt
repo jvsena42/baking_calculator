@@ -1,5 +1,6 @@
 package com.bulletapps.candypricer.data.repository
 
+import com.bulletapps.candypricer.config.Resource
 import com.bulletapps.candypricer.data.datasource.local.LocalDataSource
 import com.bulletapps.candypricer.data.datasource.local.PreferencesDataSource
 import com.bulletapps.candypricer.data.datasource.remote.CandyPricerDataSource
@@ -11,7 +12,13 @@ import com.bulletapps.candypricer.data.mapper.toProductModelList
 import com.bulletapps.candypricer.data.mapper.toUserEntity
 import com.bulletapps.candypricer.data.mapper.toUserModel
 import com.bulletapps.candypricer.data.mapper.toUserModelList
-import com.bulletapps.candypricer.data.parameters.*
+import com.bulletapps.candypricer.data.parameters.CreateProductParameters
+import com.bulletapps.candypricer.data.parameters.CreateSupplyParameters
+import com.bulletapps.candypricer.data.parameters.CreateUnitParameters
+import com.bulletapps.candypricer.data.parameters.CreateUserParameters
+import com.bulletapps.candypricer.data.parameters.LoginParameters
+import com.bulletapps.candypricer.data.parameters.UpdateProductParameters
+import com.bulletapps.candypricer.data.parameters.UpdateSupplyParameters
 import com.bulletapps.candypricer.domain.model.UnitModel
 import com.bulletapps.candypricer.domain.model.UserModel
 import com.bulletapps.candypricer.presentation.util.isNegative
@@ -53,13 +60,9 @@ class CandyPricerRepositoryImpl @Inject constructor(
         remoteDataSource.getUsers().toUserModelList()
     }
 
-    override suspend fun updateUser(parameters: UpdateUserParameters) = safeRequest(dispatcher) {
-        remoteDataSource.updateUser(parameters)
-    }
-
-    override suspend fun updateExpirationDate(id: Int, parameters: UpdateExpirationDateParameters) =
+    override suspend fun updateExpirationDate(id: Int, expirationDate: String) =
         safeRequest(dispatcher) {
-            remoteDataSource.updateExpirationDate(id, parameters)
+            remoteDataSource.updateExpirationDate(id, expirationDate)
         }
 
     override suspend fun deleteUser() = safeRequest(dispatcher) {
@@ -67,7 +70,9 @@ class CandyPricerRepositoryImpl @Inject constructor(
     }
 
     override suspend fun login(parameters: LoginParameters) = safeRequest(dispatcher) {
-        remoteDataSource.login(parameters)
+        remoteDataSource.login(parameters).also { loginResponse ->
+            updateUserLocalDataSource(loginResponse.user.toUserModel())
+        }
     }
 
     override suspend fun logout(): Result<Unit> = safeRequest2(dispatcher) {
@@ -85,9 +90,12 @@ class CandyPricerRepositoryImpl @Inject constructor(
         remoteDataSource.getProducts().toProductModelList()
     }
 
-    override suspend fun updateProduct(parameters: UpdateProductParameters) =
+    override suspend fun updateProduct(
+        id: Int,
+        parameters: UpdateProductParameters
+    ): Resource<Unit> =
         safeRequest(dispatcher) {
-            remoteDataSource.updateProduct(parameters)
+            remoteDataSource.updateProduct(id, parameters)
         }
 
     override suspend fun deleteProduct(id: Int) = safeRequest(dispatcher) {

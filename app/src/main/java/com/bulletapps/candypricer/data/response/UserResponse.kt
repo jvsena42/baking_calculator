@@ -11,11 +11,11 @@ data class UserResponse(
     val phone: String?,
     @SerializedName("email")
     val email: String?,
-    @SerializedName("admin")
+    @SerializedName("is_admin")
     val isAdmin: Boolean?,
     @SerializedName("expiration_date")
     val expirationDate: String?,
-    @SerializedName("active")
+    @SerializedName("is_active")
     val isActive: Boolean?,
 )
 

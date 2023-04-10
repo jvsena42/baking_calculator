@@ -21,14 +21,14 @@ suspend fun <T> safeRequest(
 }
 
 private fun <T> getErrorMessage(e: Exception): Resource.Error<T> {
-    var errorModel = ErrorModel(userMessage = "Ocorreu um erro inesperado, tente novamente mais tarde")
+    var errorModel = ErrorModel(message = "Ocorreu um erro inesperado, tente novamente mais tarde")
     try {
         errorModel = Gson().fromJson(e.message, ErrorModel::class.java)
     } catch (e2: Exception) {
-        errorModel.devMessage = e.message
+        errorModel.code = e.message
     }
-    Log.d("REQUEST_ERROR", "safeRequest: ${errorModel.devMessage}")
-    return Resource.Error(UiText.DynamicString(errorModel.userMessage.orEmpty()))
+    Log.d("REQUEST_ERROR", "safeRequest: ${errorModel.code}")
+    return Resource.Error(UiText.DynamicString(errorModel.message.orEmpty()))
 }
 
 suspend fun <T> safeRequest2(
@@ -43,12 +43,12 @@ suspend fun <T> safeRequest2(
 }
 
 private fun <T> getErrorMessage2(e: Exception): Result<T> {
-    var errorModel = ErrorModel(userMessage = "Ocorreu um erro inesperado, tente novamente mais tarde")
+    var errorModel = ErrorModel(message = "Ocorreu um erro inesperado, tente novamente mais tarde")
     try {
         errorModel = Gson().fromJson(e.message, ErrorModel::class.java)
     } catch (e2: Exception) {
-        errorModel.devMessage = e.message
+        errorModel.code = e.message
     }
-    Log.d("REQUEST_ERROR", "safeRequest: ${errorModel.devMessage}")
+    Log.d("REQUEST_ERROR", "safeRequest: ${errorModel.code}")
     return Result.failure(e)
 }

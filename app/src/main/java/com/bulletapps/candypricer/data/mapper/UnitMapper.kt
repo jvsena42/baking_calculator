@@ -10,12 +10,12 @@ object UnitMapper {
 
     fun UnitResponse?.toUnitModel() = UnitModel(
         id = this?.id.orNegative(),
-        label = this?.name.formatUnit()
+        label = this?.name.orEmpty()
     )
 
     fun UnitEntity?.toUnitModel() = UnitModel(
         id = this?.id.orNegative(),
-        label = this?.name.formatUnit()
+        label = this?.name.orEmpty()
     )
 
     fun UnitModel.toUnitEntity() = UnitEntity(
