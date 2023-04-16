@@ -31,6 +31,7 @@ android {
             buildConfigField "String", "LINKTREE_URL", LINKTREE_URL
             buildConfigField "String", "BUY_A_PLAN_URL", BUY_A_PLAN_URL
             buildConfigField "String", "STRIPE_PUBLISHABLE_KEY", DEV_STRIPE_PUBLISHABLE_KEY
+            buildConfigField "String", "STRIPE_ACCOUNT_ID", DEV_STRIPE_ACCOUNT_ID
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
@@ -39,6 +40,7 @@ android {
             buildConfigField "String", "LINKTREE_URL", LINKTREE_URL
             buildConfigField "String", "BUY_A_PLAN_URL", BUY_A_PLAN_URL
             buildConfigField "String", "STRIPE_PUBLISHABLE_KEY", PROD_STRIPE_PUBLISHABLE_KEY
+            buildConfigField "String", "STRIPE_ACCOUNT_ID", PROD_STRIPE_ACCOUNT_ID
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
