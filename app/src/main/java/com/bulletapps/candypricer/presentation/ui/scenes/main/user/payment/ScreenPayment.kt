@@ -1,7 +1,6 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.payment
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.BuildConfig
 import com.stripe.android.payments.paymentlauncher.PaymentLauncher
@@ -26,7 +25,6 @@ fun Screen(
 private fun rememberPaymentLauncher(
     onAction: (PaymentViewModel.ScreenActions) -> Unit,
 ): PaymentLauncher {
-    val context = LocalContext.current
     return PaymentLauncher.rememberLauncher(
         publishableKey = BuildConfig.STRIPE_PUBLISHABLE_KEY,
         stripeAccountId = BuildConfig.STRIPE_ACCOUNT_ID,
