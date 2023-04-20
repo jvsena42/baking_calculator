@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -6,7 +6,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,14 +25,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ExpiredViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.*
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.*
 import com.bulletapps.candypricer.presentation.util.openWhatsapp
 
 @Composable
 fun ScreenExpired(
-    viewModel: ExpiredViewModel = hiltViewModel(),
+    viewModel: BuyPlanViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
@@ -44,7 +43,7 @@ fun ScreenExpired(
 @Composable
 private fun EventConsumer(
     activity: MainActivity,
-    viewModel: ExpiredViewModel,
+    viewModel: BuyPlanViewModel,
     sharedViewModel: MainViewModel
 ) {
     LaunchedEffect(key1 = Unit) {

@@ -1,4 +1,4 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,10 +15,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ExpiredViewModel @Inject constructor(
+class BuyPlanViewModel @Inject constructor(
     private val preferencesDataSource: PreferencesDataSource,
     private val deleteUserUseCase: DeleteUserUseCase
-    ) : ViewModel(), EventFlow<ExpiredViewModel.ScreenEvent> by EventFlowImpl() {
+    ) : ViewModel(), EventFlow<BuyPlanViewModel.ScreenEvent> by EventFlowImpl() {
 
     val uiState = UIState()
 
@@ -48,12 +48,14 @@ class ExpiredViewModel @Inject constructor(
         uiState.isDialogVisible.value = shouldShow
     }
 
-    fun onAction(action: ScreenActions) = when(action) {
-        is ScreenActions.OnClickMessage -> onClickMessage()
-        is ScreenActions.OnClickLogout -> onClickLogout()
-        is ScreenActions.OnClickDelete -> handleDialogVisibility(true)
-        is ScreenActions.OnDismissDialog -> handleDialogVisibility(false)
-        is ScreenActions.OnConfirmDelete -> onDelete()
+    fun onAction(action: ScreenActions) {
+        when (action) {
+            is ScreenActions.OnClickMessage -> onClickMessage()
+            is ScreenActions.OnClickLogout -> onClickLogout()
+            is ScreenActions.OnClickDelete -> handleDialogVisibility(true)
+            is ScreenActions.OnDismissDialog -> handleDialogVisibility(false)
+            is ScreenActions.OnConfirmDelete -> onDelete()
+        }
     }
 
     sealed class ScreenEvent {
