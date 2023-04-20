@@ -72,6 +72,7 @@
     <string name="accept_user_terms">Declaro que li e aceito os termos de uso e políticas de privacidade</string>
     <string name="your_account_has_expiring">Ops!\nSua conta expirou 🙁</string>
     <string name="unexpected_error">Ops!\nOcorreu um erro inesperado 🙁</string>
+    <string name="choose_your_plan">Escolha seu plano</string>
     <string name="send_a_message_to">Envie uma mensagem para</string>
     <string name="hello_user">Oi, %s!</string>
     <string name="your_data">Seus dados:</string>

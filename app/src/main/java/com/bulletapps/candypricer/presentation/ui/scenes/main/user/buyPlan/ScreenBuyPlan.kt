@@ -1,7 +1,14 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
@@ -25,9 +32,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.ScreenActions
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.ScreenEvent
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.UIState
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
-import com.bulletapps.candypricer.presentation.ui.widgets.*
+import com.bulletapps.candypricer.presentation.ui.widgets.LogoCircle
+import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
+import com.bulletapps.candypricer.presentation.ui.widgets.TextButtonCustom
+import com.bulletapps.candypricer.presentation.ui.widgets.TextTitle
+import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 import com.bulletapps.candypricer.presentation.util.openWhatsapp
 
 @Composable
@@ -69,39 +83,45 @@ private fun Screen(
                 .background(color = colors.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(42.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             LogoCircle()
 
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                stringResource(R.string.your_account_has_expiring),
-                fontWeight = FontWeight.ExtraBold,
+                stringResource(R.string.choose_your_plan),
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                fontSize = 32.sp
+                fontSize = 20.sp,
             )
 
-            Spacer(modifier = Modifier.height(42.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            NormalButton(
-                text = stringResource(R.string.i_want_update_my_plan),
-                onClick = { onAction(ScreenActions.OnClickMessage) }
-            )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = colors.background),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
 
-            Spacer(modifier = Modifier.weight(1f))
+                item {
+                    Spacer(modifier = Modifier.weight(1f))
 
-            TextButtonCustom(
-                stringResource(R.string.i_want_update_my_account),
-                onClick = { onAction(ScreenActions.OnClickDelete) }
-            )
+                    TextButtonCustom(
+                        stringResource(R.string.i_want_update_my_account),
+                        onClick = { onAction(ScreenActions.OnClickDelete) }
+                    )
 
-            OutlinedButtonCustom(
-                text = stringResource(R.string.logout),
-                onClick = { onAction(ScreenActions.OnClickLogout) }
-            )
+                    OutlinedButtonCustom(
+                        text = stringResource(R.string.logout),
+                        onClick = { onAction(ScreenActions.OnClickLogout) }
+                    )
 
-            Spacer(modifier = Modifier.height(32.dp))
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
+
+            }
 
             MakeDialog(uiState, onAction)
 

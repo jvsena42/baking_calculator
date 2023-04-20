@@ -22,10 +22,6 @@ class BuyPlanViewModel @Inject constructor(
 
     val uiState = UIState()
 
-    private fun onClickMessage() {
-        viewModelScope.sendEvent(ScreenEvent.OpenWhatsApp(WHATSAPP_NUMBER))
-    }
-
     private fun onClickLogout() {
         preferencesDataSource.clearPref()
         viewModelScope.sendEvent(ScreenEvent.Login)
@@ -50,7 +46,6 @@ class BuyPlanViewModel @Inject constructor(
 
     fun onAction(action: ScreenActions) {
         when (action) {
-            is ScreenActions.OnClickMessage -> onClickMessage()
             is ScreenActions.OnClickLogout -> onClickLogout()
             is ScreenActions.OnClickDelete -> handleDialogVisibility(true)
             is ScreenActions.OnDismissDialog -> handleDialogVisibility(false)
@@ -64,7 +59,6 @@ class BuyPlanViewModel @Inject constructor(
     }
 
     sealed class ScreenActions {
-        object OnClickMessage : ScreenActions()
         object OnClickLogout : ScreenActions()
         object OnClickDelete : ScreenActions()
         object OnConfirmDelete : ScreenActions()
