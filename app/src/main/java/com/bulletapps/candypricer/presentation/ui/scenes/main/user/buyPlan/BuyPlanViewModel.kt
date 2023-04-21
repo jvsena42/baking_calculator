@@ -11,6 +11,8 @@ import com.bulletapps.candypricer.presentation.util.EventFlowImpl
 import com.bulletapps.candypricer.presentation.util.WHATSAPP_NUMBER
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +22,8 @@ class BuyPlanViewModel @Inject constructor(
     private val deleteUserUseCase: DeleteUserUseCase
     ) : ViewModel(), EventFlow<BuyPlanViewModel.ScreenEvent> by EventFlowImpl() {
 
-    val uiState = UIState()
+    private val _uiState = MutableStateFlow(BuyPlanUIState())
+    val uiState = _uiState.asStateFlow()
 
     private fun onClickLogout() {
         preferencesDataSource.clearPref()
@@ -36,12 +39,20 @@ class BuyPlanViewModel @Inject constructor(
         }
     }
 
-    private fun showToast(message: UiText?) {
-        message?.let{ uiState.textToast.value = it }
+    private fun showToast(message: String) {
+        _uiState.update {
+            it.copy(
+                textToast = message
+            )
+        }
     }
 
     private fun handleDialogVisibility(shouldShow: Boolean) = viewModelScope.launch {
-        uiState.isDialogVisible.value = shouldShow
+        _uiState.update {
+            it.copy(
+                isDialogVisible = shouldShow
+            )
+        }
     }
 
     fun onAction(action: ScreenActions) {
@@ -63,11 +74,6 @@ class BuyPlanViewModel @Inject constructor(
         object OnClickDelete : ScreenActions()
         object OnConfirmDelete : ScreenActions()
         object OnDismissDialog : ScreenActions()
-    }
-
-    class UIState {
-        val isDialogVisible = MutableStateFlow(false)
-        val textToast = MutableStateFlow<UiText>(UiText.DynamicString(""))
     }
 }
 
