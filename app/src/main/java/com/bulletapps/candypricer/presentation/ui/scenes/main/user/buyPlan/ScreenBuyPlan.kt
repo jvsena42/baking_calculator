@@ -30,11 +30,13 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.domain.model.PlanModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.ScreenActions
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.ScreenEvent
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
+import com.bulletapps.candypricer.presentation.ui.widgets.BuyPlanItem
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoCircle
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
 import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
@@ -103,20 +105,29 @@ private fun Screen(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(color = colors.background),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                items(uiState.planList.size) { index ->
+                    uiState.planList[index].run {
+                        BuyPlanItem(
+                            title = title,
+                            description = subtitle,
+                            onClick = { onAction(ScreenActions.OnClickBuy(itemId = id)) }
+                        )
+                    }
+                }
 
                 item {
                     Spacer(modifier = Modifier.weight(1f))
 
-                    TextButtonCustom(
-                        stringResource(R.string.i_want_update_my_account),
-                        onClick = { onAction(ScreenActions.OnClickDelete) }
-                    )
-
                     OutlinedButtonCustom(
                         text = stringResource(R.string.logout),
                         onClick = { onAction(ScreenActions.OnClickLogout) }
+                    )
+
+                    TextButtonCustom(
+                        stringResource(R.string.i_want_update_my_account),
+                        onClick = { onAction(ScreenActions.OnClickDelete) }
                     )
 
                     Spacer(modifier = Modifier.height(32.dp))
@@ -181,6 +192,13 @@ private fun MakeDialog(uiState: BuyPlanUIState, onAction: (ScreenActions) -> Uni
 private fun Preview() {
     Screen(
         onAction = {},
-        uiState = BuyPlanUIState()
+        uiState = BuyPlanUIState(
+            screenState = BuyPlanUIState.ScreenState.ShowScreen,
+            planList = listOf(
+                PlanModel(id = 0, title = "Plano Anual", subtitle = "12 x 29,74"),
+                PlanModel(id = 1, title = "Plano Mensal", subtitle = "12 x 29,74"),
+                PlanModel(id = 2, title = "Plano Trimestral", subtitle = "12 x 29,74")
+            )
+        )
     )
 }

@@ -25,6 +25,10 @@ class BuyPlanViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(BuyPlanUIState())
     val uiState = _uiState.asStateFlow()
 
+    fun setup() {
+        //TODO MAKE REQUEST
+    }
+
     private fun onClickLogout() {
         preferencesDataSource.clearPref()
         viewModelScope.sendEvent(ScreenEvent.Login)
@@ -53,25 +57,31 @@ class BuyPlanViewModel @Inject constructor(
         }
     }
 
+    private fun onClickBuy() {
+        //TODO IMPLEMENT
+    }
+
     fun onAction(action: ScreenActions) {
         when (action) {
             is ScreenActions.OnClickLogout -> onClickLogout()
             is ScreenActions.OnClickDelete -> handleDialogVisibility(true)
             is ScreenActions.OnDismissDialog -> handleDialogVisibility(false)
             is ScreenActions.OnConfirmDelete -> onDelete()
+            is ScreenActions.OnClickBuy -> onClickBuy()
         }
     }
 
-    sealed class ScreenEvent {
-        data class OpenWhatsApp(val number: String) : ScreenEvent()
-        object Login : ScreenEvent()
+    sealed interface ScreenEvent {
+        data class OpenWhatsApp(val number: String) : ScreenEvent
+        object Login : ScreenEvent
     }
 
-    sealed class ScreenActions {
-        object OnClickLogout : ScreenActions()
-        object OnClickDelete : ScreenActions()
-        object OnConfirmDelete : ScreenActions()
-        object OnDismissDialog : ScreenActions()
+    sealed interface ScreenActions {
+        object OnClickLogout : ScreenActions
+        object OnClickDelete : ScreenActions
+        object OnConfirmDelete : ScreenActions
+        object OnDismissDialog : ScreenActions
+        data class OnClickBuy(val itemId: Int) : ScreenActions
     }
 }
 
