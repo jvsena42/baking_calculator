@@ -65,7 +65,7 @@ class CandyPricerRepositoryImpl @Inject constructor(
             remoteDataSource.updateExpirationDate(id, expirationDate)
         }
 
-    override suspend fun deleteUser() = safeRequest(dispatcher) {
+    override suspend fun deleteUser() = safeRequest2(dispatcher) {
         remoteDataSource.deleteUser()
     }
 

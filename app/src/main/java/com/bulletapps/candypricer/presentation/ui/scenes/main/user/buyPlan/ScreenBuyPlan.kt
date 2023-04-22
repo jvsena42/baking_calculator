@@ -34,7 +34,6 @@ import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.ScreenActions
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.ScreenEvent
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.UIState
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.LogoCircle
 import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
@@ -50,7 +49,9 @@ fun ScreenExpired(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    Screen(viewModel.uiState, viewModel::onAction)
+    val uiState by viewModel.uiState.collectAsState()
+
+    Screen(uiState, viewModel::onAction)
     EventConsumer(activity, viewModel, sharedViewModel)
 }
 
@@ -72,7 +73,7 @@ private fun EventConsumer(
 
 @Composable
 private fun Screen(
-    uiState: UIState,
+    uiState: BuyPlanUIState,
     onAction: (ScreenActions) -> Unit,
 ) {
 
@@ -131,15 +132,14 @@ private fun Screen(
 }
 
 @Composable
-private fun DisplayToast(uiState: UIState) {
-    val toastMessage by uiState.textToast.collectAsState()
-    val message = toastMessage.asString()
-    if (message.isNotEmpty()) Toast(message)
+private fun DisplayToast(uiState: BuyPlanUIState) {
+    val toastMessage = uiState.textToast
+    if (toastMessage.isNotEmpty()) Toast(toastMessage)
 }
 
 @Composable
-private fun MakeDialog(uiState: UIState, onAction: (ScreenActions) -> Unit) {
-    val isVisible by uiState.isDialogVisible.collectAsState()
+private fun MakeDialog(uiState: BuyPlanUIState, onAction: (ScreenActions) -> Unit) {
+    val isVisible = uiState.isDialogVisible
 
     if (isVisible) {
         Dialog(
@@ -181,8 +181,6 @@ private fun MakeDialog(uiState: UIState, onAction: (ScreenActions) -> Unit) {
 private fun Preview() {
     Screen(
         onAction = {},
-        uiState = UIState().apply {
-            isDialogVisible.value = false
-        }
+        uiState = BuyPlanUIState()
     )
 }

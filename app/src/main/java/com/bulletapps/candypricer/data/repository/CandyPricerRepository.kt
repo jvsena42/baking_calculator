@@ -19,7 +19,7 @@ interface CandyPricerRepository {
 
     suspend fun updateExpirationDate(id:Int, expirationDate: String): Resource<Unit>
 
-    suspend fun deleteUser(): Resource<Unit>
+    suspend fun deleteUser(): Result<Unit>
 
     suspend fun login(parameters: LoginParameters): Resource<LoginResponse>
 

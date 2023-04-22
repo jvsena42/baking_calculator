@@ -31,12 +31,10 @@ class BuyPlanViewModel @Inject constructor(
     }
 
     private fun onDelete() = viewModelScope.launch {
-        deleteUserUseCase().also {
-            when (it) {
-                is Resource.Error -> showToast(it.message)
-                is Resource.Success -> onClickLogout()
-            }
-        }
+        deleteUserUseCase().fold(
+            onSuccess = { onClickLogout() },
+            onFailure = { showToast(it.message.orEmpty()) }
+        )
     }
 
     private fun showToast(message: String) {
