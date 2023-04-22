@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -21,15 +21,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
-import com.bulletapps.candypricer.domain.model.MenuModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.LoginViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ProductsViewModel
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
 import com.bulletapps.candypricer.presentation.ui.widgets.MenuItem
 import com.bulletapps.candypricer.presentation.ui.widgets.ScreenErrorRequest
 import com.bulletapps.candypricer.presentation.ui.widgets.ScreenLoading
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun ScreenMenu(
@@ -100,7 +96,7 @@ fun MenuGrid(
     val menuItems by uiState.menuList.collectAsState()
 
     LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
+        columns = GridCells.Fixed(2),
         modifier = Modifier
             .padding(top = 32.dp)
             .fillMaxSize(),

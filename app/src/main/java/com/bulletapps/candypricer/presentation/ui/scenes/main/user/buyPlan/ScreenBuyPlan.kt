@@ -1,12 +1,18 @@
-package com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired
+package com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,27 +30,37 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bulletapps.candypricer.R
+import com.bulletapps.candypricer.domain.model.PlanModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainViewModel
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ExpiredViewModel.*
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.ScreenActions
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.BuyPlanViewModel.ScreenEvent
 import com.bulletapps.candypricer.presentation.ui.theme.CandyPricerTheme
-import com.bulletapps.candypricer.presentation.ui.widgets.*
+import com.bulletapps.candypricer.presentation.ui.widgets.BuyPlanItem
+import com.bulletapps.candypricer.presentation.ui.widgets.LogoCircle
+import com.bulletapps.candypricer.presentation.ui.widgets.NormalButton
+import com.bulletapps.candypricer.presentation.ui.widgets.OutlinedButtonCustom
+import com.bulletapps.candypricer.presentation.ui.widgets.TextButtonCustom
+import com.bulletapps.candypricer.presentation.ui.widgets.TextTitle
+import com.bulletapps.candypricer.presentation.ui.widgets.Toast
 import com.bulletapps.candypricer.presentation.util.openWhatsapp
 
 @Composable
 fun ScreenExpired(
-    viewModel: ExpiredViewModel = hiltViewModel(),
+    viewModel: BuyPlanViewModel = hiltViewModel(),
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    Screen(viewModel.uiState, viewModel::onAction)
+    val uiState by viewModel.uiState.collectAsState()
+
+    Screen(uiState, viewModel::onAction)
     EventConsumer(activity, viewModel, sharedViewModel)
 }
 
 @Composable
 private fun EventConsumer(
     activity: MainActivity,
-    viewModel: ExpiredViewModel,
+    viewModel: BuyPlanViewModel,
     sharedViewModel: MainViewModel
 ) {
     LaunchedEffect(key1 = Unit) {
@@ -59,7 +75,7 @@ private fun EventConsumer(
 
 @Composable
 private fun Screen(
-    uiState: UIState,
+    uiState: BuyPlanUIState,
     onAction: (ScreenActions) -> Unit,
 ) {
 
@@ -70,39 +86,54 @@ private fun Screen(
                 .background(color = colors.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(42.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             LogoCircle()
 
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                stringResource(R.string.your_account_has_expiring),
-                fontWeight = FontWeight.ExtraBold,
+                stringResource(R.string.choose_your_plan),
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                fontSize = 32.sp
+                fontSize = 20.sp,
             )
 
-            Spacer(modifier = Modifier.height(42.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            NormalButton(
-                text = stringResource(R.string.i_want_update_my_plan),
-                onClick = { onAction(ScreenActions.OnClickMessage) }
-            )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = colors.background),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(uiState.planList.size) { index ->
+                    uiState.planList[index].run {
+                        BuyPlanItem(
+                            title = title,
+                            description = subtitle,
+                            onClick = { onAction(ScreenActions.OnClickBuy(itemId = id)) }
+                        )
+                    }
+                }
 
-            Spacer(modifier = Modifier.weight(1f))
+                item {
+                    Spacer(modifier = Modifier.weight(1f))
 
-            TextButtonCustom(
-                stringResource(R.string.i_want_update_my_account),
-                onClick = { onAction(ScreenActions.OnClickDelete) }
-            )
+                    OutlinedButtonCustom(
+                        text = stringResource(R.string.logout),
+                        onClick = { onAction(ScreenActions.OnClickLogout) }
+                    )
 
-            OutlinedButtonCustom(
-                text = stringResource(R.string.logout),
-                onClick = { onAction(ScreenActions.OnClickLogout) }
-            )
+                    TextButtonCustom(
+                        stringResource(R.string.i_want_update_my_account),
+                        onClick = { onAction(ScreenActions.OnClickDelete) }
+                    )
 
-            Spacer(modifier = Modifier.height(32.dp))
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
+
+            }
 
             MakeDialog(uiState, onAction)
 
@@ -112,15 +143,14 @@ private fun Screen(
 }
 
 @Composable
-private fun DisplayToast(uiState: UIState) {
-    val toastMessage by uiState.textToast.collectAsState()
-    val message = toastMessage.asString()
-    if (message.isNotEmpty()) Toast(message)
+private fun DisplayToast(uiState: BuyPlanUIState) {
+    val toastMessage = uiState.textToast
+    if (toastMessage.isNotEmpty()) Toast(toastMessage)
 }
 
 @Composable
-private fun MakeDialog(uiState: UIState, onAction: (ScreenActions) -> Unit) {
-    val isVisible by uiState.isDialogVisible.collectAsState()
+private fun MakeDialog(uiState: BuyPlanUIState, onAction: (ScreenActions) -> Unit) {
+    val isVisible = uiState.isDialogVisible
 
     if (isVisible) {
         Dialog(
@@ -162,8 +192,13 @@ private fun MakeDialog(uiState: UIState, onAction: (ScreenActions) -> Unit) {
 private fun Preview() {
     Screen(
         onAction = {},
-        uiState = UIState().apply {
-            isDialogVisible.value = false
-        }
+        uiState = BuyPlanUIState(
+            screenState = BuyPlanUIState.ScreenState.ShowScreen,
+            planList = listOf(
+                PlanModel(id = 0, title = "Plano Anual", subtitle = "12 x 29,74"),
+                PlanModel(id = 1, title = "Plano Mensal", subtitle = "12 x 29,74"),
+                PlanModel(id = 2, title = "Plano Trimestral", subtitle = "12 x 29,74")
+            )
+        )
     )
 }

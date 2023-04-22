@@ -7,13 +7,12 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.activity
 import androidx.navigation.compose.composable
 import com.bulletapps.candypricer.presentation.ui.scenes.main.admin.clients.ScreenClients
 import com.bulletapps.candypricer.presentation.ui.scenes.main.menu.ScreenMenu
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addProduct.ScreenAddProduct
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.addSupply.ScreenAddSupply
-import com.bulletapps.candypricer.presentation.ui.scenes.main.user.expired.ScreenExpired
+import com.bulletapps.candypricer.presentation.ui.scenes.main.user.buyPlan.ScreenExpired
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.login.ScreenLogin
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.productDetail.ScreenProductDetail
 import com.bulletapps.candypricer.presentation.ui.scenes.main.user.products.ScreenProducts
