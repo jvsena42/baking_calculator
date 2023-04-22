@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bulletapps.candypricer.R
 import com.bulletapps.candypricer.domain.model.PlanModel
 import com.bulletapps.candypricer.presentation.ui.scenes.main.MainActivity
@@ -51,7 +52,7 @@ fun ScreenExpired(
     sharedViewModel: MainViewModel
 ) {
     val activity = LocalContext.current as MainActivity
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Screen(uiState, viewModel::onAction)
     EventConsumer(activity, viewModel, sharedViewModel)
@@ -64,9 +65,9 @@ private fun EventConsumer(
     sharedViewModel: MainViewModel
 ) {
     LaunchedEffect(key1 = Unit) {
+        viewModel.setup()
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is ScreenEvent.OpenWhatsApp -> activity.openWhatsapp(event.number, activity.getString(R.string.update_plan_text))
                 is ScreenEvent.Login -> sharedViewModel.navigate(MainViewModel.Navigation.Login)
             }
         }

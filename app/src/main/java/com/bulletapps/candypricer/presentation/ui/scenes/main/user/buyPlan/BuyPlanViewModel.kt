@@ -72,7 +72,6 @@ class BuyPlanViewModel @Inject constructor(
     }
 
     sealed interface ScreenEvent {
-        data class OpenWhatsApp(val number: String) : ScreenEvent
         object Login : ScreenEvent
     }
 
