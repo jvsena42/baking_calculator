@@ -25,6 +25,10 @@ class PaymentViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    private fun makePayment() {
+
+    }
+
     private fun handlePaymentResult(result: PaymentResult) {
         when(result) {
             PaymentResult.Canceled -> onPaymentCanceled()
