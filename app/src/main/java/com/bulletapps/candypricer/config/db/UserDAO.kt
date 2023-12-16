@@ -7,14 +7,14 @@ import com.bulletapps.candypricer.data.entities.UserEntity
 interface UserDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun createUser(user: UserEntity)
+    fun createUser(user: UserEntity)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateUser(user: UserEntity)
+    fun updateUser(user: UserEntity)
 
     @Query("SELECT * FROM user LIMIT 1")
-    suspend fun getUser(): UserEntity?
+    fun getUser(): UserEntity?
 
     @Query("DELETE FROM user")
-    suspend fun deleteUser()
+    fun deleteUser()
 }
