@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.bulletapps.candypricer"
         minSdk 24
-        targetSdk 31
+        targetSdk 33
         versionCode 14
         versionName "2.0.0"
 
