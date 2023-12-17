@@ -1,6 +1,6 @@
-## Precificando
+## Baking Calculator
 
-Precificando is an Android app to precify recipes, built in Jetpack Compose, using Clean Architecture, coroutines, Flow, and single activity.
+Baking Calculator is an Android app to precify recipes, built in Jetpack Compose, using Clean Architecture, coroutines, Flow, and single activity.
 
 ### Getting started
 
