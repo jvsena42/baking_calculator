@@ -8,14 +8,14 @@ on:
     branches: [master]
 
 jobs:
-  start:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
-
-      - name: Run sample script
-        run: echo Hello, world
+#  start:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout the code
+#        uses: actions/checkout@v2
+#
+#      - name: Run sample script
+#        run: echo Hello, world
 
   #  lint:
   #    name: Perform lint check
