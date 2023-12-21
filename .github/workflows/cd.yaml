@@ -22,7 +22,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Make gradlew executable
-        run: chmod +x gradlew
+        run: chmod +x ./gradlew
 
       - name: Build Release AAB
         run: ./gradlew bundleRelease
