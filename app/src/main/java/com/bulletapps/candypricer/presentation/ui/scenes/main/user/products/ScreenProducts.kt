@@ -1,7 +1,9 @@
 package com.bulletapps.candypricer.presentation.ui.scenes.main.user.products
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
@@ -129,20 +131,20 @@ private fun ScreenProducts(
                 )
             }
         }
-    ) {
-        MakeList(uiState, onAction)
+    ) { paddingValues ->
+        MakeList(uiState, Modifier.padding(paddingValues) , onAction)
     }
 }
 
 @Composable
-private fun MakeList(uiState: ProductsUIState, onAction: (ScreenActions) -> Unit) {
+private fun MakeList(uiState: ProductsUIState, modifier: Modifier , onAction: (ScreenActions) -> Unit) {
     val list by uiState.productsList.collectAsState()
 
     if (list.isEmpty()) {
         TextEmpty(stringResource(R.string.add_product_and_start_pricing))
     } else {
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             content = {
                 items(list.size) { index ->
