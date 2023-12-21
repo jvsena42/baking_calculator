@@ -24,8 +24,11 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ${{ github.workspace }}/gradlew
 
+      - name: Check gradlew permissions
+        run: ls -l ${{ github.workspace }}/gradlew
+
       - name: Build Release AAB
-        run: ./gradlew bundleRelease
+        run: ${{ github.workspace }}/gradlew bundleRelease
 
       - name: Sign app bundle
         uses: r0adkll/upload-google-play@v1
