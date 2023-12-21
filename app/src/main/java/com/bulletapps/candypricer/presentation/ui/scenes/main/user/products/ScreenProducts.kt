@@ -132,12 +132,16 @@ private fun ScreenProducts(
             }
         }
     ) { paddingValues ->
-        MakeList(uiState, Modifier.padding(paddingValues) , onAction)
+        MakeList(uiState, Modifier.padding(paddingValues), onAction)
     }
 }
 
 @Composable
-private fun MakeList(uiState: ProductsUIState, modifier: Modifier , onAction: (ScreenActions) -> Unit) {
+private fun MakeList(
+    uiState: ProductsUIState,
+    modifier: Modifier,
+    onAction: (ScreenActions) -> Unit
+) {
     val list by uiState.productsList.collectAsState()
 
     if (list.isEmpty()) {
