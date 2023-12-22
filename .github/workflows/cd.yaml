@@ -31,6 +31,13 @@ jobs:
       - name: Build Release AAB
         run: ./gradlew bundleRelease
 
+      - name: Check for app bundle file
+        run: |
+          if [[ ! -f app/build/outputs/bundle/release/app-release.aab ]]; then
+            echo "Error: App bundle file not found!"
+            exit 1  # Terminate the job with an error
+          fi
+
       - name: Sign App Bundle
         uses: r0adkll/sign-android-release@v1
         with:
@@ -39,6 +46,8 @@ jobs:
           alias: ${{ secrets.KEYSTORE_ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.KEYSTORE_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "30.0.2"
 
       - name: Upload Signed AAB
         uses: actions/upload-artifact@v2
@@ -53,15 +62,6 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.bulletapps.candypricer
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-        env:
-          BUILD_TOOLS_VERSION: "30.0.2"
-
-      - name: Check for app bundle file
-        run: |
-          if [[ ! -f app/build/outputs/bundle/release/app-release.aab ]]; then
-            echo "Error: App bundle file not found!"
-            exit 1  # Terminate the job with an error
-          fi
 
       - name: Upload Signed AAB
         uses: actions/upload-artifact@v2
