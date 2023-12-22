@@ -34,6 +34,9 @@ jobs:
       - name: Build Release AAB
         run: ./gradlew bundleRelease
 
+      - name: List directory contents
+        run: ls -l app/build/outputs/bundle/release
+
       - name: Check for app bundle file
         run: |
           if [[ ! -f app/build/outputs/bundle/release/app-release.aab ]]; then
