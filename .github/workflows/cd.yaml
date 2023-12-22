@@ -28,9 +28,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-#      - name: Make gradlew executable
-#        run: chmod +x ${{ github.workspace }}/gradlew
-
       - name: Check gradlew permissions
         run: ls -l ${{ github.workspace }}/gradlew
 
