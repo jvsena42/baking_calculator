@@ -56,6 +56,13 @@ jobs:
         env:
           BUILD_TOOLS_VERSION: "30.0.2"
 
+      - name: Check for app bundle file
+        run: |
+          if [[ ! -f app/build/outputs/bundle/release/app-release.aab ]]; then
+            echo "Error: App bundle file not found!"
+            exit 1  # Terminate the job with an error
+          fi
+
       - name: Upload Signed AAB
         uses: actions/upload-artifact@v2
         with:
