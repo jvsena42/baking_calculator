@@ -34,7 +34,7 @@ jobs:
       - name: Sign App Bundle
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/bundle/release/app-release.aab
+          releaseDirectory: app/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
           alias: ${{ secrets.KEYSTORE_ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: app-bundle
-          path: app/build/outputs/bundle/release/app-release.aab.signed
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
 
       - name: Sign app bundle
         uses: r0adkll/upload-google-play@v1
