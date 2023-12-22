@@ -69,5 +69,5 @@ jobs:
         with:
           serviceAccountJson: service_account.json
           packageName: com.bulletapps.candypricer
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          releaseFiles: baking_calculator/app/build/outputs/bundle/release/app-release.aab
           track: production
