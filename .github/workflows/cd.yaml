@@ -68,6 +68,6 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJson: service_account.json
-          packageName: ${{ github.event.inputs.app_id }}
+          packageName: com.bulletapps.candypricer
           releaseFiles: app/build/outputs/bundle/release/*.aab
           track: production
