@@ -37,6 +37,20 @@ jobs:
       - name: Build Release AAB
         run: ./gradlew bundleRelease
 
+      - name: Sign App Bundle
+        uses: r0adkll/sign-android-release@v1
+        with:
+          appBundlePath: app/build/outputs/bundle/release/app-release.aab
+          keystoreBase64: ${{ secrets.KEYSTORE_BASE64 }}
+          keystoreAlias: ${{ secrets.KEYSTORE_ALIAS }}
+          keystorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+
+      - name: Upload Signed AAB
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-bundle
+          path: app/build/outputs/bundle/release/app-release.aab.signed
+
       - name: Sign app bundle
         uses: r0adkll/upload-google-play@v1
         id: sign_app
