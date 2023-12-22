@@ -2,7 +2,7 @@ name: CD
 
 on:
   workflow_run:
-    workflows: ["ci"]
+    workflows: [ "ci" ]
     types:
       - completed
 
@@ -37,10 +37,11 @@ jobs:
       - name: Sign App Bundle
         uses: r0adkll/sign-android-release@v1
         with:
-          appBundlePath: app/build/outputs/bundle/release/app-release.aab
-          keystoreBase64: ${{ secrets.KEYSTORE_BASE64 }}
-          keystoreAlias: ${{ secrets.KEYSTORE_ALIAS }}
-          keystorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          releaseDirectory: app/build/outputs/bundle/release/app-release.aab
+          signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
+          alias: ${{ secrets.KEYSTORE_ALIAS }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEYSTORE_PASSWORD }}
 
       - name: Upload Signed AAB
         uses: actions/upload-artifact@v2
@@ -64,7 +65,7 @@ jobs:
 
   deploy:
     name: Deploy release AAB on Playstore
-    needs: [bundle]
+    needs: [ bundle ]
     runs-on: ubuntu-latest
     steps:
       - name: Create service_account.json
