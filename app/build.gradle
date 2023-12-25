@@ -13,7 +13,7 @@ android {
         applicationId "com.bulletapps.candypricer"
         minSdk 24
         targetSdk 34
-        versionCode 14
+        versionCode 15
         versionName "2.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -98,6 +98,10 @@ dependencies {
 
     //Splash screen
     implementation 'androidx.core:core-splashscreen:1.1.0-alpha02'
+
+    //Google play billing
+    def billing_version = "6.1.0"
+    implementation "com.android.billingclient:billing-ktx:$billing_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
